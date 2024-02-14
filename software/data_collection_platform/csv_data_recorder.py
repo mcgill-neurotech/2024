@@ -147,7 +147,6 @@ class CSVDataRecorder:
         left_list = np.array([], dtype=int)
         right_list = np.array([], dtype=int)
 
-        current_marker = 0
         for i in range(8):
             channel_lists.append(np.array([]))
 
@@ -160,22 +159,23 @@ class CSVDataRecorder:
             eeg_sample, eeg_timestamp = self.eeg_inlet.pull_sample()
             marker_sample, marker_timestamp = self.marker_inlet.pull_sample(0.0)
 
+            marker = None
             if marker_sample is not None and marker_sample[0] is not None:
-                marker = marker_sample[0]
+                marker_string = marker_sample[0]
 
                 for i in range(len(constants.markers)):
-                    if marker == constants.markers[i]:
-                        current_marker = i
+                    if marker_string == constants.markers[i]:
+                        marker = i
                         break
 
             timestamp_list = np.append(timestamp_list, eeg_timestamp)
             for i in range(8):
                 channel_lists[i] = np.append(channel_lists[i], eeg_sample[i])
 
-            cross_list = np.append(cross_list, 1 if current_marker == 1 else 0)
-            beep_list = np.append(beep_list, 1 if current_marker == 2 else 0)
-            left_list = np.append(left_list, 1 if current_marker == 3 else 0)
-            right_list = np.append(right_list, 1 if current_marker == 4 else 0)
+            cross_list = np.append(cross_list, 1 if marker == 0 else 0)
+            beep_list = np.append(beep_list, 1 if marker == 1 else 0)
+            left_list = np.append(left_list, 1 if marker == 2 else 0)
+            right_list = np.append(right_list, 1 if marker == 3 else 0)
 
         df["timestamp"] = timestamp_list
         for i in range(8):

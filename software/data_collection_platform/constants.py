@@ -1,1 +1,1 @@
-markers = ["done", "cross", "beep", "left", "right"]
+markers = ["cross", "beep", "left", "right"]
