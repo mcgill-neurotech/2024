@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 import typing
 import constants
-
+from pathlib import Path  
 
 def find_bci_inlet(debug=False):
     """Find an EEG stream and return an inlet to it.
@@ -185,7 +185,10 @@ class CSVDataRecorder:
         df["left"] = left_list
         df["right"] = right_list
 
-        df.to_csv(filename, index=False)
+        filepath = Path(f'test_data/{filename}')  
+        filepath.parent.mkdir(parents=True, exist_ok=True)  
+
+        df.to_csv(filepath, index=False)
 
     def stop(self):
         """Finish recording data to a CSV file."""
