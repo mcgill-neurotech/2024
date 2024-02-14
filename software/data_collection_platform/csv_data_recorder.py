@@ -4,12 +4,7 @@ import threading
 import pandas as pd
 import numpy as np
 import typing
-
-
-# g_markers = ["done", "cross", "beep", "left", "right"]
-g_markers = ["done", "XXX", "Blah", "Marker", "Testtest"]  # Used with liesl
-# NOTE: I (Ezra) couldn't find a way to manually set the mock marker values with liesl, so I just used the default ones.
-# Maybe someone else can figure it out (https://github.com/pyreiz/pyliesl/blob/develop/liesl/streams/mock.py#L112)
+import constants
 
 
 def find_bci_inlet(debug=False):
@@ -50,7 +45,7 @@ def find_marker_inlet(debug=False):
     """
 
     print("Looking for a marker stream...")
-    streams = pylsl.resolve_stream("type", "Marker")
+    streams = pylsl.resolve_stream("type", "Markers")
     # Block until stream found
     inlet = pylsl.StreamInlet(
         streams[0], processing_flags=pylsl.proc_dejitter | pylsl.proc_clocksync
@@ -75,7 +70,8 @@ class CSVDataRecorder:
         self.recording = False
         self.ready = self.eeg_inlet is not None and self.marker_inlet is not None
 
-        print("DataRecorder ready:", self.ready)
+        if self.ready:
+            print("Ready to start recording.")
 
     def find_streams(self):
         """Find EEG and marker streams. Updates the ready flag."""
@@ -156,11 +152,10 @@ class CSVDataRecorder:
             channel_lists.append(np.array([]))
 
         while self.recording:
-            # PROBLEM - we need to merge the two LSL streams into one
-            # Assume we never get two markers for one sample
-            # Therefore when we pull a marker, we can assume the next sample is the eeg sample and attach the marker to it
+            # PROBLEM - we need to merge the two (EEG and Marker) LSL streams into one
+            # Assume we never get two markers for one EEG sample
+            # Therefore when we pull a marker, we can attach it to the next pulled EEG sample
             # This effectively discards the marker timestamps but the EEG is recorded so quickly that it doesn't matter (?)
-            # Otherwise all EEG samples will have an empty marker
 
             eeg_sample, eeg_timestamp = self.eeg_inlet.pull_sample()
             marker_sample, marker_timestamp = self.marker_inlet.pull_sample(0.0)
@@ -168,8 +163,8 @@ class CSVDataRecorder:
             if marker_sample is not None and marker_sample[0] is not None:
                 marker = marker_sample[0]
 
-                for i in range(len(g_markers)):
-                    if marker == g_markers[i]:
+                for i in range(len(constants.markers)):
+                    if marker == constants.markers[i]:
                         current_marker = i
                         break
 
@@ -200,13 +195,14 @@ class CSVDataRecorder:
 def test_recorder():
     collector = CSVDataRecorder(find_streams=True)
 
-    # mock collect for 2 seconds, then sleep for 1 second 5 times
+    # mock collect for 3 seconds, then sleep for 1 second 5 times
     for i in range(5):
         print(f"Starting test run {i+1}")
 
         collector.start(filename=f"test_data_{i+1}.csv")
-        time.sleep(2)
+        time.sleep(3)
         collector.stop()
+        print(f"Finished test run {i+1}")
         time.sleep(1)
 
 

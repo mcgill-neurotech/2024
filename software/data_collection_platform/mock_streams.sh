@@ -9,7 +9,7 @@ mock_eeg() {
 }
 
 mock_markers() {
-    liesl mock --type Markers
+    python mock_marker_sender.py
 }
 
 (trap 'kill 0' SIGINT; mock_eeg & mock_markers)
