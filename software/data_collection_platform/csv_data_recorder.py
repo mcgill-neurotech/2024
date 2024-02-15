@@ -4,8 +4,21 @@ import threading
 import pandas as pd
 import numpy as np
 import typing
+import logging
+import os
 import constants
 from pathlib import Path  
+
+# Edited from NTX McGill 2021 stream.py, lines 16-23
+# https://github.com/NTX-McGill/NeuroTechX-McGill-2021/blob/main/software/backend/dcp/bci/stream.py
+log_path = Path(f'logs/test.log')  
+log_path.parent.mkdir(parents=True, exist_ok=True)
+
+logging.basicConfig(filename=log_path,
+                    level=logging.INFO,
+                    format="%(asctime)s %(name)s %(levelname)s %(message)s")
+
+logger = logging.getLogger(__name__)
 
 def find_bci_inlet(debug=False):
     """Find an EEG stream and return an inlet to it.
@@ -17,19 +30,19 @@ def find_bci_inlet(debug=False):
         pylsl.StreamInlet: Inlet to the EEG stream
     """
 
-    print("Looking for an EEG stream...")
+    logger.info("Looking for an EEG stream...")
     streams = pylsl.resolve_stream("type", "EEG")
     # Block until stream found
     inlet = pylsl.StreamInlet(
         streams[0], processing_flags=pylsl.proc_dejitter | pylsl.proc_clocksync
     )
 
-    print(
+    logger.info(
         f"Connected to stream: {streams[0].name()}, Stream channel_count: {streams[0].channel_count()}"
     )
 
     if debug:
-        print(f"Stream info dump:\n{streams[0].as_xml()}")
+        logger.info(f"Stream info dump:\n{streams[0].as_xml()}")
 
     return inlet
 
@@ -44,18 +57,18 @@ def find_marker_inlet(debug=False):
         pylsl.StreamInlet: Inlet to the marker stream
     """
 
-    print("Looking for a marker stream...")
+    logger.info("Looking for a marker stream...")
     streams = pylsl.resolve_stream("type", "Markers")
     # Block until stream found
     inlet = pylsl.StreamInlet(
         streams[0], processing_flags=pylsl.proc_dejitter | pylsl.proc_clocksync
     )
 
-    print(f"Found {len(streams)} streams")
-    print(f"Connected to stream: {streams[0].name()}")
+    logger.info(f"Found {len(streams)} streams")
+    logger.info(f"Connected to stream: {streams[0].name()}")
 
     if debug:
-        print(f"Stream info dump:\n{streams[0].as_xml()}")
+        logger.info(f"Stream info dump:\n{streams[0].as_xml()}")
 
     return inlet
 
@@ -71,7 +84,7 @@ class CSVDataRecorder:
         self.ready = self.eeg_inlet is not None and self.marker_inlet is not None
 
         if self.ready:
-            print("Ready to start recording.")
+            logger.info("Ready to start recording.")
 
     def find_streams(self):
         """Find EEG and marker streams. Updates the ready flag."""
@@ -88,7 +101,7 @@ class CSVDataRecorder:
     def find_marker_input(self):
         """Find the marker stream and update the inlet."""
         self.marker_inlet = find_marker_inlet(debug=False)
-        print("Marker Inlet found:", self.marker_inlet)
+        logger.info("Marker Inlet found:", self.marker_inlet)
 
         self.ready = self.eeg_inlet is not None and self.marker_inlet is not None
 
@@ -100,11 +113,11 @@ class CSVDataRecorder:
         """
 
         if not self.ready:
-            print("Error: not ready to start recording")
-            print("EEG Inlet:", self.eeg_inlet)
-            print("Marker Inlet:", self.marker_inlet)
+            logger.error("Error: not ready to start recording")
+            logger.info("EEG Inlet:", self.eeg_inlet)
+            logger.info("Marker Inlet:", self.marker_inlet)
             return
-
+        
         self.recording = True
 
         worker_args = [filename]
@@ -193,7 +206,6 @@ class CSVDataRecorder:
     def stop(self):
         """Finish recording data to a CSV file."""
         self.recording = False
-
 
 def test_recorder():
     collector = CSVDataRecorder(find_streams=True)
