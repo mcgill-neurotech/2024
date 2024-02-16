@@ -99,12 +99,12 @@ class CSVDataRecorder:
     def find_eeg_inlet(self):
         """Find the EEG stream and update the inlet."""
         self.eeg_inlet = find_bci_inlet(debug=False)
-        print("EEG Inlet found:", self.eeg_inlet)
+        logger.info(f"EEG Inlet found:{self.eeg_inlet}")
 
     def find_marker_input(self):
         """Find the marker stream and update the inlet."""
         self.marker_inlet = find_marker_inlet(debug=False)
-        print("Marker Inlet found:", self.marker_inlet)
+        logger.info(f"Marker Inlet found:{self.marker_inlet}")
 
         self.ready = self.eeg_inlet is not None and self.marker_inlet is not None
 
@@ -117,8 +117,8 @@ class CSVDataRecorder:
 
         if not self.ready:
             logger.error("Error: not ready to start recording")
-            logger.info("EEG Inlet:", self.eeg_inlet)
-            logger.info("Marker Inlet:", self.marker_inlet)
+            logger.info(f"EEG Inlet:{self.eeg_inlet}")
+            logger.info(f"Marker Inlet:{self.marker_inlet}")
             return
 
         self.recording = True
