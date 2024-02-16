@@ -7,16 +7,14 @@ def main():
     marker_outlet = m.MarkerOutlet()
 
     # Create a data recorder
-    data_recorder = recorder.CSVDataRecorder()
+    data_recorder = recorder.CSVDataRecorder(find_streams=False)
 
     print("Welcome to the data collection platform.")
 
-    print(
-        "Press 0 to exit. Press 1 to send a marker. Press 2 to start recording. Press 3 to stop recording. Press 4 to reconnect to streams. Press 5 to send a marker every 5 seconds."
-    )
-
     while True:
-        user_input = input("Enter a command: ")
+        user_input = input(
+            "Press 0 to exit. Press 1 to send a marker. Press 2 to start recording. Press 3 to stop recording. Press 4 to reconnect to streams.\nEnter a command: "
+        )
 
         if user_input == "0":
             print("Exiting the data collection platform.")
@@ -44,6 +42,9 @@ def main():
 
         elif user_input == "3":
             data_recorder.stop()
+
+        elif user_input == "4":
+            data_recorder.find_streams()
 
 
 if __name__ == "__main__":
