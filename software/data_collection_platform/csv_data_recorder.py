@@ -7,18 +7,21 @@ import typing
 import logging
 import os
 import constants
-from pathlib import Path  
+from pathlib import Path
 
 # Edited from NTX McGill 2021 stream.py, lines 16-23
 # https://github.com/NTX-McGill/NeuroTechX-McGill-2021/blob/main/software/backend/dcp/bci/stream.py
-log_path = Path(f'logs/test.log')  
+log_path = Path(f"logs/test.log")
 log_path.parent.mkdir(parents=True, exist_ok=True)
 
-logging.basicConfig(filename=log_path,
-                    level=logging.INFO,
-                    format="%(asctime)s %(name)s %(levelname)s %(message)s")
+logging.basicConfig(
+    filename=log_path,
+    level=logging.INFO,
+    format="%(asctime)s %(name)s %(levelname)s %(message)s",
+)
 
 logger = logging.getLogger(__name__)
+
 
 def find_bci_inlet(debug=False):
     """Find an EEG stream and return an inlet to it.
@@ -117,7 +120,7 @@ class CSVDataRecorder:
             logger.info("EEG Inlet:", self.eeg_inlet)
             logger.info("Marker Inlet:", self.marker_inlet)
             return
-        
+
         self.recording = True
 
         worker_args = [filename]
@@ -198,14 +201,15 @@ class CSVDataRecorder:
         df["left"] = left_list
         df["right"] = right_list
 
-        filepath = Path(f'test_data/{filename}')  
-        filepath.parent.mkdir(parents=True, exist_ok=True)  
+        filepath = Path(f"test_data/{filename}")
+        filepath.parent.mkdir(parents=True, exist_ok=True)
 
         df.to_csv(filepath, index=False)
 
     def stop(self):
         """Finish recording data to a CSV file."""
         self.recording = False
+
 
 def test_recorder():
     collector = CSVDataRecorder(find_streams=True)
@@ -221,4 +225,4 @@ def test_recorder():
         time.sleep(1)
 
 
-test_recorder()
+# test_recorder()
