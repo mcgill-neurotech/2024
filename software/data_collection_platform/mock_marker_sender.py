@@ -5,7 +5,7 @@ import constants
 
 def main():
     info = pylsl.StreamInfo(
-        "Mock Markers", "Markers", 1, 0, "string", "data-collection-markers"
+        "Mock Markers", "Markers", 1, 0, "string", "data-collection-mock-markers"
     )
     outlet = pylsl.StreamOutlet(info)
     current_marker = 0
