@@ -104,7 +104,7 @@ class CSVDataRecorder:
     def find_marker_input(self):
         """Find the marker stream and update the inlet."""
         self.marker_inlet = find_marker_inlet(debug=False)
-        logger.info("Marker Inlet found:", self.marker_inlet)
+        print("Marker Inlet found:", self.marker_inlet)
 
         self.ready = self.eeg_inlet is not None and self.marker_inlet is not None
 
