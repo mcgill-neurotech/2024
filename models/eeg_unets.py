@@ -1,9 +1,9 @@
 import torch
 from torch import nn 
 from torch.nn import functional as F
-from torchsummary import summary
+import lightning as L
 
-class Convdown(nn.Module):
+class Convdown(L.LightningModule):
 
 	def __init__(self,
 				 input_channels,
@@ -28,7 +28,7 @@ class Convdown(nn.Module):
 		x = self.instance_norm(x)
 		return x
 	
-class Encode(nn.Module):
+class Encode(L.LightningModule):
 	def __init__(self,
 				 input_channels,
 				 output_channels,
@@ -49,7 +49,7 @@ class Encode(nn.Module):
 		pooled = self.pool(x)
 		return pooled,x
 	
-class Decode(nn.Module):
+class Decode(L.LightningModule):
 
 	def __init__(self,
 				 x_channel,
@@ -83,7 +83,7 @@ class Decode(nn.Module):
 		x = self.conv(x)
 		return x
 	
-class Unet(nn.Module):
+class Unet(L.LightningModule):
 
 	def __init__(self,
 				 num_modalities,
@@ -143,10 +143,12 @@ class Unet(nn.Module):
 				self.input_features.append(max_channels)
 			size /= 2
 
-		self.encoder = nn.ModuleList()
-		self.decoder = nn.ModuleList()
+		self.encoder = L.LightningModuleList()
+		self.decoder = L.LightningModuleList()
 
 		# input_channels = [32, 64, 128, 256,256....]
+
+		self.auxiliary_clf = nn.Identity()
 
 		for idx,i in enumerate(self.input_features[:-1]):
 			self.encoder.append(Encode(input_channels,i,ops["conv_op"],ops["norm_op"],
@@ -174,9 +176,10 @@ class Unet(nn.Module):
 			skip_connections.append(skip)
 
 		x = self.middle_conv(x)
+		y = self.auxiliary_clf(x)
 
 		for decode,skip in zip(self.decoder,reversed(skip_connections)):
 			x = decode(skip,x)
 
 		x = self.output_conv(x)
-		return x
+		return x,y
