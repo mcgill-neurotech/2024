@@ -2,23 +2,35 @@ import torch
 from torch import nn 
 from torch.nn import functional as F
 import lightning as L
+import dataclasses
+from typing import Tuple
+
+@dataclasses.dataclass(kw_only=True)
+class ConvConfig:
+	input_channels: int
+	output_channels: int
+	conv_op: nn.Module
+	norm_op: nn.Module
+	non_lin: nn.Module
+	groups: int = 1
+	padding: Tuple[int,...]
+	kernel_size: Tuple[int,...]
 
 class Convdown(L.LightningModule):
 
 	def __init__(self,
-				 input_channels,
-				 output_channels,
-				 conv_op=nn.Conv3d,
-				 norm_op=nn.InstanceNorm3d,
-				 non_lin=nn.LeakyReLU,
-				 kernel_size=3,
-				 groups=1) -> None:
+				 config: ConvConfig) -> None:
 		super().__init__()
+
 		# 3 x 3
-		self.c1 = conv_op(input_channels,output_channels,kernel_size=kernel_size,padding=(kernel_size-1)//2,groups=groups)
-		self.c2 = conv_op(output_channels,output_channels,kernel_size=kernel_size,padding=(kernel_size-1)//2,groups=groups)
-		self.instance_norm = norm_op(output_channels)
-		self.non_lin = non_lin()
+		self.c1 = config.conv_op(config.input_channels,config.output_channels,kernel_size=config.kernel_size,
+					padding=config.padding,groups=config.groups)
+		
+		self.c2 = config.conv_op(config.output_channels,config.output_channels,kernel_size=config.kernel_size,
+					padding=config.padding,groups=config.groups)
+		
+		self.instance_norm = config.norm_op(config.output_channels)
+		self.non_lin = config.non_lin()
 		
 	def forward(self,x):
 		x = self.c1(x)
@@ -183,3 +195,17 @@ class Unet(L.LightningModule):
 
 		x = self.output_conv(x)
 		return x,y
+	
+if __name__ == "__main__":
+	config = ConvConfig(
+		input_channels=1,
+		output_channels=32,
+		conv_op=nn.Conv2d,
+		norm_op=nn.InstanceNorm2d,
+		non_lin=nn.LeakyReLU,
+		groups=1,
+		kernel_size=(3,3),
+		padding= (0,0)
+	)
+
+	conv = Convdown(config)
