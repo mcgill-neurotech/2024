@@ -5,8 +5,9 @@ The following will guide you on how to run the data collection CLI.
 ## Dependencies:
 
 Prerequisites:
-
+- Clone 2024 folder to vscode or IDE of choice
 - Conda installed on your system (https://docs.anaconda.com/free/miniconda/)
+- Pandas installed (within conda) 'pip install pandas'
 - The OpenBCI Gui installed (https://openbci.com/downloads)
 
 If on linux, do `conda env create -f environment.yml`, which will create a conda environment called `neurotech` with all the necessary dependencies installed. TODO-create working environment.yml files for mac and windows
@@ -20,7 +21,7 @@ To set up the OpenBCI GUI with a physical or synthetic board, first start the Op
 1. Set up an 8-channel synthetic board for testing. Skip this step if you are using a physical board, follow the instructions on how to setup that board instead:
    ![image](./images/bci-step-1.png)
 
-2. Open the networking tab:
+2. Open the networking tab (under the drop down time series menu):
    ![image](./images/bci-step-2.jpg)
 
 3. Set the output protocol to LSL:
@@ -33,8 +34,8 @@ To set up the OpenBCI GUI with a physical or synthetic board, first start the Op
 
 First, make sure to activate the correct conda environment with `conda activate neurotech`
 
-Then, while the LSL Stream from the OpenBCI is started, run `python cli.py`.
-First, connect to the OpenBCI stream and marker stream with option (4). In the `logs/test.log` file you should see the following:
+Then, while the LSL Stream from the OpenBCI is started, run `python cli.py` (from the data_collection_platform folder).
+Then, connect to the OpenBCI stream and marker stream with option (4). In the `logs/test.log` file in your IDE you should see the following:
 
 ```
 2024-02-16 20:39:51,151 csv_data_recorder INFO Looking for an EEG stream...
