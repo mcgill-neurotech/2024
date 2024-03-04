@@ -149,106 +149,95 @@ class subject_dataset:
 
 class Classifier:
 
-	def __init__(self,
-			  dataset,
-			  t_baseline=0,
-			  t_epoch=4,
-			  fs=250):
-		
-		self.fs = fs
-		self.t_epoch = t_epoch
-		self.t_baseline = t_baseline
-		self.train_epochs = []
-		self.train_y = []
-		self.val_epochs = []
-		self.val_y = []
+    def __init__(self,
+            dataset,
+            t_baseline=0,
+            t_epoch=4,
+            fs=250):
+    
+        self.fs = fs
+        self.t_epoch = t_epoch
+        self.t_baseline = t_baseline
+        self.train_epochs = []
+        self.train_y = []
+        self.val_epochs = []
+        self.val_y = [] 
+        for k,v in dataset.items():
+            s_train = subject_dataset(v["train"],fs,t_baseline,t_epoch)
+            s_val = subject_dataset(v["test"],fs,t_baseline,t_epoch)
+            self.train_epochs.append(s_train.epochs)
+            self.train_y.append(s_train.cues)
+            self.val_epochs.append(s_val.epochs)
+            self.val_y.append(s_val.cues)   
+        self.train_epochs = rearrange(np.concatenate(self.train_epochs,0),"n t d -> n d t")
+        self.val_epochs = rearrange(np.concatenate(self.val_epochs,0),"n t d -> n d t")
+        self.train_y = np.concatenate(self.train_y,0)
+        self.val_y = np.concatenate(self.val_y,0)   
+        self.x_train,self.y_train = self.preprocess(self.train_epochs,self.train_y)
+        self.x_val,self.y_val = self.preprocess(self.val_epochs,self.val_y) 
+    def fit(self,*args,**kwargs):
+        pass    
+    def filter(self,x): 
+        """
+        Apply a sequence of filters to a set of measurements
+        """
+        return x
 
-		for k,v in dataset.items():
-			s_train = subject_dataset(v["train"],fs,t_baseline,t_epoch)
-			s_val = subject_dataset(v["test"],fs,t_baseline,t_epoch)
-			self.train_epochs.append(s_train.epochs)
-			self.train_y.append(s_train.cues)
-			self.val_epochs.append(s_val.epochs)
-			self.val_y.append(s_val.cues)
+    def preprocess(self,x,y):   
+        """
+        Apply filters and additional preprocessing to measurements
+        """ 
+        n,t,d = x.shape 
+        x = rearrange(x,"n d t -> (n d) t")
+        x = self.filter(x)
+        x = rearrange(x,"(n d) t -> n d t",n=n) 
+        return x,y
 
-		self.train_epochs = rearrange(np.concatenate(self.train_epochs,0),"n t d -> n d t")
-		self.val_epochs = rearrange(np.concatenate(self.val_epochs,0),"n t d -> n d t")
-		self.train_y = np.concatenate(self.train_y,0)
-		self.val_y = np.concatenate(self.val_y,0)
-
-		self.x_train,self.y_train = self.preprocess(self.train_epochs,self.train_y)
-		self.x_val,self.y_val = self.preprocess(self.val_epochs,self.val_y)
-
-	def fit(self,*args,**kwargs):
-		pass
-
-	def filter(self,x):
-
-		"""
-		Apply a sequence of filters to a set of measurements
-		"""
-		return x
-	
-	def preprocess(self,x,y):
-
-		"""
-		Apply filters and additional preprocessing to measurements
-		"""
-
-		n,t,d = x.shape
-
-		x = rearrange(x,"n d t -> (n d) t")
-		x = self.filter(x)
-		x = rearrange(x,"(n d) t -> n d t",n=n)
-
-		return x,y
-	
-	def predict(self,x):
-
-		"""
-		Returns a continuous and a discrete prediction
-		"""
-		
-		y = np.random.random(x.shape[0])
-		return y,np.round(y)
-	
-	def get_train(self):
-		return self.x_train,self.y_train
-	
-	def get_test(self):
-		return self.x_val,self.y_val
-	
-	def test(self,
-		  verbose=True):
-
-		outs = {}
-		for split in ["train","test"]:
-			x,y = self.get_test() if split == "test" else self.get_train()
-			y_pred,y_discrete = self.predict(x)
-			
-			acc = accuracy_score(y,y_discrete)
-			confusion = confusion_matrix(y,y_discrete,normalize="true")
-
-			kappa = cohen_kappa_score(y_discrete,y)
-
-			if verbose:
-
-				print(f"{split} kappa score: {kappa}")
-
-				print(f"{split} accuracy: {acc}")
-				print(confusion)
-				cm_display = ConfusionMatrixDisplay(confusion_matrix = confusion, display_labels = [False, True])
-				cm_display.plot()
-				plt.show()
-			outs[split] = (y,y_pred,y_discrete,acc,kappa)
-		return outs
-		
-	def plot_first(self,i=0):
-
-		plt.plot(self.x_train[i,0,:],label="clean")
-		plt.plot(self.train_epochs[i,0,:],alpha=0.5,label="raw")
-		plt.legend()
-		plt.show()
+    def predict(self,x):    
+        """
+        Returns a continuous and a discrete prediction
+        """
+        
+        y = np.random.random(x.shape[0])
+        return y,np.round(y)
+    
+    def get_train(self):
+        return self.x_train,self.y_train
+    
+    def get_test(self):
+        return self.x_val,self.y_val
+    
+    def test(self,
+    	  verbose=True):   
+        outs = {}
+        for split in ["train","test"]:
+            x,y = self.get_test() if split == "test" else self.get_train()
+            y_pred,y_discrete = self.predict(x)
+            
+            acc = accuracy_score(y,y_discrete)
+            confusion = confusion_matrix(y,y_discrete,normalize="true") 
+            kappa = cohen_kappa_score(y_discrete,y) 
+            if verbose: 
+                print(f"{split} kappa score: {kappa}")  
+                print(f"{split} accuracy: {acc}")
+                print(confusion)
+                cm_display = ConfusionMatrixDisplay(confusion_matrix = confusion, display_labels = [False, True])
+                cm_display.plot()
+                plt.show()
+            outs[split] = (y,y_pred,y_discrete,acc,kappa)
+        return outs
+    
+    def plot_first(self,i=0):   
+        plt.plot(self.x_train[i,0,:],label="clean")
+        plt.plot(self.train_epochs[i,0,:],alpha=0.5,label="raw")
+        plt.legend()
+        plt.show()
+        
+    def __len__(self):
+        return len(self.x_train)
+    
+    def __getitem__(self, index):
+        return {"signal": self.x_train[index].astype(np.float32), "cue": self.y_train[index].astype(np.float32)}
   
   
 class CSPClassifier(Classifier):
@@ -332,10 +321,3 @@ class CSPClassifier(Classifier):
         sigma = np.std(x,axis=-1)
         x = (x-rearrange(mu,"n d -> n d 1"))/rearrange(sigma,"n d -> n d 1")
         return x,y
-
-    def __len__(self):
-        return len(self.x_train)
-    
-    def __getitem__(self, index):
-        return {"signal": self.x_train[index].astype(np.float32), "cue": self.y_train[index].astype(np.float32)}
-	
