@@ -4,6 +4,8 @@ from torch.nn import functional as F
 import lightning as L
 import dataclasses
 from typing import Tuple
+from einops import reduce
+import torchsummary
 
 import os
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
@@ -19,32 +21,87 @@ class ConvConfig:
 	padding: Tuple[int,...]
 	kernel_size: Tuple[int,...]
 	pool_fact: int
+	pool_op:nn.Module
+
+	def new_shapes(
+				self,
+				input_channels,
+				ouput_channels):
+		
+		return ConvConfig(
+			input_channels=input_channels,
+			output_channels=ouput_channels,
+			conv_op=self.conv_op,
+			norm_op=self.norm_op,
+			non_lin=self.non_lin,
+			groups=self.groups,
+			padding=self.padding,
+			kernel_size=self.kernel_size,
+			pool_fact=self.pool_fact,
+			pool_op=self.pool_op
+		)
 
 @dataclasses.dataclass(kw_only=True)
-class ConvConfig:
+class EncodeConfig(ConvConfig):
     input_channels: int
     output_channels: int
     conv_op: nn.Module
     norm_op: nn.Module
     non_lin: nn.Module
-    groups: int  # Added groups parameter
-    padding: Tuple[int, ...]
-    kernel_size: Tuple[int, ...]
-    pool_fact: int  # Added pooling factor
+    groups: int = 1
+    padding: Tuple[int, ...] = (1,1)
+    kernel_size: Tuple[int, ...] = (3,3)
+    pool_fact: int = 2
 
-    def __init__(self, input_channels: int, output_channels: int, conv_op: nn.Module,
-                 norm_op: nn.Module, non_lin: nn.Module, groups: int = 1,
-                 padding: Tuple[int, ...] = (0, 0), kernel_size: Tuple[int, ...] = (3, 3),
-                 pool_fact: int = 2) -> None:
-        self.input_channels = input_channels
-        self.output_channels = output_channels
-        self.conv_op = conv_op
-        self.norm_op = norm_op
-        self.non_lin = non_lin
-        self.groups = groups
-        self.padding = padding
-        self.kernel_size = kernel_size
-        self.pool_fact = pool_fact
+@dataclasses.dataclass(kw_only=True)
+class DecodeConfig:
+	x_channels: int
+	g_channels: int 
+	output_channels: int
+	up_conv: nn.Module
+	groups: int = 1
+	padding: Tuple[int,...]
+	kernel_size: Tuple[int,...] = (2,2)
+	stride: Tuple[int,...] = (2,2)
+	conv_config: ConvConfig
+
+	def new_shapes(self,
+				x_channels,
+				g_channels,
+				output_channels):
+		
+		new_conv_config = self.conv_config.new_shapes(2*x_channels,output_channels)
+		return DecodeConfig(
+			x_channels=x_channels,
+			g_channels=g_channels,
+			output_channels=output_channels,
+			up_conv=self.up_conv,
+			groups=self.groups,
+			padding=self.padding,
+			kernel_size=self.kernel_size,
+			stride=self.stride,
+			conv_config=new_conv_config
+		)
+
+@dataclasses.dataclass(kw_only=True)
+class UnetConfig:
+	input_shape: Tuple[int,...]
+	input_channels: int
+	conv_op: nn.Module
+	norm_op: nn.Module
+	non_lin: nn.Module
+	pool_op: nn.Module
+	up_op: nn.Module
+	starting_channels: int
+	max_channels: int
+	conv_group: int
+	conv_padding: Tuple[int,...]
+	conv_kernel: Tuple[int,...]
+	pool_fact: Tuple[int,...]
+	deconv_group: int
+	deconv_padding: Tuple[int,...]
+	deconv_kernel: Tuple[int,...]
+	deconv_stride: Tuple[int,...]
 
 class Convdown(L.LightningModule):
     def __init__(self, config: ConvConfig) -> None:
@@ -64,7 +121,7 @@ class Convdown(L.LightningModule):
         return x
 
 class Encode(L.LightningModule):
-    def __init__(self, input_channels, output_channels, config: ConvConfig) -> None:
+    def __init__(self, config: ConvConfig) -> None:
         super().__init__()
         self.convdown = Convdown(config)
         self.pool = config.pool_op(config.pool_fact)
@@ -76,14 +133,15 @@ class Encode(L.LightningModule):
 
 class Decode(L.LightningModule):
 
-	def __init__(self,
-				 x_channel,
-				 g_channel,
-				 output_channels,
-				 config: ConvConfig) -> None:
+	def __init__(self, config: DecodeConfig) -> None:
 		super().__init__()
-		self.deconv = config.up_op(g_channel,x_channel,2,2)
-		self.conv = Convdown(2*x_channel,output_channels,config)
+		# self.deconv = config.up_op(g_channel,x_channel,2,2)
+		self.deconv = config.up_conv(config.g_channels,
+							   config.x_channels,
+							   config.kernel_size,
+							   config.stride,
+							   groups=config.groups)
+		self.conv = Convdown(config.conv_config)
 
 	def forward(self,x,g):
 		"""
@@ -105,17 +163,13 @@ class Decode(L.LightningModule):
 class Unet(L.LightningModule):
 
 	def __init__(self,
-				 num_modalities,
-				 n_dim,
-				 starting_channels,
-				 max_channels,
-				 size,
-				 groups=1):
+				 config: UnetConfig
+				 ):
 		
 		super().__init__()
 
-		self.input_features = [starting_channels]
-		input_channels = num_modalities
+		self.input_features = [config.starting_channels]
+		size = torch.tensor(config.input_shape)
 
 		"""
 		possible input shapes:
@@ -134,59 +188,75 @@ class Unet(L.LightningModule):
 			we don't do the distinction between channels and features but add a frequency dimension
 		"""
 
-		if n_dim == 1:
-			ops = {"conv_op":nn.Conv1d,
-				   "norm_op":nn.InstanceNorm1d,
-				   "non_lin":nn.LeakyReLU,
-				   "pool_op":nn.MaxPool1d,
-				   "up_op":nn.ConvTranspose1d}
+		# can't divice 0-d tensor
+		get_min = lambda x: min(x) if len(size.shape)>0 else x
 
-		if n_dim == 2:
-			ops = {"conv_op":nn.Conv2d,
-				   "norm_op":nn.InstanceNorm2d,
-				   "non_lin":nn.LeakyReLU,
-				   "pool_op":nn.MaxPool2d,
-				   "up_op":nn.ConvTranspose2d}
-			
-		elif n_dim == 3:
-			ops = {"conv_op":nn.Conv3d,
-				   "norm_op":nn.InstanceNorm3d,
-				   "non_lin":nn.LeakyReLU,
-				   "pool_op":nn.MaxPool3d,
-				   "up_op":nn.ConvTranspose3d}
-
-		while (size > 8) & (len(self.input_features)<=6):
-			if 2*self.input_features[-1] < max_channels:
+		while (get_min(size) > 8) & (len(self.input_features)<=6):
+			if 2*self.input_features[-1] < config.max_channels:
 				self.input_features.append(2*self.input_features[-1])
 			else:
-				self.input_features.append(max_channels)
-			size /= 2
+				self.input_features.append(config.max_channels)
+			size = size/config.pool_fact
 
-		self.encoder = L.LightningModuleList()
-		self.decoder = L.LightningModuleList()
+		self.encoder = nn.ModuleList()
+		self.decoder = nn.ModuleList()
 
 		# input_channels = [32, 64, 128, 256,256....]
 
 		self.auxiliary_clf = nn.Identity()
 
+		self.base_conv_config = ConvConfig(
+			input_channels=1,
+			output_channels=1,
+			conv_op=config.conv_op,
+			norm_op=config.norm_op,
+			non_lin=config.non_lin,
+			groups=config.conv_group,
+			padding=config.conv_padding,
+			kernel_size=config.conv_kernel,
+			pool_fact=config.pool_fact,
+			pool_op=config.pool_op
+		)
+
+		self.base_decode_config = DecodeConfig(
+			x_channels=1,
+			g_channels=1,
+			output_channels=1,
+			up_conv=config.up_op,
+			groups=config.deconv_group,
+			padding=config.deconv_padding,
+			kernel_size=config.deconv_kernel,
+			stride=config.deconv_stride,
+			conv_config=self.base_conv_config
+		)
+
+		input_channels = config.input_channels
+
 		for idx,i in enumerate(self.input_features[:-1]):
-			self.encoder.append(Encode(input_channels,i,ops["conv_op"],ops["norm_op"],
-									ops["non_lin"],ops["pool_op"],groups=groups))
+			encode_config = self.base_conv_config.new_shapes(input_channels,i)
+			self.encoder.append(Encode(encode_config))
 			input_channels = i
 
-		self.middle_conv = Convdown(self.input_features[-2],self.input_features[-1],ops["conv_op"],
-									ops["norm_op"],ops["non_lin"])
+		bottleneck_conv_config = self.base_conv_config.new_shapes(
+			input_channels=self.input_features[-2],
+			ouput_channels=self.input_features[-1]
+		)
+
+		self.middle_conv = Convdown(bottleneck_conv_config)
 
 		output_features = self.input_features[::-1]
 
 		for i in range(len(self.input_features)-1):
-			self.decoder.append(Decode(output_features[i+1],output_features[i],output_features[i+1],
-									   ops["up_op"],ops["conv_op"],ops["norm_op"],
-									   ops["non_lin"]))
 
-		self.output_conv = ops["conv_op"](starting_channels,2,1)
+			decode_config = self.base_decode_config.new_shapes(
+				x_channels=output_features[i+1],
+				g_channels=output_features[i],
+				output_channels=output_features[i+1]
+			)
 
-		# N x 32 X L -> N x 2 x L
+			self.decoder.append(Decode(decode_config))
+
+		self.output_conv = config.conv_op(config.starting_channels,config.input_channels,1)
 
 	def forward(self,x):
 		skip_connections = []
@@ -203,17 +273,48 @@ class Unet(L.LightningModule):
 		x = self.output_conv(x)
 		return x,y
 	
-if __name__ == "__main__":
-	config = ConvConfig(
-		input_channels=1,
-		output_channels=32,
-		conv_op=nn.Conv2d,
-		norm_op=nn.InstanceNorm2d,
-		non_lin=nn.LeakyReLU,
-		groups=1,
-		kernel_size=(3,3),
-		padding= (0,0),
-  		pool_fact=2
-	)
+Unet2D = UnetConfig(
+	input_shape=(256,256),
+	input_channels=1,
+	conv_op=nn.Conv2d,
+	norm_op=nn.InstanceNorm2d,
+	non_lin=nn.ReLU,
+	pool_op=nn.AvgPool2d,
+	up_op=nn.ConvTranspose2d,
+	starting_channels=32,
+	max_channels=256,
+	conv_group=1,
+	conv_padding=(1,1),
+	conv_kernel=(3,3),
+	pool_fact=2,
+	deconv_group=1,
+	deconv_padding=(0,0),
+	deconv_kernel=(2,2),
+	deconv_stride=(2,2)
+)
 
-	conv = Convdown(config)
+Unet1D = UnetConfig(
+	input_shape=(256),
+	input_channels=3,
+	conv_op=nn.Conv1d,
+	norm_op=nn.InstanceNorm1d,
+	non_lin=nn.ReLU,
+	pool_op=nn.AvgPool1d,
+	up_op=nn.ConvTranspose1d,
+	starting_channels=32,
+	max_channels=256,
+	conv_group=1,
+	conv_padding=(1),
+	conv_kernel=(3),
+	pool_fact=2,
+	deconv_group=1,
+	deconv_padding=(0),
+	deconv_kernel=(2),
+	deconv_stride=(2)
+)
+	
+if __name__ == "__main__":
+	unet_2d = Unet(Unet2D)
+	torchsummary.summary(unet_2d,(1,256,256),1,device="cpu")
+	unet_1d = Unet(Unet1D)
+	torchsummary.summary(unet_1d,(3,256),1,device="cpu")
