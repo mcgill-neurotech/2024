@@ -9,9 +9,6 @@ class ChannelAttention(nn.Module):
         super(ChannelAttention, self).__init__()
 
         ''' CBAM: CHANNEL ATTENTION MODULE '''
-        self.global_max_pool = nn.AdaptiveMaxPool2d()
-        self.global_avg_pool = nn.AdaptiveAvgPool2d()
-
         # sigmoid(MLP(avgPool(F)) + MLP(maxPool(F)))
         self.fc1 = nn.Linear(features, features // reduction, bias=False)
         self.relu = nn.ReLU()
