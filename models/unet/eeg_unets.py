@@ -4,7 +4,7 @@ from torch.nn import functional as F
 import lightning as L
 import dataclasses
 from typing import Tuple
-from einops import reduce
+from einops import reduce,rearrange
 import torchsummary
 
 import os
@@ -22,6 +22,7 @@ class ConvConfig:
 	kernel_size: Tuple[int,...]
 	pool_fact: int
 	pool_op:nn.Module
+	residual: bool = False
 
 	def new_shapes(
 				self,
@@ -38,20 +39,21 @@ class ConvConfig:
 			padding=self.padding,
 			kernel_size=self.kernel_size,
 			pool_fact=self.pool_fact,
-			pool_op=self.pool_op
+			pool_op=self.pool_op,
+			residual=self.residual
 		)
 
 @dataclasses.dataclass(kw_only=True)
 class EncodeConfig(ConvConfig):
-    input_channels: int
-    output_channels: int
-    conv_op: nn.Module
-    norm_op: nn.Module
-    non_lin: nn.Module
-    groups: int = 1
-    padding: Tuple[int, ...] = (1,1)
-    kernel_size: Tuple[int, ...] = (3,3)
-    pool_fact: int = 2
+	input_channels: int
+	output_channels: int
+	conv_op: nn.Module
+	norm_op: nn.Module
+	non_lin: nn.Module
+	groups: int = 1
+	padding: Tuple[int, ...] = (1,1)
+	kernel_size: Tuple[int, ...] = (3,3)
+	pool_fact: int = 2
 
 @dataclasses.dataclass(kw_only=True)
 class DecodeConfig:
@@ -102,34 +104,49 @@ class UnetConfig:
 	deconv_padding: Tuple[int,...]
 	deconv_kernel: Tuple[int,...]
 	deconv_stride: Tuple[int,...]
+	residual: False
+
+@dataclasses.dataclass(kw_only=True)
+class BottleneckClassifierConfig:
+	channels = Tuple[int,...]
+	pool_op = nn.Module
+
 
 class Convdown(L.LightningModule):
-    def __init__(self, config: ConvConfig) -> None:
-        super().__init__()
+	def __init__(self, config: ConvConfig) -> None:
+		super().__init__()
 
-        self.c1 = config.conv_op(config.input_channels, config.output_channels, kernel_size=config.kernel_size, padding=config.padding, groups=config.groups)
-        self.c2 = config.conv_op(config.output_channels, config.output_channels, kernel_size=config.kernel_size, padding=config.padding, groups=config.groups)
-        self.instance_norm = config.norm_op(config.output_channels)
-        self.non_lin = config.non_lin()
+		self.c1 = config.conv_op(config.input_channels, config.output_channels, kernel_size=config.kernel_size, padding=config.padding, groups=config.groups)
+		self.c2 = config.conv_op(config.output_channels, config.output_channels, kernel_size=config.kernel_size, padding=config.padding, groups=config.groups)
+		self.instance_norm = config.norm_op(config.output_channels)
+		self.non_lin = config.non_lin()
+		self.residual = config.residual
 
-    def forward(self, x):
-        x = self.c1(x)
-        x = self.non_lin(x)
-        x = self.c2(x)
-        x = self.non_lin(x)
-        x = self.instance_norm(x)
-        return x
+	def forward(self, x):
+
+		if self.residual:
+			x = self.c1(x)
+			x = self.non_lin(x)
+			x = x + self.c2(x)
+			x = self.non_lin(x)
+		else:
+			x = self.c1(x)
+			x = self.non_lin(x)
+			x = self.c2(x)
+			x = self.non_lin(x)
+		x = self.instance_norm(x)
+		return x
 
 class Encode(L.LightningModule):
-    def __init__(self, config: ConvConfig) -> None:
-        super().__init__()
-        self.convdown = Convdown(config)
-        self.pool = config.pool_op(config.pool_fact)
+	def __init__(self, config: ConvConfig) -> None:
+		super().__init__()
+		self.convdown = Convdown(config)
+		self.pool = config.pool_op(config.pool_fact)
 
-    def forward(self, x):
-        x = self.convdown(x)
-        pooled = self.pool(x)
-        return pooled, x
+	def forward(self, x):
+		x = self.convdown(x)
+		pooled = self.pool(x)
+		return pooled, x
 
 class Decode(L.LightningModule):
 
@@ -159,11 +176,38 @@ class Decode(L.LightningModule):
 		x = torch.concat((x,g),1)
 		x = self.conv(x)
 		return x
-	
-class Unet(L.LightningModule):
+
+class BottleNeckClassifier(L.LightningModule):
 
 	def __init__(self,
-				 config: UnetConfig
+			  channels: Tuple[int]) -> None:
+		super().__init__()
+
+		self.mlp = nn.ModuleList()
+		for i in range(len(channels)-1):
+			self.mlp.append(nn.Linear(channels[i],channels[i+1]))
+			self.mlp.append(nn.ReLU())
+		self.mlp.append(nn.Linear(channels[-1],1))
+
+	def forward(self,x):
+		x = rearrange(x,"b c h w -> b (c h w)")
+		for i in self.mlp:
+			x = i(x)
+		return x
+		
+class Unet(L.LightningModule):
+
+	"""
+	base Unet model with adaptable topology and dimension in nnUnet style.
+	
+	Attributes:
+		config: configuration for Unet
+	
+	"""
+
+	def __init__(self,
+				 config: UnetConfig,
+				 classifier: L.LightningDataModule
 				 ):
 		
 		super().__init__()
@@ -203,7 +247,7 @@ class Unet(L.LightningModule):
 
 		# input_channels = [32, 64, 128, 256,256....]
 
-		self.auxiliary_clf = nn.Identity()
+		self.auxiliary_clf = classifier
 
 		self.base_conv_config = ConvConfig(
 			input_channels=1,
@@ -215,7 +259,8 @@ class Unet(L.LightningModule):
 			padding=config.conv_padding,
 			kernel_size=config.conv_kernel,
 			pool_fact=config.pool_fact,
-			pool_op=config.pool_op
+			pool_op=config.pool_op,
+			residual=config.residual
 		)
 
 		self.base_decode_config = DecodeConfig(
@@ -258,7 +303,26 @@ class Unet(L.LightningModule):
 
 		self.output_conv = config.conv_op(config.starting_channels,config.input_channels,1)
 
-	def forward(self,x):
+	def forward(self,
+			 x):
+
+		"""
+		Full U-net forward pass to get the reconstructed datas
+		"""
+		skip_connections = []
+		for encode in self.encoder:
+			x,skip = encode(x)
+			skip_connections.append(skip)
+
+		x = self.middle_conv(x)
+
+		for decode,skip in zip(self.decoder,reversed(skip_connections)):
+			x = decode(skip,x)
+
+		x = self.output_conv(x)
+		return x
+	
+	def classify(self,x):
 		skip_connections = []
 		for encode in self.encoder:
 			x,skip = encode(x)
@@ -267,11 +331,8 @@ class Unet(L.LightningModule):
 		x = self.middle_conv(x)
 		y = self.auxiliary_clf(x)
 
-		for decode,skip in zip(self.decoder,reversed(skip_connections)):
-			x = decode(skip,x)
-
-		x = self.output_conv(x)
-		return x,y
+		return y
+			
 	
 Unet2D = UnetConfig(
 	input_shape=(256,256),
@@ -284,13 +345,35 @@ Unet2D = UnetConfig(
 	starting_channels=32,
 	max_channels=256,
 	conv_group=1,
+	conv_padding=(3,3),
+	conv_kernel=(7,7),
+	pool_fact=2,
+	deconv_group=1,
+	deconv_padding=(0,0),
+	deconv_kernel=(2,2),
+	deconv_stride=(2,2),
+	residual=True
+)
+
+Chenetal2021 = UnetConfig(
+	input_shape=(64,64),
+	input_channels=3,
+	conv_op=nn.Conv2d,
+	norm_op=nn.InstanceNorm2d,
+	non_lin=nn.ReLU,
+	pool_op=nn.AvgPool2d,
+	up_op=nn.ConvTranspose2d,
+	starting_channels=64,
+	max_channels=64,
+	conv_group=1,
 	conv_padding=(1,1),
 	conv_kernel=(3,3),
 	pool_fact=2,
 	deconv_group=1,
 	deconv_padding=(0,0),
 	deconv_kernel=(2,2),
-	deconv_stride=(2,2)
+	deconv_stride=(2,2),
+	residual=True
 )
 
 Unet1D = UnetConfig(
@@ -310,11 +393,16 @@ Unet1D = UnetConfig(
 	deconv_group=1,
 	deconv_padding=(0),
 	deconv_kernel=(2),
-	deconv_stride=(2)
+	deconv_stride=(2),
+	residual=True
 )
 	
 if __name__ == "__main__":
-	unet_2d = Unet(Unet2D)
-	torchsummary.summary(unet_2d,(1,256,256),1,device="cpu")
-	unet_1d = Unet(Unet1D)
-	torchsummary.summary(unet_1d,(3,256),1,device="cpu")
+	
+	classifier = BottleNeckClassifier((4096,512))
+	unet_2d = Unet(Chenetal2021,classifier)
+	torchsummary.summary(unet_2d,(3,64,64),1,device="cpu")
+	x = torch.rand((4,3,64,64))
+	with torch.no_grad():
+		y = unet_2d.classify(x)
+		print(y)
