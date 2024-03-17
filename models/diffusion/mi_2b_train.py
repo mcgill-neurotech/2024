@@ -10,7 +10,7 @@ import yaml # pip install pyyaml
 from torch import optim
 from torch.utils.data import DataLoader
 
-import optuna # pip install optuna (this is for the Bayesian optimization) and subsequent analysis)
+import optuna # pip install optuna (this is for the Bayesian optimization and subsequent analysis)
 
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
@@ -62,7 +62,7 @@ for i in range(1,10):
 
 classifier = CSPClassifier(dataset_mat, t_baseline=classifier_yaml["t_baseline"], t_epoch=classifier_yaml["t_epoch"])
 
-# Set up pretrained classifier
+# Set up pretrained classifier (maay need to modify later)
 pretrained_classifier = CSPClassifier(dataset_mat, t_baseline=classifier_yaml["t_baseline"], t_epoch=classifier_yaml["t_epoch"])
 pretrained_classifier.load_state_dict(torch.load(PRE_TRAINED_CLASSIFIER_PATH))
 pretrained_classifier.to(device)
