@@ -33,11 +33,6 @@ wandb.init(project="diffusion-mi", mode="disabled")
 DATA_PATH = "D:/Neurotech/motor-imagery-classification-2024/data/2b_iv"
 SAVE_PATH = "D:/Neurotech/motor-imagery-classification-2024/data/saved_models/diff_1.pt"
 CONF_PATH = "D:/Neurotech/motor-imagery-classification-2024/models/diffusion/conf"
-PRE_TRAINED_CLASSIFIER_PATH = "" ### FILL IN ###
-
-# REAL DATA ACCURACY
-REAL_DATA_ACCURACY_ZERO = 0.72 ### FILL IN ###
-REAL_DATA_ACCURACY_ONE = 0.72 ### FILL IN ###
 
 # Load parameters from config files
 
@@ -55,18 +50,17 @@ with open(os.path.join(CONF_PATH, "diffusion.yaml"), "r") as f:
     diffusion_yaml = yaml.safe_load(f)
 
 # Load data
-dataset_mat = {}
-for i in range(1,10):
+dataset_mat_diffusion = {}
+for i in range(1,8):
 	mat_train,mat_test = load_data(DATA_PATH,i)
-	dataset_mat[f"subject_{i}"] = {"train":mat_train,"test":mat_test}
+	dataset_mat_diffusion[f"subject_{i}"] = {"train":mat_train,"test":mat_test}
+  
+dataset_mat_classifier = {}
+for i in range(8,10):
+	mat_train,mat_test = load_data(DATA_PATH,i)
+	dataset_mat_classifier[f"subject_{i}"] = {"train":mat_train,"test":mat_test}
 
-classifier = CSPClassifier(dataset_mat, t_baseline=classifier_yaml["t_baseline"], t_epoch=classifier_yaml["t_epoch"])
-
-# Set up pretrained classifier (maay need to modify later)
-pretrained_classifier = CSPClassifier(dataset_mat, t_baseline=classifier_yaml["t_baseline"], t_epoch=classifier_yaml["t_epoch"])
-pretrained_classifier.load_state_dict(torch.load(PRE_TRAINED_CLASSIFIER_PATH))
-pretrained_classifier.to(device)
-pretrained_classifier.eval()
+diffusion_classifier = CSPClassifier(dataset_mat_diffusion, t_baseline=classifier_yaml["t_baseline"], t_epoch=classifier_yaml["t_epoch"])
 
 # Objective function for Bayesian Optimization
 def objective(trial):
@@ -99,7 +93,7 @@ def objective(trial):
         
     # Load data
     train_loader = DataLoader(
-        classifier,
+        diffusion_classifier,
         train_yaml["batch_size"]
     )
 
@@ -170,35 +164,49 @@ def objective(trial):
     # Evaluate synthetic data performance
     generated_signals_zero = generate_samples(diffusion_model, condition=0)
     generated_signals_one = generate_samples(diffusion_model, condition=1)
-
-    synthetic_accuracy_zero = evaluate_generated_signals(pretrained_classifier, generated_signals_zero, labels=0)
-    synthetic_accuracy_one = evaluate_generated_signals(pretrained_classifier, generated_signals_one, labels=1)
-
-    synthetic_total_accuracy = (synthetic_accuracy_zero + synthetic_accuracy_one) / 2
-
-    # Evaluate real data performance
-    real_total_accuracy = (REAL_DATA_ACCURACY_ZERO + REAL_DATA_ACCURACY_ONE) / 2
-
-    # Compute the difference in accuracy
-    accuracy_difference = abs(real_total_accuracy - synthetic_total_accuracy)
+    
+    accuracies = []
+    kappas = []
+    
+    for real_fake_split in range(10, 90, 10):
+        
+        # Train new classifier with a mix of generated and real data
+        test_classifier = CSPClassifier(dataset_mat_classifier, t_baseline=classifier_yaml["t_baseline"], t_epoch=classifier_yaml["t_epoch"])
+        
+        # Change real_fake_split percent of the test_classifier data to generated signals
+        n = len(test_classifier.x_train)
+        num_fake = int(n * real_fake_split / 100)
+        indices = np.random.shuffle([i for i in range(n)])[:num_fake]
+        
+        for ind in indices:
+            one_or_zero = np.random.randint(0, 2)
+            test_classifier.x_train[ind] = generated_signals_zero[ind] if one_or_zero == 0 else generated_signals_one[ind]
+            test_classifier.y_train[ind] = 0 if one_or_zero == 0 else 1
+        
+        test_classifier.fit()
+        test_classifier.eval()
+        
+        test_accuracy, test_kappa = test_classifier.test()
+        accuracies.append(test_accuracy)
+        kappas.append(test_kappa)
+    
+    best_accuracy = np.max(accuracies)
 
     # Log results
-    wandb.log({"synthetic_accuracy": synthetic_total_accuracy})
-    wandb.log({"real_accuracy": real_total_accuracy})
-    wandb.log({"accuracy_difference": accuracy_difference})
+    wandb.log({"best_accuracy": best_accuracy})
 
     # Determine if trial should be pruned or not
-    trial.report(accuracy_difference, i)
+    trial.report(best_accuracy, i)
     if trial.should_prune():
         raise optuna.exceptions.TrialPruned()
     
-    return accuracy_difference
+    return best_accuracy 
 
 # BAYESIAN OPTIMIZATION
 # Can modify pruner as necessary (n_startup_trials refers to the number of trials
 # before pruning starts. n_warmup_steps refers to the number of epochs before pruning)
 pruner = optuna.pruners.MedianPruner(n_startup_trials=5, n_warmup_steps=20)
-study = optuna.create_study(direction="minimize", pruner=pruner)
+study = optuna.create_study(direction="maximize", pruner=pruner)
 study.optimize(objective, n_trials=50)
 
 # Analyze results
@@ -228,7 +236,7 @@ def evaluate_generated_signals(classifier_model, generated_signals, labels):
 
 # GENERATE SIGNALS
 def generate_samples(diffusion_model, condition):
-    num_samples = 30
+    num_samples = 645
     cond = 0
     if (condition == 0):
         cond = torch.zeros(num_samples, 1, network_yaml["signal_length"])
