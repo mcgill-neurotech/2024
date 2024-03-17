@@ -62,6 +62,12 @@ for i in range(1,10):
 
 classifier = CSPClassifier(dataset_mat, t_baseline=classifier_yaml["t_baseline"], t_epoch=classifier_yaml["t_epoch"])
 
+# Set up pretrained classifier
+pretrained_classifier = CSPClassifier(dataset_mat, t_baseline=classifier_yaml["t_baseline"], t_epoch=classifier_yaml["t_epoch"])
+pretrained_classifier.load_state_dict(torch.load(PRE_TRAINED_CLASSIFIER_PATH))
+pretrained_classifier.to(device)
+pretrained_classifier.eval()
+
 # Objective function for Bayesian Optimization
 def objective(trial):
     # Hyperparameters to be optimized
@@ -92,6 +98,7 @@ def objective(trial):
         start_beta = network_yaml["start_beta"]
         end_beta = trial.suggest_float('end_beta', 0.01, 0.08, step=0.01)
         
+    # Load data
     train_loader = DataLoader(
         classifier,
         train_yaml["batch_size"]
@@ -165,8 +172,8 @@ def objective(trial):
     generated_signals_zero = generate_samples(diffusion_model, condition=0)
     generated_signals_one = generate_samples(diffusion_model, condition=1)
 
-    synthetic_accuracy_zero = evaluate_generated_signals(classifier, generated_signals_zero, labels=0)
-    synthetic_accuracy_one = evaluate_generated_signals(classifier, generated_signals_one, labels=1)
+    synthetic_accuracy_zero = evaluate_generated_signals(pretrained_classifier, generated_signals_zero, labels=0)
+    synthetic_accuracy_one = evaluate_generated_signals(pretrained_classifier, generated_signals_one, labels=1)
 
     synthetic_total_accuracy = (synthetic_accuracy_zero + synthetic_accuracy_one) / 2
 
