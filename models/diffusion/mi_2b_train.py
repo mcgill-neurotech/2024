@@ -189,7 +189,9 @@ def objective(trial):
     return accuracy_difference
 
 # BAYESIAN OPTIMIZATION
-pruner = optuna.pruners.MedianPruner()
+# Can modify pruner as necessary (n_startup_trials refers to the number of trials
+# before pruning starts. n_warmup_steps refers to the number of epochs before pruning)
+pruner = optuna.pruners.MedianPruner(n_startup_trials=5, n_warmup_steps=20)
 study = optuna.create_study(direction="minimize", pruner=pruner)
 study.optimize(objective, n_trials=50)
 
