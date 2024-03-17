@@ -70,13 +70,12 @@ pretrained_classifier.eval()
 
 # Objective function for Bayesian Optimization
 def objective(trial):
-    # Hyperparameters to be optimized
-
-    # Training parameters
+    # THE FOLLOWING HYPERPARAMETERS ARE THE ONES WE ARE TRYING TO TEST AND OPTIMIZE
+    # Training hyperparameters
     lr = trial.suggest_loguniform('lr', 1e-5, 1e-3)
     num_epochs = trial.suggest_int('num_epochs', 10, 150)
 
-    # Network parameters
+    # Network hyperparameters
     # Note that kernel sizes are same
     time_dim = trial.suggest_int('time_dim', 10, 18, step=2)
     hidden_channel = trial.suggest_int('hidden_channel', 16, 64, step=16)
@@ -87,7 +86,7 @@ def objective(trial):
     activation_type = trial.suggest_categorical('activation_type', ["gelu", "leaky_relu"])
     use_fft_conv = trial.suggest_categorical('use_fft_conv', [True, False])
 
-    # Diffusion parameters
+    # Diffusion hyperparameters
     # Note that start_beta seems to always be 0.001 so we don't need to test that
     num_timesteps = trial.suggest_int('num_timesteps', 100, 1000, step=100)
     schedule = trial.suggest_categorical('schedule', ["linear", "quadratic", "cosine"])
