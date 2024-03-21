@@ -50,6 +50,8 @@ class Diffusion(nn.Module):
             )
         elif self.schedule == "cosine":
             _betas = cosine_betas(diffusion_time_steps)
+        else:
+            raise ValueError(f"the {self.schedule} schedule is not supported")
 
         self.register_buffer("betas", _betas)
         self.register_buffer("alphas", 1.0 - self.betas)
@@ -77,7 +79,9 @@ class Diffusion(nn.Module):
                 self.network.signal_length,
             )
         )
-        assert noise.shape == batch.shape
+        if noise.shape != batch.shape:
+            raise ValueError(f"shape mismatch between noise ({noise.shape}) and batch ({batch.shape})")
+        
         noisy_sig = (
             torch.sqrt(train_alpha_bars) * batch
             + torch.sqrt(1.0 - train_alpha_bars) * noise

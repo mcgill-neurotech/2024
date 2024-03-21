@@ -9,6 +9,8 @@ import yaml # pip install pyyaml
 
 from torch import optim
 from torch.utils.data import DataLoader
+import json
+from datetime import datetime
 
 import optuna # pip install optuna (this is for the Bayesian optimization and subsequent analysis)
 
@@ -21,18 +23,22 @@ from ntd.diffusion_model import Diffusion
 from ntd.utils.kernels_and_diffusion_utils import WhiteNoiseProcess
 
 # Device (uses the gpu if you have one, otherwise uses the cpu)
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print(device)
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print(DEVICE)
+
+torch.set_float32_matmul_precision("medium")
 
 # WandB (logs the training process. You can keep the mode="disabled" if you don't want it or use online to log it to wandb.ai)
-wandb.init(project="diffusion-mi", mode="disabled")
+wandb.init(project="diffusion-mi", mode="online")
 
 # This code trains a model on the CSP components. To train on the eeg data, use the Classifier class and create your own preprocessing pipeline.
 
 # CONSTANTS
-DATA_PATH = "D:/Neurotech/motor-imagery-classification-2024/data/2b_iv"
-SAVE_PATH = "D:/Neurotech/motor-imagery-classification-2024/data/saved_models/diff_1.pt"
-CONF_PATH = "D:/Neurotech/motor-imagery-classification-2024/models/diffusion/conf"
+DATA_PATH = "../../data/2b_iv"
+SAVE_PATH = "../../saved_models/diff_1.pt"
+CONF_PATH = "../diffusion/conf"
+
+torch.manual_seed(0)
 
 # Load parameters from config files
 
@@ -61,34 +67,100 @@ for i in range(8,10):
 	dataset_mat_classifier[f"subject_{i}"] = {"train":mat_train,"test":mat_test}
 
 diffusion_classifier = CSPClassifier(dataset_mat_diffusion, t_baseline=classifier_yaml["t_baseline"], t_epoch=classifier_yaml["t_epoch"])
+diffusion_classifier.set_epoch(3.5,2)
+signal_shape = diffusion_classifier.get_shape()
+print(f"signal shape: {signal_shape}")
+network_yaml["signal_length"] = signal_shape[-1]
+network_yaml["signal_channel"] = signal_shape[1]
+print(network_yaml["signal_length"])
+
+# EVALUATION CODE
+def evaluate_generated_signals(classifier_model, generated_signals, labels):
+    # Get predictions from classifier model
+    classifier_model.eval()
+    with torch.no_grad():
+        predictions = classifier_model.predict(generated_signals)
+
+    # Calculate accuracy
+    predicted_labels = predictions.argmax(dim=1)
+    accuracy = (predicted_labels == labels).float().mean().item()
+
+    return accuracy
+
+# GENERATE SIGNALS
+def generate_samples(diffusion_model, condition):
+    # it's a bit hard to predict memory consumption so splitting in mini-batches to be safe
+    num_samples = 105
+    cond = 0
+    if (condition == 0):
+        cond = torch.zeros(num_samples, 1, network_yaml["signal_length"]).to(DEVICE)
+    elif (condition == 1):
+        cond = torch.ones(num_samples, 1, network_yaml["signal_length"]).to(DEVICE)
+    
+    diffusion_model.eval()
+
+    print(f"Generating samples: cue {condition}")
+    complete_samples = []
+    with torch.no_grad():
+        for i in range(6):
+            samples, _ = diffusion_model.sample(num_samples, cond=cond)
+            samples = samples.cpu().numpy()
+            print(samples.shape)
+            complete_samples.append(samples)
+    complete_samples = np.concatenate(complete_samples)
+    print(complete_samples.shape)
+    return complete_samples
 
 # Objective function for Bayesian Optimization
 def objective(trial):
     # THE FOLLOWING HYPERPARAMETERS ARE THE ONES WE ARE TRYING TO TEST AND OPTIMIZE
     # Training hyperparameters
+
+    print(f"Starting trial {trial.number}")
     lr = trial.suggest_loguniform('lr', 1e-5, 1e-3)
-    num_epochs = trial.suggest_int('num_epochs', 10, 150)
+    # num_epochs = trial.suggest_int('num_epochs', 10, 150)
+    num_epochs = 150
+    # we don't need to optimize for number of epochs
+    # we can just check for convergence
 
     # Network hyperparameters
     # Note that kernel sizes are same
-    time_dim = trial.suggest_int('time_dim', 10, 18, step=2)
-    hidden_channel = trial.suggest_int('hidden_channel', 16, 64, step=16)
-    kernel_size = trial.suggest_int('kernel_size', 15, 65, step=10)
+    time_dim = trial.suggest_int('time_dim', 10, 18, step=2) # I'm not sure we need that many for a signal this short
+    hidden_channel = trial.suggest_int('hidden_channel', 16, 64, step=16) # 64 seems to be a bit wide for a model this shallow
+
+    # the kernel size and the number of scales are linked
+    # the full kernel length for SLConv will be kernel_size * (2**num_scales - 1)
+    # Anything above 500 is just wasted compute and parameters
+    # We should see the effect of total kernel size and component kernel size
+    # We evaluate different number of scales for short and long components up to signal length
+    # This could only be linked to decay
+    kernel_size = trial.suggest_int('kernel_size', 15, 65, step=10) 
     num_scales = trial.suggest_int('num_scales', 1, 5, step=1)
+
+    # I'm really not sure how this affects performance
+    # A constant value different from one or learnable values make sense
+    # not really sure why you would hard-code different decays
     decay_min = trial.suggest_int('decay_min', 1, 4, step=1)
-    decay_max = trial.suggest_int('decay_min', decay_min, 4, step=1)
+    decay_max = trial.suggest_int('decay_max', decay_min, 4, step=1)
+
+    # we can probably keep the activation type constant, it shouldn't interplay with other parameters at this scale
+    
     activation_type = trial.suggest_categorical('activation_type', ["gelu", "leaky_relu"])
-    use_fft_conv = trial.suggest_categorical('use_fft_conv', [True, False])
+    # use_fft_conv = trial.suggest_categorical('use_fft_conv', [True, False]) 
+    # FFT Conv isn't a parameter it's just the algorithm used to compute the convolution
+    # https://github.com/fkodom/fft-conv-pytorch
+    use_fft_conv = kernel_size * (2 ** (num_scales - 1)) >= 100
 
     # Diffusion hyperparameters
     # Note that start_beta seems to always be 0.001 so we don't need to test that
+    # we should use a single scheduler that makes sense for prototyping and then optimize the scheduler for the best model
     num_timesteps = trial.suggest_int('num_timesteps', 100, 1000, step=100)
-    schedule = trial.suggest_categorical('schedule', ["linear", "quadratic", "cosine"])
+    schedule = trial.suggest_categorical('schedule', ["linear", "quad", "cosine"])
     # If the schedule is not cosine, we need to test the end_beta
     start_beta = -1
     end_beta = -1
     if schedule != "cosine":
-        start_beta = network_yaml["start_beta"]
+        start_beta = diffusion_yaml["start_beta"]
         end_beta = trial.suggest_float('end_beta', 0.01, 0.08, step=0.01)
         
     # Load data
@@ -113,9 +185,9 @@ def objective(trial):
         heads=network_yaml["heads"],
         activation_type=activation_type,
         use_fft_conv=use_fft_conv,
-    ).to(device)
+    ).to(DEVICE)
 
-    noise_sampler = WhiteNoiseProcess(1.0, network_yaml["signal_length"]).to(device)
+    noise_sampler = WhiteNoiseProcess(1.0, network_yaml["signal_length"]).to(DEVICE)
 
     diffusion_model = Diffusion(
         network=network,
@@ -125,7 +197,7 @@ def objective(trial):
         schedule=schedule,
         start_beta=start_beta,
         end_beta=end_beta,
-    ).to(device)
+    ).to(DEVICE)
 
     # Optimizer (also testing learning rate here)
     optimizer = optim.AdamW(
@@ -135,31 +207,41 @@ def objective(trial):
 
     loss_per_epoch = []
 
+    stop_counter = 0
+    min_delta = 0.05
+    tolerance = 20
+
     # Train model
     for i in range(num_epochs):
         
         epoch_loss = []
         for batch in train_loader:
-            optimizer.zero_grad()
             
             # Repeat the cue signal to match the signal length
-            cond = batch["cue"].unsqueeze(-1).unsqueeze(-1).repeat(1, 1, network_yaml["signal_length"]).to(device)
+            cond = batch["cue"].unsqueeze(-1).unsqueeze(-1).repeat(1, 1, network_yaml["signal_length"]).to(DEVICE)
             
-            print(batch["signal"].shape)
-            
-            loss = diffusion_model.train_batch(batch["signal"].to(device), cond=cond)
+            loss = diffusion_model.train_batch(batch["signal"].to(DEVICE), cond=cond)
             loss = torch.mean(loss)
             
             epoch_loss.append(loss.item())
             
             loss.backward()
             optimizer.step()
+            optimizer.zero_grad()
             
         epoch_loss = np.mean(epoch_loss)
         loss_per_epoch.append(epoch_loss)
         
-        wandb.log({"loss": epoch_loss})
+        wandb.log({f"loss_{trial.number}": epoch_loss,
+                   f"epoch":i})
         print(f"Epoch {i} loss: {epoch_loss}")
+
+        print(f"diff: {epoch_loss - min(loss_per_epoch)}")
+
+        if epoch_loss - min(loss_per_epoch) >= min_delta*min(loss_per_epoch):
+            stop_counter += 1
+        if stop_counter > tolerance:
+            break
     
     # Evaluate synthetic data performance
     generated_signals_zero = generate_samples(diffusion_model, condition=0)
@@ -167,33 +249,47 @@ def objective(trial):
     
     accuracies = []
     kappas = []
+
+    test_classifier = CSPClassifier(dataset_mat_classifier,
+                                        t_baseline=classifier_yaml["t_baseline"],
+                                        t_epoch=classifier_yaml["t_epoch"],
+                                        start=classifier_yaml["start"],
+                                        length=classifier_yaml["length"],)
     
+    full_x,full_y = test_classifier.get_train(cut=True)
+    
+    # already checked at 0 with accuracy of 79%
     for real_fake_split in range(10, 90, 10):
         
         # Train new classifier with a mix of generated and real data
-        test_classifier = CSPClassifier(dataset_mat_classifier, t_baseline=classifier_yaml["t_baseline"], t_epoch=classifier_yaml["t_epoch"])
         
         # Change real_fake_split percent of the test_classifier data to generated signals
-        n = len(test_classifier.x_train)
-        num_fake = int(n * real_fake_split / 100)
-        indices = np.random.shuffle([i for i in range(n)])[:num_fake]
+        n = int(len(full_x) * real_fake_split / 100)
+
+        shuffling = np.random.permutation(full_x.shape[0])
+
+        split_x = full_x[shuffling]
+        split_y = full_y[shuffling]
+        split_x[0:n//2] = generated_signals_one[0:n//2]
+        split_y[0:n//2] = 1
+
+        split_x[n//2:n] = generated_signals_zero[n//2:n]
+        split_y[n//2:n] = 0
+
+        test_classifier.fit((split_x,split_y))
+        # test_classifier.eval()
         
-        for ind in indices:
-            one_or_zero = np.random.randint(0, 2)
-            test_classifier.x_train[ind] = generated_signals_zero[ind] if one_or_zero == 0 else generated_signals_one[ind]
-            test_classifier.y_train[ind] = 0 if one_or_zero == 0 else 1
-        
-        test_classifier.fit()
-        test_classifier.eval()
-        
-        test_accuracy, test_kappa = test_classifier.test()
-        accuracies.append(test_accuracy)
-        kappas.append(test_kappa)
+        results = test_classifier.test(verbose=False)
+        accuracies.append(results["test"][-2])
+        kappas.append(results["test"][-1])
     
-    best_accuracy = np.max(accuracies)
+    best_split = np.argmax(accuracies)
+    best_accuracy = accuracies[best_split]
 
     # Log results
-    wandb.log({"best_accuracy": best_accuracy})
+    wandb.log({"best_accuracy": best_accuracy,
+               "best_split":best_split,
+               "trial":trial.number},)
 
     # Determine if trial should be pruned or not
     trial.report(best_accuracy, i)
@@ -202,52 +298,30 @@ def objective(trial):
     
     return best_accuracy 
 
-# BAYESIAN OPTIMIZATION
-# Can modify pruner as necessary (n_startup_trials refers to the number of trials
-# before pruning starts. n_warmup_steps refers to the number of epochs before pruning)
-pruner = optuna.pruners.MedianPruner(n_startup_trials=5, n_warmup_steps=20)
-study = optuna.create_study(direction="maximize", pruner=pruner)
-study.optimize(objective, n_trials=50)
+if __name__ == "__main__":
 
-# Analyze results
-print(f"Best trial: {study.best_trial.params}")
+    # BAYESIAN OPTIMIZATION
+    # Can modify pruner as necessary (n_startup_trials refers to the number of trials
+    # before pruning starts. n_warmup_steps refers to the number of epochs before pruning)
+    pruner = optuna.pruners.MedianPruner(n_startup_trials=5, n_warmup_steps=20)
+    sampler = optuna.samplers.TPESampler(seed=10)
+    study = optuna.create_study(direction="maximize", pruner=pruner,sampler=sampler)
+    study.optimize(objective, n_trials=50)
 
-# Hyperparameter importance
-importance = optuna.importance.get_param_importances(study)
-print("Hyperparameter importance:")
-for param, value in importance.items():
-    print(f"{param}: {value}")
+    # Analyze results
+    print(f"Best trial: {study.best_trial.params}")
 
-# Save model
-# torch.save(diffusion_model.state_dict(), SAVE_PATH)
+    timestamp = f"params_{datetime.now().strftime('%Y_%m_%d_%H_%M')}"
 
-# EVALUATION CODE
-def evaluate_generated_signals(classifier_model, generated_signals, labels):
-    # Get predictions from classifier model
-    classifier_model.eval()
-    with torch.no_grad():
-        predictions = classifier_model.predict(generated_signals)
+    with open(f"{timestamp}.json","w") as f:
+        json.dump(study.best_trial.params,f)
 
-    # Calculate accuracy
-    predicted_labels = predictions.argmax(dim=1)
-    accuracy = (predicted_labels == labels).float().mean().item()
+    # Hyperparameter importance
+    importance = optuna.importance.get_param_importances(study)
+    print("Hyperparameter importance:")
+    for param, value in importance.items():
+        print(f"{param}: {value}")
 
-    return accuracy
+    # Save model
+    # torch.save(diffusion_model.state_dict(), SAVE_PATH)
 
-# GENERATE SIGNALS
-def generate_samples(diffusion_model, condition):
-    num_samples = 645
-    cond = 0
-    if (condition == 0):
-        cond = torch.zeros(num_samples, 1, network_yaml["signal_length"])
-    elif (condition == 1):
-        cond = torch.ones(num_samples, 1, network_yaml["signal_length"])
-    
-    diffusion_model.eval()
-
-    print(f"Generating samples: cue {condition}")
-    with torch.no_grad():
-        samples, _ = diffusion_model.sample(num_samples, cond=cond)
-        samples = samples.numpy()
-
-    return samples

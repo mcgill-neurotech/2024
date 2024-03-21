@@ -236,6 +236,9 @@ class SLConv(nn.Module):
             self.kernel_list.append(kernel)
 
         # Support multiple scales. Only makes sense in non-sparse setting.
+
+        # the multiplier is (1 x num_channels x 1)
+        # so you're manually setting different decays for different channel indices
         self.register_buffer(
             "multiplier",
             torch.linspace(decay_min, decay_max, self.h).view(1, -1, 1),
@@ -255,6 +258,7 @@ class SLConv(nn.Module):
                 scale_factor=2 ** (max(0, i - 1)),
                 mode=self.interpolate_mode,
             ) * self.multiplier ** (self.num_scales - i - 1)
+            # decay from x^(n-1) x^(n-2), ... x^(n-1)
             kernel_list.append(kernel)
         k = torch.cat(kernel_list, dim=-1)
 
