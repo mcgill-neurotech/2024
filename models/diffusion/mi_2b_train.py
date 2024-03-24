@@ -112,6 +112,7 @@ def generate_samples(diffusion_model, condition):
     return complete_samples
 
 # Objective function for Bayesian Optimization
+previous_optim_val = 0 # Keep the last value in case of an assertion error
 def objective(trial):
     # THE FOLLOWING HYPERPARAMETERS ARE THE ONES WE ARE TRYING TO TEST AND OPTIMIZE
     # Training hyperparameters
@@ -205,37 +206,43 @@ def objective(trial):
     min_delta = 0.05
     tolerance = 20
 
-    # Train model
-    for i in range(num_epochs):
-        
-        epoch_loss = []
-        for batch in train_loader:
+    try:
+        # Train model
+        for i in range(num_epochs):
             
-            # Repeat the cue signal to match the signal length
-            cond = batch["cue"].unsqueeze(-1).unsqueeze(-1).repeat(1, 1, network_yaml["signal_length"]).to(DEVICE)
+            epoch_loss = []
+            for batch in train_loader:
+                
+                # Repeat the cue signal to match the signal length
+                cond = batch["cue"].unsqueeze(-1).unsqueeze(-1).repeat(1, 1, network_yaml["signal_length"]).to(DEVICE)
+                
+                loss = diffusion_model.train_batch(batch["signal"].to(DEVICE), cond=cond)
+                loss = torch.mean(loss)
+                
+                epoch_loss.append(loss.item())
+                
+                loss.backward()
+                optimizer.step()
+                optimizer.zero_grad()
+                
+            epoch_loss = np.mean(epoch_loss)
+            loss_per_epoch.append(epoch_loss)
             
-            loss = diffusion_model.train_batch(batch["signal"].to(DEVICE), cond=cond)
-            loss = torch.mean(loss)
-            
-            epoch_loss.append(loss.item())
-            
-            loss.backward()
-            optimizer.step()
-            optimizer.zero_grad()
-            
-        epoch_loss = np.mean(epoch_loss)
-        loss_per_epoch.append(epoch_loss)
-        
-        wandb.log({f"loss_{trial.number}": epoch_loss,
-                   f"epoch":i})
-        print(f"Epoch {i} loss: {epoch_loss}")
+            wandb.log({f"loss_{trial.number}": epoch_loss,
+                    f"epoch":i})
+            print(f"Epoch {i} loss: {epoch_loss}")
 
-        print(f"diff: {epoch_loss - min(loss_per_epoch)}")
+            print(f"diff: {epoch_loss - min(loss_per_epoch)}")
 
-        if epoch_loss - min(loss_per_epoch) >= min_delta*min(loss_per_epoch):
-            stop_counter += 1
-        if stop_counter > tolerance:
-            break
+            if epoch_loss - min(loss_per_epoch) >= min_delta*min(loss_per_epoch):
+                stop_counter += 1
+            if stop_counter > tolerance:
+                break
+    except Exception as e:
+        print("Error during training.\nSkipping to next trial.")
+        print(e)
+        return previous_optim_val
+        
     
     # Evaluate synthetic data performance
     generated_signals_zero = generate_samples(diffusion_model, condition=0)
@@ -289,6 +296,8 @@ def objective(trial):
     trial.report(best_accuracy, i)
     if trial.should_prune():
         raise optuna.exceptions.TrialPruned()
+    
+    previous_optim_val = best_accuracy
     
     return best_accuracy 
 
