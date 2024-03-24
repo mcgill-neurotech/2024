@@ -125,27 +125,19 @@ def objective(trial):
 
     # Network hyperparameters
     # Note that kernel sizes are same
-    time_dim = trial.suggest_int('time_dim', 10, 18, step=2) # I'm not sure we need that many for a signal this short
-    hidden_channel = trial.suggest_int('hidden_channel', 16, 64, step=16) # 64 seems to be a bit wide for a model this shallow
+    time_dim = trial.suggest_int('time_dim', 10, 18, step=2)
+    hidden_channel = trial.suggest_int('hidden_channel', 16, 64, step=16)
 
-    # the kernel size and the number of scales are linked
-    # the full kernel length for SLConv will be kernel_size * (2**num_scales - 1)
-    # Anything above 500 is just wasted compute and parameters
-    # We should see the effect of total kernel size and component kernel size
-    # We evaluate different number of scales for short and long components up to signal length
-    # This could only be linked to decay
     kernel_size = trial.suggest_int('kernel_size', 15, 65, step=10) 
     num_scales = trial.suggest_int('num_scales', 1, 5, step=1)
 
-    # I'm really not sure how this affects performance
-    # A constant value different from one or learnable values make sense
-    # not really sure why you would hard-code different decays
     decay_min = trial.suggest_int('decay_min', 1, 4, step=1)
     decay_max = trial.suggest_int('decay_max', decay_min, 4, step=1)
 
-    # we can probably keep the activation type constant, it shouldn't interplay with other parameters at this scale
+    # we can probably keep the activation type constant, it shouldn't interplay with other parameters that much at this scale
     
-    activation_type = trial.suggest_categorical('activation_type', ["gelu", "leaky_relu"])
+    # activation_type = trial.suggest_categorical('activation_type', ["gelu", "leaky_relu"])
+    activation_type = "leaky_relu"
     # use_fft_conv = trial.suggest_categorical('use_fft_conv', [True, False]) 
     # FFT Conv isn't a parameter it's just the algorithm used to compute the convolution
     # https://github.com/fkodom/fft-conv-pytorch
@@ -154,8 +146,10 @@ def objective(trial):
     # Diffusion hyperparameters
     # Note that start_beta seems to always be 0.001 so we don't need to test that
     # we should use a single scheduler that makes sense for prototyping and then optimize the scheduler for the best model
-    num_timesteps = trial.suggest_int('num_timesteps', 100, 1000, step=100)
-    schedule = trial.suggest_categorical('schedule', ["linear", "quad", "cosine"])
+    # num_timesteps = trial.suggest_int('num_timesteps', 100, 1000, step=100)
+    # schedule = trial.suggest_categorical('schedule', ["linear", "quad", "cosine"])
+    num_timesteps = 500
+    schedule = "cosine"
     # If the schedule is not cosine, we need to test the end_beta
     start_beta = -1
     end_beta = -1
