@@ -190,7 +190,7 @@ class BottleNeckClassifier(L.LightningModule):
 		self.mlp.append(nn.Linear(channels[-1],1))
 
 	def forward(self,x):
-		x = rearrange(x,"b c h w -> b (c h w)")
+		x = rearrange(x,"b c t -> b (c t)")
 		for i in self.mlp:
 			x = i(x)
 		return x
@@ -402,7 +402,7 @@ if __name__ == "__main__":
 	classifier = BottleNeckClassifier((4096,512))
 	unet_2d = Unet(Chenetal2021,classifier)
 	torchsummary.summary(unet_2d,(3,64,64),1,device="cpu")
-	x = torch.rand((4,3,64,64))
-	with torch.no_grad():
-		y = unet_2d.classify(x)
-		print(y)
+	# x = torch.rand((4,3,64,64))
+	# with torch.no_grad():
+	# 	y = unet_2d.classify(x)
+	# 	print(y)
