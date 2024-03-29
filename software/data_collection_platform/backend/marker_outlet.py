@@ -1,6 +1,6 @@
 import pylsl
 import logging
-import constants
+from .constants import markers
 
 
 logger = logging.getLogger(__name__)
@@ -24,13 +24,19 @@ class MarkerOutlet:
         logging.info(f"Sending marker: {marker}")
 
     def send_cross(self):
-        self.send_marker_string(constants.markers[0])
+        self.send_marker_string(markers[0])
 
     def send_beep(self):
-        self.send_marker_string(constants.markers[1])
+        self.send_marker_string(markers[1])
 
     def send_left(self):
-        self.send_marker_string(constants.markers[2])
+        self.send_marker_string(markers[2])
 
     def send_right(self):
-        self.send_marker_string(constants.markers[3])
+        self.send_marker_string(markers[3])
+
+    def send_clench(self):
+        self.send_marker_string(markers[4])
+
+    def send_rest(self):
+        self.send_marker_string(markers[5])

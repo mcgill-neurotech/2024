@@ -5,8 +5,7 @@ import pandas as pd
 import numpy as np
 import typing
 import logging
-import os
-import constants
+from .constants import markers
 from pathlib import Path
 
 # Edited from NTX McGill 2021 stream.py, lines 16-23
@@ -150,6 +149,8 @@ class CSVDataRecorder:
                 "beep",
                 "left",
                 "right",
+                "clench",
+                "rest",
             ]
         )
 
@@ -157,10 +158,12 @@ class CSVDataRecorder:
         channel_lists: typing.List[np.ndarray] = list()
 
         # see g_markers for the marker values
-        cross_list = np.array([], dtype=int)
-        beep_list = np.array([], dtype=int)
-        left_list = np.array([], dtype=int)
-        right_list = np.array([], dtype=int)
+        cross_list = np.array([], dtype=np.bool_)
+        beep_list = np.array([], dtype=np.bool_)
+        left_list = np.array([], dtype=np.bool_)
+        right_list = np.array([], dtype=np.bool_)
+        clench_list = np.array([], dtype=np.bool_)
+        rest_list = np.array([], dtype=np.bool_)
 
         for i in range(8):
             channel_lists.append(np.array([]))
@@ -178,8 +181,8 @@ class CSVDataRecorder:
             if marker_sample is not None and marker_sample[0] is not None:
                 marker_string = marker_sample[0]
 
-                for i in range(len(constants.markers)):
-                    if marker_string == constants.markers[i]:
+                for i in range(len(markers)):
+                    if marker_string == markers[i]:
                         marker = i
                         break
 
@@ -187,18 +190,22 @@ class CSVDataRecorder:
             for i in range(8):
                 channel_lists[i] = np.append(channel_lists[i], eeg_sample[i])
 
-            cross_list = np.append(cross_list, 1 if marker == 0 else 0)
-            beep_list = np.append(beep_list, 1 if marker == 1 else 0)
-            left_list = np.append(left_list, 1 if marker == 2 else 0)
-            right_list = np.append(right_list, 1 if marker == 3 else 0)
+            cross_list = np.append(cross_list, marker == 0)
+            beep_list = np.append(beep_list, marker == 1)
+            left_list = np.append(left_list, marker == 2)
+            right_list = np.append(right_list, marker == 3)
+            clench_list = np.append(clench_list, marker == 4)
+            rest_list = np.append(rest_list, marker == 5)
 
         df["timestamp"] = timestamp_list
         for i in range(8):
             df[f"ch{i+1}"] = channel_lists[i]
-        df["cross"] = cross_list
-        df["beep"] = beep_list
-        df["left"] = left_list
-        df["right"] = right_list
+        df["cross"] = cross_list.astype(np.int8)
+        df["beep"] = beep_list.astype(np.int8)
+        df["left"] = left_list.astype(np.int8)
+        df["right"] = right_list.astype(np.int8)
+        df["clench"] = clench_list.astype(np.int8)
+        df["rest"] = rest_list.astype(np.int8)
 
         filepath = Path(f"test_data/{filename}")
         filepath.parent.mkdir(parents=True, exist_ok=True)

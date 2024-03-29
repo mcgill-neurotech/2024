@@ -1,5 +1,5 @@
-import csv_data_recorder as recorder
-import marker_outlet as m
+from .backend import CSVDataRecorder
+from .backend import MarkerOutlet
 
 
 title_string = """
@@ -20,12 +20,12 @@ title_string = """
 """
 
 
-def main():
+def cli():
     # Create a marker outlet
-    marker_outlet = m.MarkerOutlet()
+    marker_outlet = MarkerOutlet()
 
     # Create a data recorder
-    data_recorder = recorder.CSVDataRecorder(find_streams=False)
+    data_recorder = CSVDataRecorder(find_streams=False)
 
     print(title_string)
 
@@ -40,7 +40,7 @@ def main():
 
         elif user_input == "1":
             marker = input(
-                " > Select 1 to send a cross marker. Select 2 to send a beep marker. Select 3 to send a left marker. Select 4 to send a right marker. Select anything else to cancel: "
+                " > Select 1 to send a cross marker. Select 2 to send a beep marker. Select 3 to send a left marker. Select 4 to send a right marker. Select 5 to send a clench marker. Select 6 to send a rest marker. Select anything else to cancel: "
             )
 
             if marker == "1":
@@ -51,6 +51,10 @@ def main():
                 marker_outlet.send_left()
             elif marker == "4":
                 marker_outlet.send_right()
+            elif marker == "5":
+                marker_outlet.send_clench()
+            elif marker == "6":
+                marker_outlet.send_rest()
             else:
                 print("Invalid input.")
                 continue
@@ -83,4 +87,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    cli()
