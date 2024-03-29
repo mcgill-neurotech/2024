@@ -13,7 +13,7 @@ import json
 from datetime import datetime
 
 import optuna # pip install optuna (this is for the Bayesian optimization and subsequent analysis)
-
+from lightning.fabric import Fabric
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
 
@@ -74,6 +74,10 @@ network_yaml["signal_length"] = signal_shape[-1]
 network_yaml["signal_channel"] = signal_shape[1]
 print(network_yaml["signal_length"])
 
+# float-16 can have some stability problems outside of FFT
+fabric = Fabric(accelerator="cuda",precision="bf16-mixed")
+fabric.launch()
+
 # EVALUATION CODE
 def evaluate_generated_signals(classifier_model, generated_signals, labels):
     # Get predictions from classifier model
@@ -101,13 +105,14 @@ def generate_samples(diffusion_model, condition):
 
     print(f"Generating samples: cue {condition}")
     complete_samples = []
-    with torch.no_grad():
-        for i in range(6):
-            samples, _ = diffusion_model.sample(num_samples, cond=cond)
-            samples = samples.cpu().numpy()
-            print(samples.shape)
-            complete_samples.append(samples)
-    complete_samples = np.concatenate(complete_samples)
+    with fabric.autocast():
+        with torch.no_grad():
+            for i in range(6):
+                samples, _ = diffusion_model.sample(num_samples, cond=cond)
+                samples = samples.cpu().numpy()
+                print(samples.shape)
+                complete_samples.append(samples)
+    complete_samples = np.float32(np.concatenate(complete_samples))
     print(complete_samples.shape)
     return complete_samples
 
@@ -132,8 +137,12 @@ def objective(trial):
     kernel_size = trial.suggest_int('kernel_size', 15, 65, step=10) 
     num_scales = trial.suggest_int('num_scales', 1, 5, step=1)
 
-    decay_min = trial.suggest_int('decay_min', 1, 4, step=1)
-    decay_max = trial.suggest_int('decay_max', decay_min, 4, step=1)
+    # decay_min = trial.suggest_int('decay_min', 1, 4, step=1)
+    # decay_max = trial.suggest_int('decay_max', decay_min, 4, step=1)
+
+    # the paper mostly sticks with constant decay
+    decay_min = 2
+    decay_max = 2
 
     # we can probably keep the activation type constant, it shouldn't interplay with other parameters that much at this scale
     
@@ -149,14 +158,14 @@ def objective(trial):
     # we should use a single scheduler that makes sense for prototyping and then optimize the scheduler for the best model
     # num_timesteps = trial.suggest_int('num_timesteps', 100, 1000, step=100)
     # schedule = trial.suggest_categorical('schedule', ["linear", "quad", "cosine"])
-    num_timesteps = 500
-    schedule = "cosine"
+    num_timesteps = 250
+    schedule = "linear"
     # If the schedule is not cosine, we need to test the end_beta
-    start_beta = -1
-    end_beta = -1
-    if schedule != "cosine":
-        start_beta = diffusion_yaml["start_beta"]
-        end_beta = trial.suggest_float('end_beta', 0.01, 0.08, step=0.01)
+    start_beta = 0.0001
+    end_beta = 0.08
+    # if schedule != "cosine":
+    #     start_beta = diffusion_yaml["start_beta"]
+    #     end_beta = trial.suggest_float('end_beta', 0.01, 0.08, step=0.01)
         
     # Load data
     train_loader = DataLoader(
@@ -200,6 +209,9 @@ def objective(trial):
         lr=lr,
     )
 
+    diffusion_model,optimizer = fabric.setup(diffusion_model,optimizer)
+    train_loader = fabric.setup_dataloaders(train_loader)
+
     loss_per_epoch = []
 
     stop_counter = 0
@@ -213,15 +225,18 @@ def objective(trial):
             epoch_loss = []
             for batch in train_loader:
                 
+                with fabric.autocast():
                 # Repeat the cue signal to match the signal length
-                cond = batch["cue"].unsqueeze(-1).unsqueeze(-1).repeat(1, 1, network_yaml["signal_length"]).to(DEVICE)
-                
-                loss = diffusion_model.train_batch(batch["signal"].to(DEVICE), cond=cond)
+                    # print(batch["signal"].shape)
+                    cond = batch["cue"].unsqueeze(-1).unsqueeze(-1).repeat(1, 1, network_yaml["signal_length"]).to(DEVICE)
+                    
+                    loss = diffusion_model.train_batch(batch["signal"].to(DEVICE), cond=cond)
                 loss = torch.mean(loss)
                 
                 epoch_loss.append(loss.item())
                 
-                loss.backward()
+                fabric.backward(loss)
+                # loss.backward()
                 optimizer.step()
                 optimizer.zero_grad()
                 
@@ -258,6 +273,12 @@ def objective(trial):
                                         length=classifier_yaml["length"],)
     
     full_x,full_y = test_classifier.get_train(cut=True)
+
+    test_classifier.fit((full_x,full_y))
+
+    results = test_classifier.test(verbose=False)
+
+    print(f"reaching an accuracy of {results['test'][-2]}")
     
     # already checked at 0 with accuracy of 79%
     for real_fake_split in range(10, 90, 10):

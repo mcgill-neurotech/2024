@@ -251,6 +251,11 @@ class SLConv(nn.Module):
     def forward(self, x):
         signal_length = x.size(-1)
 
+        # half precision not supported for FFT
+        orig_dtype = x.dtype
+        if self.use_fft_conv:
+            x = x.to(torch.float32)
+
         kernel_list = []
         for i in range(self.num_scales):
             kernel = F.interpolate(
@@ -270,7 +275,7 @@ class SLConv(nn.Module):
             log.debug(f"Kernel norm: {self.kernel_norm.mean()}")
             log.debug(f"Kernel size: {k.size()}")
 
-        assert k.size(-1) < signal_length
+        # assert k.size(-1) < signal_length
         if self.use_fft_conv:
             k = F.pad(k, (0, signal_length - k.size(-1)))
 
@@ -286,7 +291,9 @@ class SLConv(nn.Module):
             k_f = torch.fft.rfft(k, n=factor * signal_length)  # (C H L)
             u_f = torch.fft.rfft(x, n=factor * signal_length)  # (B H L)
             y_f = torch.einsum("bhl,chl->bchl", u_f, k_f)
-            slice_start = self.kernel_length // 2
+
+            # to allow for longer convolution kernels
+            slice_start = min(self.kernel_length // 2,signal_length)
             y = torch.fft.irfft(y_f, n=factor * signal_length)
 
             if self.padding_mode == "constant":
@@ -308,7 +315,7 @@ class SLConv(nn.Module):
             "b c h l -> b (h c) l",
         )
 
-        return y
+        return y.to(orig_dtype)
 
 
 ### Sparse masks
