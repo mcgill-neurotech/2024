@@ -1,0 +1,84 @@
+2024-02-23 13:18:45,900 csv_data_recorder INFO Looking for an EEG stream...
+2024-02-23 13:18:45,918 csv_data_recorder INFO Connected to stream: obci_eeg1, Stream channel_count: 8
+2024-02-23 13:18:45,918 csv_data_recorder INFO EEG Inlet found:<pylsl.pylsl.StreamInlet object at 0x116722600>
+2024-02-23 13:18:45,918 csv_data_recorder INFO Looking for a marker stream...
+2024-02-23 13:18:45,920 csv_data_recorder INFO Found 1 streams
+2024-02-23 13:18:45,920 csv_data_recorder INFO Connected to stream: Neurotech markers
+2024-02-23 13:18:45,920 csv_data_recorder INFO Marker Inlet found:<pylsl.pylsl.StreamInlet object at 0x1167886e0>
+2024-02-23 13:37:10,277 csv_data_recorder INFO Looking for an EEG stream...
+2024-02-23 13:37:10,286 csv_data_recorder INFO Connected to stream: obci_eeg1, Stream channel_count: 8
+2024-02-23 13:37:10,287 csv_data_recorder INFO EEG Inlet found:<pylsl.pylsl.StreamInlet object at 0x102dda150>
+2024-02-23 13:37:10,287 csv_data_recorder INFO Looking for a marker stream...
+2024-02-23 13:37:10,289 csv_data_recorder INFO Found 1 streams
+2024-02-23 13:37:10,289 csv_data_recorder INFO Connected to stream: Neurotech markers
+2024-02-23 13:37:10,289 csv_data_recorder INFO Marker Inlet found:<pylsl.pylsl.StreamInlet object at 0x11820d280>
+2024-02-25 09:03:46,230 root INFO Sending marker: cross
+2024-02-25 09:03:57,115 csv_data_recorder INFO Looking for an EEG stream...
+2024-02-25 09:03:57,121 csv_data_recorder INFO Connected to stream: obci_eeg1, Stream channel_count: 8
+2024-02-25 09:03:57,121 csv_data_recorder INFO EEG Inlet found:<pylsl.pylsl.StreamInlet object at 0x122f05e80>
+2024-02-25 09:03:57,121 csv_data_recorder INFO Looking for a marker stream...
+2024-02-25 09:03:57,122 csv_data_recorder INFO Found 1 streams
+2024-02-25 09:03:57,122 csv_data_recorder INFO Connected to stream: Neurotech markers
+2024-02-25 09:03:57,122 csv_data_recorder INFO Marker Inlet found:<pylsl.pylsl.StreamInlet object at 0x103d5dbe0>
+2024-02-25 09:05:37,277 root INFO Sending marker: cross
+2024-02-25 09:05:46,240 root INFO Sending marker: beep
+2024-02-25 09:05:56,076 root INFO Sending marker: left
+2024-02-25 09:29:12,832 csv_data_recorder INFO Looking for an EEG stream...
+2024-02-25 09:29:12,839 csv_data_recorder INFO Connected to stream: obci_eeg1, Stream channel_count: 8
+2024-02-25 09:29:12,840 csv_data_recorder INFO EEG Inlet found:<pylsl.pylsl.StreamInlet object at 0x14b401a90>
+2024-02-25 09:29:12,840 csv_data_recorder INFO Looking for a marker stream...
+2024-02-25 09:29:12,841 csv_data_recorder INFO Found 1 streams
+2024-02-25 09:29:12,841 csv_data_recorder INFO Connected to stream: Neurotech markers
+2024-02-25 09:29:12,841 csv_data_recorder INFO Marker Inlet found:<pylsl.pylsl.StreamInlet object at 0x14b4f45c0>
+2024-02-25 09:29:58,965 root INFO Sending marker: cross
+2024-02-25 09:30:05,025 root INFO Sending marker: beep
+2024-02-25 09:58:56,349 csv_data_recorder INFO Looking for an EEG stream...
+2024-02-25 10:01:08,726 csv_data_recorder INFO Looking for an EEG stream...
+2024-02-25 10:01:08,731 csv_data_recorder INFO Connected to stream: obci_eeg1, Stream channel_count: 8
+2024-02-25 10:01:08,731 csv_data_recorder INFO EEG Inlet found:<pylsl.pylsl.StreamInlet object at 0x122aec260>
+2024-02-25 10:01:08,731 csv_data_recorder INFO Looking for a marker stream...
+2024-02-25 10:01:08,733 csv_data_recorder INFO Found 1 streams
+2024-02-25 10:01:08,733 csv_data_recorder INFO Connected to stream: Neurotech markers
+2024-02-25 10:01:08,733 csv_data_recorder INFO Marker Inlet found:<pylsl.pylsl.StreamInlet object at 0x122aec2f0>
+2024-02-25 10:01:40,653 root INFO Sending marker: cross
+2024-02-25 10:01:46,696 root INFO Sending marker: beep
+2024-02-25 10:01:51,857 root INFO Sending marker: left
+2024-02-25 10:05:41,069 csv_data_recorder INFO Looking for an EEG stream...
+2024-02-25 10:05:41,075 csv_data_recorder INFO Connected to stream: obci_eeg1, Stream channel_count: 8
+2024-02-25 10:05:41,076 csv_data_recorder INFO EEG Inlet found:<pylsl.pylsl.StreamInlet object at 0x116823c80>
+2024-02-25 10:05:41,076 csv_data_recorder INFO Looking for a marker stream...
+2024-02-25 10:05:41,078 csv_data_recorder INFO Found 1 streams
+2024-02-25 10:05:41,078 csv_data_recorder INFO Connected to stream: Neurotech markers
+2024-02-25 10:05:41,078 csv_data_recorder INFO Marker Inlet found:<pylsl.pylsl.StreamInlet object at 0x103cbdbb0>
+2024-02-25 10:16:22,528 csv_data_recorder INFO Looking for an EEG stream...
+2024-02-25 10:16:22,534 csv_data_recorder INFO Connected to stream: obci_eeg1, Stream channel_count: 8
+2024-02-25 10:16:22,534 csv_data_recorder INFO EEG Inlet found:<pylsl.pylsl.StreamInlet object at 0x11535b0b0>
+2024-02-25 10:16:22,534 csv_data_recorder INFO Looking for a marker stream...
+2024-02-25 10:16:22,535 csv_data_recorder INFO Found 1 streams
+2024-02-25 10:16:22,535 csv_data_recorder INFO Connected to stream: Neurotech markers
+2024-02-25 10:16:22,535 csv_data_recorder INFO Marker Inlet found:<pylsl.pylsl.StreamInlet object at 0x1170e83b0>
+2024-02-25 10:17:05,945 root INFO Sending marker: cross
+2024-02-25 10:40:37,628 csv_data_recorder INFO Looking for an EEG stream...
+2024-02-25 10:40:37,635 csv_data_recorder INFO Connected to stream: obci_eeg1, Stream channel_count: 8
+2024-02-25 10:40:37,635 csv_data_recorder INFO EEG Inlet found:<pylsl.pylsl.StreamInlet object at 0x1227b6090>
+2024-02-25 10:40:37,635 csv_data_recorder INFO Looking for a marker stream...
+2024-02-25 10:40:37,637 csv_data_recorder INFO Found 1 streams
+2024-02-25 10:40:37,637 csv_data_recorder INFO Connected to stream: Neurotech markers
+2024-02-25 10:40:37,637 csv_data_recorder INFO Marker Inlet found:<pylsl.pylsl.StreamInlet object at 0x116cc1c70>
+2024-02-25 10:41:01,539 root INFO Sending marker: cross
+2024-03-04 13:31:55,310 csv_data_recorder INFO Looking for an EEG stream...
+2024-03-04 13:31:55,317 csv_data_recorder INFO Connected to stream: obci_eeg1, Stream channel_count: 8
+2024-03-04 13:31:55,317 csv_data_recorder INFO EEG Inlet found:<pylsl.pylsl.StreamInlet object at 0x105e26fc0>
+2024-03-04 13:31:55,317 csv_data_recorder INFO Looking for a marker stream...
+2024-03-04 13:31:55,318 csv_data_recorder INFO Found 1 streams
+2024-03-04 13:31:55,318 csv_data_recorder INFO Connected to stream: Neurotech markers
+2024-03-04 13:31:55,318 csv_data_recorder INFO Marker Inlet found:<pylsl.pylsl.StreamInlet object at 0x1064d5280>
+2024-03-04 13:33:10,198 root INFO Sending marker: left
+2024-03-20 00:40:15,619 csv_data_recorder INFO Looking for an EEG stream...
+2024-03-20 00:40:15,626 csv_data_recorder INFO Connected to stream: obci_eeg1, Stream channel_count: 8
+2024-03-20 00:40:15,626 csv_data_recorder INFO EEG Inlet found:<pylsl.pylsl.StreamInlet object at 0x116d9a510>
+2024-03-20 00:40:15,626 csv_data_recorder INFO Looking for a marker stream...
+2024-03-20 00:40:15,627 csv_data_recorder INFO Found 1 streams
+2024-03-20 00:40:15,627 csv_data_recorder INFO Connected to stream: Neurotech markers
+2024-03-20 00:40:15,627 csv_data_recorder INFO Marker Inlet found:<pylsl.pylsl.StreamInlet object at 0x116fe44d0>
+2024-03-20 00:41:23,424 root INFO Sending marker: left
