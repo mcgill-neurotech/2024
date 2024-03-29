@@ -1,10 +1,11 @@
 # Data collection platform
 
-The following will guide you on how to run the data collection CLI.
+The following will guide you on how to run the data collection platform or CLI.
 
 ## Dependencies:
 
 Prerequisites:
+
 - Clone 2024 folder to vscode or IDE of choice
 - Conda installed on your system (https://docs.anaconda.com/free/miniconda/)
 - Pandas installed (within conda) 'pip install pandas'
@@ -49,3 +50,10 @@ Then you should be able to start and stop recording with options (2) and (3) res
 Use option (1) to send one of the four cross, beep, left, and right markers.
 
 If a connection to the LSL EEG stream is lost, reconnecting the stream should automatically allow data collection to continue.
+
+# Running the data collection platform
+
+First, make sure to activate the correct conda environment with `conda activate neurotech`
+
+Then, while the LSL Stream from the OpenBCI is started, run `python main.py` (from the data_collection_platform folder).
+Then, connect to the OpenBCI stream and marker stream with option (4). In the `logs/test.log` file in your IDE you should see the following:

@@ -207,7 +207,7 @@ class CSVDataRecorder:
         df["clench"] = clench_list.astype(np.int8)
         df["rest"] = rest_list.astype(np.int8)
 
-        filepath = Path(f"test_data/{filename}")
+        filepath = Path(f"collected_data/{filename}")
         filepath.parent.mkdir(parents=True, exist_ok=True)
 
         df.to_csv(filepath, index=False)

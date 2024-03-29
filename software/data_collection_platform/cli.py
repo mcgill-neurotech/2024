@@ -1,5 +1,5 @@
-from .backend import CSVDataRecorder
-from .backend import MarkerOutlet
+from backend import CSVDataRecorder
+from backend import MarkerOutlet
 
 
 title_string = """
@@ -77,7 +77,7 @@ def cli():
 
             data_recorder.stop()
             print(
-                "Data collection finished. Your data should be written in the test_data folder."
+                "Data collection finished. Your data should be written in the collected_data folder."
             )
 
         elif user_input == "4":
