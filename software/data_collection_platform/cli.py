@@ -1,6 +1,18 @@
 from backend import CSVDataRecorder
 from backend import MarkerOutlet
+import pathlib
+import logging
 
+
+log_path = pathlib.Path(f"logs/cli.log")
+log_path.parent.mkdir(parents=True, exist_ok=True)
+
+logging.basicConfig(
+    filename=log_path,
+    filemode="w",
+    level=logging.INFO,
+    format="%(asctime)s %(name)s %(levelname)s %(message)s",
+)
 
 title_string = """
 
