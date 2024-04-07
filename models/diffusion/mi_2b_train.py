@@ -11,6 +11,7 @@ from torch import optim
 from torch.utils.data import DataLoader
 import json
 from datetime import datetime
+import pickle
 
 import optuna # pip install optuna (this is for the Bayesian optimization and subsequent analysis)
 
@@ -56,23 +57,34 @@ with open(os.path.join(CONF_PATH, "diffusion.yaml"), "r") as f:
     diffusion_yaml = yaml.safe_load(f)
 
 # Load data
-dataset_mat_diffusion = {}
-for i in range(1,8):
-	mat_train,mat_test = load_data(DATA_PATH,i)
-	dataset_mat_diffusion[f"subject_{i}"] = {"train":mat_train,"test":mat_test}
-  
-dataset_mat_classifier = {}
-for i in range(8,10):
-	mat_train,mat_test = load_data(DATA_PATH,i)
-	dataset_mat_classifier[f"subject_{i}"] = {"train":mat_train,"test":mat_test}
+### PREPROCESSES THE DATA USING THE CSP CLASSIFIER ###
+#idataset_mat_diffusion = {}
+#for i in range(1,8):
+#	mat_train,mat_test = load_data(DATA_PATH,i)
+#	dataset_mat_diffusion[f"subject_{i}"] = {"train":mat_train,"test":mat_test}
+#  
+#dataset_mat_classifier = {}
+#for i in range(8,10):
+#	mat_train,mat_test = load_data(DATA_PATH,i)
+#	dataset_mat_classifier[f"subject_{i}"] = {"train":mat_train,"test":mat_test}
+#
+#diffusion_classifier = CSPClassifier(dataset_mat_diffusion, t_baseline=classifier_yaml["t_baseline"], t_epoch=classifier_yaml["t_epoch"])
+#diffusion_classifier.set_epoch(3.5,2)
+#signal_shape = diffusion_classifier.get_shape()
+#print(f"signal shape: {signal_shape}")
+#network_yaml["signal_length"] = signal_shape[-1]
+#network_yaml["signal_channel"] = signal_shape[1]
+#print(network_yaml["signal_length"])
 
-diffusion_classifier = CSPClassifier(dataset_mat_diffusion, t_baseline=classifier_yaml["t_baseline"], t_epoch=classifier_yaml["t_epoch"])
-diffusion_classifier.set_epoch(3.5,2)
-signal_shape = diffusion_classifier.get_shape()
-print(f"signal shape: {signal_shape}")
-network_yaml["signal_length"] = signal_shape[-1]
-network_yaml["signal_channel"] = signal_shape[1]
+### LOADS THE PREPROCESSED DATA ###
+# Load preprocessed pickled data
+preprocessed_data_path = "../../data/preprocessed_fake.pt"
+preprocessed_data = torch.load(preprocessed_data_path)
+print(preprocessed_data.shape)
+network_yaml["signal_length"] = preprocessed_data.shape[-1]
+network_yaml["signal_channel"] = preprocessed_data.shape[1]
 print(network_yaml["signal_length"])
+
 
 # EVALUATION CODE
 def evaluate_generated_signals(classifier_model, generated_signals, labels):
@@ -160,7 +172,7 @@ def objective(trial):
         
     # Load data
     train_loader = DataLoader(
-        diffusion_classifier,
+        preprocessed_data,
         train_yaml["batch_size"]
     )
 
