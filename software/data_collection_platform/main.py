@@ -78,8 +78,8 @@ def main():
         # on_left_done=on_left_done,
         # on_right_done=on_right_done,
         # on_rest_done=on_rest_done,
-        rest_duration=2,
-        work_duration=1,
+        rest_duration=20,
+        work_duration=10,
     )
 
 
