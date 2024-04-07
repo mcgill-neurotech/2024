@@ -1,5 +1,3 @@
-
-
 import os
 import scipy
 import numpy as np
@@ -207,6 +205,9 @@ class Classifier:
     def get_test(self):
         return self.x_val,self.y_val
     
+    def get_shape(self):
+        return self.x_train.shape
+    
     def test(self,
     	  verbose=True):   
         outs = {}
@@ -256,13 +257,22 @@ class CSPClassifier(Classifier):
         self.svm = SVC(C=1)
 
         self.clf = Pipeline(steps=[("csp",self.csp),
-                            ("selection",SelectKBest(mutual_info_classif)),
+                            ("selection",SelectKBest(mutual_info_classif,k=10)),
                             ("classification",self.svm)])
         self.set_epoch(start,length)
 
     def set_epoch(self,start,length):
         self.input_start = start + self.t_baseline
         self.input_end = self.input_start + length
+
+    def get_train(self,
+                  cut=False):
+        if cut:
+            x,y = self.get_train()
+            x = x[:,:,int(self.input_start*250):int(self.input_end*250)]
+            return x,y
+        else:
+            return super().get_train()
 
     def gridCV(self,
             param_grid,
@@ -275,13 +285,24 @@ class CSPClassifier(Classifier):
         print(f"accuracy of: {search.best_estimator_.score(x,y)}")
         self.clf = search.best_estimator_
 		
-    def fit(self):
-        x,y = self.get_train()
-        x = x[:,:,int(self.input_start*250):int(self.input_end*250)]
-        self.clf.fit(x,y)
+    def fit(self,
+            dataset=None):
+        if dataset == None:
+            x,y = self.get_train()
+            x = x[:,:,int(self.input_start*250):int(self.input_end*250)]
+            self.clf.fit(x,y)
+        else:
+             self.clf.fit(*dataset)
+        
 
-    def predict(self, x):
-        x = x[:,:,int(self.input_start*250):int(self.input_end*250)]
+    def get_shape(self):
+         return self.x_train[:,:,int(self.input_start*250):int(self.input_end*250)].shape
+
+    def predict(self,
+                x,
+                cut=True):
+        if cut:
+            x = x[:,:,int(self.input_start*250):int(self.input_end*250)]
         y_cont = self.clf.decision_function(x)
         y_discrete = self.clf.predict(x)
         return y_cont,y_discrete
@@ -321,3 +342,7 @@ class CSPClassifier(Classifier):
         sigma = np.std(x,axis=-1)
         x = (x-rearrange(mu,"n d -> n d 1"))/rearrange(sigma,"n d -> n d 1")
         return x,y
+    
+    def __getitem__(self, index):
+        return {"signal": self.x_train[index,:,int(self.input_start*250):int(self.input_end*250)].astype(np.float32),
+                 "cue": self.y_train[index].astype(np.float32)}
