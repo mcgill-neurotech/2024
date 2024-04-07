@@ -13,10 +13,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start-app": "cd app && flask run --no-debugger",
+    "start-api": "cd api && flask run --no-debugger",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "test-app": "cd app && flask test",
+    "test-api": "cd api && flask test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
