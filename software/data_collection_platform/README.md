@@ -10,6 +10,8 @@ Prerequisites:
 - Conda installed on your system (https://docs.anaconda.com/free/miniconda/)
 - Pandas installed (within conda) 'pip install pandas'
 - The OpenBCI Gui installed (https://openbci.com/downloads)
+- Pylsl pip installed
+- Pygame pip installed
 
 If on linux, do `conda env create -f environment.yml`, which will create a conda environment called `neurotech` with all the necessary dependencies installed. TODO-create working environment.yml files for mac and windows
 
