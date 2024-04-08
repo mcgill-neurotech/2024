@@ -33,7 +33,20 @@ To set up the OpenBCI GUI with a physical or synthetic board, first start the Op
 4. Set the data type to TimeSeriesRaw:
    ![image](./images/bci-step-4.png)
 
+
+
+# Running the data collection platform
+
+First, make sure to activate the correct conda environment with `conda activate neurotech`
+
+Then, while the LSL and OpenBCI Streams have started, run `python main.py` (from the data_collection_platform folder). You should be greeted by the data collection dashboard: 
+
+Hit enter to start the timer. After 5 seconds of rest the dahsboard will alternate through Left, Right and Go commands for 10 seconds with a 20 second rest between each command. This cycle will run for 5 minutes before ending on rest.  
+
+A collected_data directory will be automatically created after the first time you run the data collection platform; raw data is stored in .csv files.
+
 ## Running the cli
+-for synthetic testing only-
 
 First, make sure to activate the correct conda environment with `conda activate neurotech`
 
@@ -53,9 +66,3 @@ Use option (1) to send one of the four cross, beep, left, and right markers.
 
 If a connection to the LSL EEG stream is lost, reconnecting the stream should automatically allow data collection to continue.
 
-# Running the data collection platform
-
-First, make sure to activate the correct conda environment with `conda activate neurotech`
-
-Then, while the LSL Stream from the OpenBCI is started, run `python main.py` (from the data_collection_platform folder).
-Then, connect to the OpenBCI stream and marker stream with option (4). In the `logs/test.log` file in your IDE you should see the following:
