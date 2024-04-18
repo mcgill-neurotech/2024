@@ -23,6 +23,7 @@ class ConvConfig:
 	pool_fact: int
 	pool_op:nn.Module
 	residual: bool = False
+	p_drop: float
 
 	def new_shapes(
 				self,
@@ -40,7 +41,8 @@ class ConvConfig:
 			kernel_size=self.kernel_size,
 			pool_fact=self.pool_fact,
 			pool_op=self.pool_op,
-			residual=self.residual
+			residual=self.residual,
+			p_drop=self.p_drop
 		)
 
 @dataclasses.dataclass(kw_only=True)
@@ -54,6 +56,7 @@ class EncodeConfig(ConvConfig):
 	padding: Tuple[int, ...] = (1,1)
 	kernel_size: Tuple[int, ...] = (3,3)
 	pool_fact: int = 2
+	p_drop: float
 
 @dataclasses.dataclass(kw_only=True)
 class DecodeConfig:
@@ -105,6 +108,8 @@ class UnetConfig:
 	deconv_kernel: Tuple[int,...]
 	deconv_stride: Tuple[int,...]
 	residual: False
+	conv_pdrop: float = 0.1
+	mlp_pdrop: float = 0.25
 
 @dataclasses.dataclass(kw_only=True)
 class BottleneckClassifierConfig:
@@ -118,6 +123,7 @@ class Convdown(L.LightningModule):
 
 		self.c1 = config.conv_op(config.input_channels, config.output_channels, kernel_size=config.kernel_size, padding=config.padding, groups=config.groups)
 		self.c2 = config.conv_op(config.output_channels, config.output_channels, kernel_size=config.kernel_size, padding=config.padding, groups=config.groups)
+		self.drop = nn.Dropout(config.p_drop)
 		self.instance_norm = config.norm_op(config.output_channels)
 		self.non_lin = config.non_lin()
 		self.residual = config.residual
@@ -125,14 +131,14 @@ class Convdown(L.LightningModule):
 	def forward(self, x):
 
 		if self.residual:
-			x = self.c1(x)
+			x = self.drop(self.c1(x))
 			x = self.non_lin(x)
-			x = x + self.c2(x)
+			x = x + self.drop(self.c2(x))
 			x = self.non_lin(x)
 		else:
-			x = self.c1(x)
+			x = self.drop(self.c1(x))
 			x = self.non_lin(x)
-			x = self.c2(x)
+			x = self.drop(self.c2(x))
 			x = self.non_lin(x)
 		x = self.instance_norm(x)
 		return x
@@ -180,17 +186,24 @@ class Decode(L.LightningModule):
 class BottleNeckClassifier(L.LightningModule):
 
 	def __init__(self,
-			  channels: Tuple[int]) -> None:
+			  channels: Tuple[int],
+			  pool=None) -> None:
 		super().__init__()
 
 		self.mlp = nn.ModuleList()
 		for i in range(len(channels)-1):
 			self.mlp.append(nn.Linear(channels[i],channels[i+1]))
 			self.mlp.append(nn.ReLU())
-		self.mlp.append(nn.Linear(channels[-1],1))
+		self.mlp.append(nn.Linear(channels[-1],2))
+		self.pool = pool
 
 	def forward(self,x):
-		x = rearrange(x,"b c t -> b (c t)")
+		if self.pool=="max":
+			x = reduce(x,"b c t -> b c","max")
+		elif self.pool=="mean":
+			x = reduce(x,"b c t -> b c","mean")
+		else:
+			x = rearrange(x,"b c t -> b (c t)")
 		for i in self.mlp:
 			x = i(x)
 		return x
@@ -244,6 +257,7 @@ class Unet(L.LightningModule):
 
 		self.encoder = nn.ModuleList()
 		self.decoder = nn.ModuleList()
+		self.out_shape = [get_min(size),self.input_features[-1]]
 
 		# input_channels = [32, 64, 128, 256,256....]
 
@@ -260,7 +274,8 @@ class Unet(L.LightningModule):
 			kernel_size=config.conv_kernel,
 			pool_fact=config.pool_fact,
 			pool_op=config.pool_op,
-			residual=config.residual
+			residual=config.residual,
+			p_drop=config.conv_pdrop
 		)
 
 		self.base_decode_config = DecodeConfig(
