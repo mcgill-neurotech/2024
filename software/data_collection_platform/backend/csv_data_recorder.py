@@ -222,4 +222,100 @@ def test_recorder():
         time.sleep(1)
 
 
-# test_recorder()
+class DataClassifier:
+    """Class to stream the last two seconds of LSL data"""
+
+    def __init__(
+        self,
+        find_streams=True,
+    ):
+        self.eeg_inlet = find_bci_inlet() if find_streams else None
+
+        self.recording = False
+        self.ready = self.eeg_inlet is not None
+
+        if self.ready:
+            logger.info("Ready to start recording.")
+
+        self.bufsize = 1000
+        self.buffer = np.ndarray((8, self.bufsize))
+        self.time_buffer = np.ndarray(self.bufsize)
+        self.last_time_index = 0
+        self.current_time_index = 0
+
+    def find_streams(self):
+        """Find EEG and marker streams. Updates the ready flag."""
+        self.find_eeg_inlet()
+        self.ready = self.eeg_inlet is not None
+
+    def find_eeg_inlet(self):
+        """Find the EEG stream and update the inlet."""
+        self.eeg_inlet = find_bci_inlet(debug=False)
+        logger.info(f"EEG Inlet found:{self.eeg_inlet}")
+
+    def start(self, filename="test_data_0.csv"):
+        """Start recording data to a CSV file. The recording will continue until stop() is called.
+        The filename is the name of the file to save the data to. If the file already exists, it will be overwritten.
+        If the LSL streams are not available, the function will print a message and return without starting the recording.
+        Note that the output file will only be written to disk when the recording is stopped.
+        """
+
+        if not self.ready:
+            logger.error("Error: not ready to start recording")
+            logger.info(f"EEG Inlet:{self.eeg_inlet}")
+            return
+
+        self.recording = True
+
+        worker_args = [filename]
+        t = threading.Thread(target=self._start_recording_worker, args=worker_args)
+        t.start()
+
+    def _start_recording_worker(self, filename):
+        # Flush the inlets to remove old data
+        self.eeg_inlet.flush()
+
+        while self.recording:
+            eeg_sample, eeg_timestamp = self.eeg_inlet.pull_sample()
+            two_seconds_before = eeg_timestamp - 2
+
+            self.time_buffer[self.current_time_index] = eeg_timestamp
+            for i in range(8):
+                self.buffer[i][self.current_time_index] = eeg_sample[i]
+            self.current_time_index = (self.current_time_index + 1) % self.bufsize
+
+            while self.time_buffer[self.last_time_index] < two_seconds_before:
+                self.last_time_index = (self.last_time_index + 1) % self.bufsize
+
+            if self.last_time_index > self.current_time_index:
+                print(self.bufsize - (self.last_time_index - self.current_time_index))
+            else:
+                print(self.current_time_index - self.last_time_index)
+
+            print(self.get_buffer_samples().shape)
+
+    def get_buffer_samples(self):
+        if self.last_time_index > self.current_time_index:
+            begin = self.buffer[range(8), self.last_time_index : self.bufsize]
+            end = self.buffer[range(8), 0 : self.current_time_index]
+            return np.concatenate((begin, end), 1)
+        else:
+            return self.buffer[range(8), self.last_time_index : self.current_time_index]
+
+    def stop(self):
+        """Finish recording data to a CSV file."""
+        self.recording = False
+
+
+def test_recorder():
+    collector = CSVDataRecorder(find_streams=True)
+
+    # mock collect for 3 seconds, then sleep for 1 second 5 times
+    for i in range(5):
+        print(f"Starting test run {i+1}")
+
+        collector.start(filename=f"test_data_{i+1}.csv")
+        time.sleep(3)
+        collector.stop()
+        print(f"Finished test run {i+1}")
+        time.sleep(1)
