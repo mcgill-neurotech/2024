@@ -24,7 +24,7 @@ interface ICardProps {
 
 const Card: React.FC<ICardProps> = ({ color, center, corners }) => {
   return (
-    <div className="w-40 h-56 border-2 border-black rounded-md flex justify-center items-stretch font-sans">
+    <div className="w-40 h-56 border-2 border-black rounded-md flex justify-center items-stretch font-sans bg-white">
       <div
         className="m-4 rounded-md flex items-stretch flex-col grow"
         style={{ backgroundColor: color }}

@@ -1,8 +1,9 @@
+import { useState } from 'react';
 import Card, { CardColor } from './Card';
+import CardFanCirular from './CardFan';
 
 const texts = [...Array.from(Array(10).keys())];
 const colors = Object.values(CardColor);
-const plusTwo = '+2';
 
 /**
  * Cartesion product set operation
@@ -10,36 +11,43 @@ const plusTwo = '+2';
  * @param {...any[]} sets A list of arrays
  * @returns {*} The cartesion product of the arrays
  */
-const cartesian = (...sets: any[]) =>
+const cartesian = (...sets: any[]): any[] =>
   sets.reduce((a, b) =>
     a.flatMap((d: any) => b.map((e: any) => [d, e].flat())),
   );
 
 function App() {
+  const [selectedCardIndex, setSelectedCardIndex] = useState(0);
+  console.log(selectedCardIndex);
+
   return (
     <div>
       <h1>Test</h1>
       {/* 0-9 cards */}
       <div className="flex flex-row flex-wrap">
-        {cartesian(texts, colors).map(([text, color]: [string, CardColor]) => {
-          return (
-            <Card
-              corners={
-                <p className="text-white text-4xl text-shadow">{text}</p>
-              }
-              color={color}
-              center={
-                <p className="text-6xl text-shadow" style={{ color: color }}>
-                  {text}
-                </p>
-              }
-            />
-          );
-        })}
+        {cartesian(texts, colors).map(
+          ([text, color]: [string, CardColor], i) => {
+            return (
+              <Card
+                key={i}
+                corners={
+                  <p className="text-white text-4xl text-shadow">{text}</p>
+                }
+                color={color}
+                center={
+                  <p className="text-6xl text-shadow" style={{ color: color }}>
+                    {text}
+                  </p>
+                }
+              />
+            );
+          },
+        )}
         {/* +2 card */}
-        {colors.map((color) => {
+        {colors.map((color, i) => {
           return (
             <Card
+              key={i}
               corners={
                 <p className="text-white text-4xl text-shadow">{'+2'}</p>
               }
@@ -53,13 +61,21 @@ function App() {
           );
         })}
         {/* reverse card */}
-        {colors.map((color) => {
-          return <Card corners={'reverse'} color={color} center={'reverse'} />;
-        })}
-        {/* block card */}
-        {colors.map((color) => {
+        {colors.map((color, i) => {
           return (
             <Card
+              key={i}
+              corners={'reverse'}
+              color={color}
+              center={'reverse'}
+            />
+          );
+        })}
+        {/* block card */}
+        {colors.map((color, i) => {
+          return (
+            <Card
+              key={i}
               corners={<p className="text-white text-4xl text-shadow">ø</p>}
               color={color}
               center={
@@ -71,9 +87,10 @@ function App() {
           );
         })}
         {/* color wheel card */}
-        {colors.map((color) => {
+        {colors.map((color, i) => {
           return (
             <Card
+              key={i}
               corners={
                 <p className="text-white text-sm">{'color wheel svg'}</p>
               }
@@ -87,9 +104,10 @@ function App() {
           );
         })}
         {/* +4 card */}
-        {colors.map((color) => {
+        {colors.map((color, i) => {
           return (
             <Card
+              key={i}
               corners={
                 <p className="text-white text-4xl text-shadow">{'+4'}</p>
               }
@@ -103,6 +121,30 @@ function App() {
           );
         })}
       </div>
+      <div className="mt-8"></div>
+      <CardFanCirular
+        selected={selectedCardIndex}
+        spread={0.2}
+        onSelected={(i) => setSelectedCardIndex(i)}
+        cards={cartesian(texts, colors).map(
+          ([text, color]: [string, CardColor], i) => {
+            return (
+              <Card
+                key={i}
+                corners={
+                  <p className="text-white text-4xl text-shadow">{text}</p>
+                }
+                color={color}
+                center={
+                  <p className="text-6xl text-shadow" style={{ color: color }}>
+                    {text}
+                  </p>
+                }
+              />
+            );
+          },
+        )}
+      />
     </div>
   );
 }
