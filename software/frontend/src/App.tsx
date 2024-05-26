@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Card, { CardColor } from './Card';
-import CardFanCirular from './CardFan';
+import { CardFanCirular, CardFanLinear } from './CardFan';
 
 const texts = [...Array.from(Array(10).keys())];
 const colors = Object.values(CardColor);
@@ -18,7 +18,6 @@ const cartesian = (...sets: any[]): any[] =>
 
 function App() {
   const [selectedCardIndex, setSelectedCardIndex] = useState(0);
-  console.log(selectedCardIndex);
 
   return (
     <div>
@@ -121,10 +120,34 @@ function App() {
           );
         })}
       </div>
-      <div className="mt-8"></div>
+      <div className="mt-8" />
       <CardFanCirular
         selected={selectedCardIndex}
         spread={0.2}
+        onSelected={(i) => setSelectedCardIndex(i)}
+        cards={cartesian(texts, colors).map(
+          ([text, color]: [string, CardColor], i) => {
+            return (
+              <Card
+                key={i}
+                corners={
+                  <p className="text-white text-4xl text-shadow">{text}</p>
+                }
+                color={color}
+                center={
+                  <p className="text-6xl text-shadow" style={{ color: color }}>
+                    {text}
+                  </p>
+                }
+              />
+            );
+          },
+        )}
+      />
+      <div className="mt-80" />
+      <CardFanLinear
+        selected={selectedCardIndex}
+        spread={1}
         onSelected={(i) => setSelectedCardIndex(i)}
         cards={cartesian(texts, colors).map(
           ([text, color]: [string, CardColor], i) => {

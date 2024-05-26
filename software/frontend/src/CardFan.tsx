@@ -30,8 +30,11 @@ const CardFanCirular: React.FC<ICardFanProps> = ({
     <div className="flex items-center justify-center">
       <div className="relative">
         {cards.map((card, i) => {
-          let x = radius * Math.cos(angles[i]);
-          let y = radius * Math.sin(angles[i]);
+          let s = i == selected;
+          let x = -radius * Math.cos(angles[i]);
+          let y = radius * Math.sin(angles[i]) - radius + (s ? 30 : 0);
+          let r = angles[i] - Math.PI / 2;
+          let z = selected == i ? 2 : 0;
           return (
             <div
               onClick={() => onSelected(i)}
@@ -39,11 +42,9 @@ const CardFanCirular: React.FC<ICardFanProps> = ({
               className="absolute"
               style={{
                 left: x,
-                bottom: y - radius + (selected == i ? 30 : 0),
-                transform: `rotate(${Math.PI / 2 - angles[i]}rad)`,
-                ...{
-                  zIndex: selected == i ? 2 : 0,
-                },
+                bottom: y,
+                transform: `rotate(${r}rad)`,
+                zIndex: z,
               }}
             >
               {card}
@@ -55,4 +56,34 @@ const CardFanCirular: React.FC<ICardFanProps> = ({
   );
 };
 
-export default CardFanCirular;
+const CardFanLinear: React.FC<ICardFanProps> = ({
+  cards,
+  spread,
+  selected,
+  onSelected,
+}) => {
+  const xPositions = calculate_fan_angles(cards.length, selected, spread).map(
+    (x) => (x - Math.PI / 2) * 200, // arbitrary but could be changed
+  );
+  return (
+    <div className="flex items-center justify-center">
+      <div className="relative">
+        {cards.map((card, i) => {
+          let z = selected == i ? 2 : 0;
+          return (
+            <div
+              onClick={() => onSelected(i)}
+              key={i}
+              className="absolute"
+              style={{ left: xPositions[i], zIndex: z }}
+            >
+              {card}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+export { CardFanCirular, CardFanLinear };
