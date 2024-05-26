@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Helvetica Bold";
+  src: url("./assets/Helvetica.ttf") format("ttf")
+}
+
+/* 
+CSS class selector for the center white oval of an uno card, 
+*/
+.ellipse {
+  clip-path: ellipse(43% 42% at 50% 50%);
+  transform: skew(-40deg);
+  -webkit-transform: skew(-40deg);
+}
+
+.text-shadow {
+  text-shadow: 2px 2px 0px black;
+}
+
+.tight {
+  letter-spacing: -6px;
+}
