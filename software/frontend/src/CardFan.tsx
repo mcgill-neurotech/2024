@@ -1,7 +1,7 @@
 import React from 'react';
 
 function calculate_fan_angles(N: number, selected: number, spread: number) {
-  // https://www.desmos.com/calculator/s7251p1bor
+  // https://www.desmos.com/calculator/s7251p1bor for an explanation
   const B = N % 2 == 0 ? (N - 1) / 2 : Math.floor(N / 2);
   const arr = [];
   for (let n = -B; n <= B; n++) {
@@ -30,9 +30,9 @@ const CardFanCirular: React.FC<ICardFanProps> = ({
     <div className="flex items-center justify-center">
       <div className="relative">
         {cards.map((card, i) => {
-          let s = i == selected;
+          let active = i == selected;
           let x = -radius * Math.cos(angles[i]);
-          let y = radius * Math.sin(angles[i]) - radius + (s ? 30 : 0);
+          let y = radius * Math.sin(angles[i]) - radius + (active ? 30 : 0);
           let r = angles[i] - Math.PI / 2;
           let z = selected == i ? 2 : 0;
           return (
@@ -42,7 +42,7 @@ const CardFanCirular: React.FC<ICardFanProps> = ({
               className="absolute"
               style={{
                 left: x,
-                bottom: y,
+                top: -y, // overflow downwards instead of upwards. An alternative is "bottom: y" to overflow upwards
                 transform: `rotate(${r}rad)`,
                 zIndex: z,
               }}
