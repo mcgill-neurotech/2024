@@ -69,13 +69,19 @@ const CardFanLinear: React.FC<ICardFanProps> = ({
     <div className="flex items-center justify-center">
       <div className="relative">
         {cards.map((card, i) => {
-          let z = selected == i ? 2 : 0;
+          let active = selected == i;
+          let z = -Math.abs(i - selected) + cards.length / 2 + 20;
+          let y = active ? 30 : 0;
           return (
             <div
               onClick={() => onSelected(i)}
               key={i}
               className="absolute"
-              style={{ left: xPositions[i], zIndex: z }}
+              style={{
+                left: xPositions[i],
+                zIndex: z,
+                top: -y,
+              }}
             >
               {card}
             </div>

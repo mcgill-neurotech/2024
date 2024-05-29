@@ -1,4 +1,5 @@
 import React from 'react';
+import BrainIcon from './BrainIcon';
 
 export enum CardColor {
   Red = '#FF5555',
@@ -29,7 +30,10 @@ const Card: React.FC<ICardProps> = ({ color, center, corners }) => {
         className="m-4 rounded-md flex items-stretch flex-col grow"
         style={{ backgroundColor: color }}
       >
-        <div className="flex px-2 pt-1">{corners}</div>
+        <div className="flex px-2 pt-1 justify-between">
+          {corners}
+          <BrainIcon style={{ height: 40, width: 40, color: 'white' }} />
+        </div>
         <div className="grow relative flex items-stretch">
           <div className="grow flex items-stretch">
             <div className="ellipse bg-white grow" />

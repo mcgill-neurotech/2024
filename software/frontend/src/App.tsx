@@ -1,7 +1,8 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Card, { CardColor } from './Card';
 import { CardFanCirular, CardFanLinear } from './CardFan';
 import PlayingPile from './CardPile';
+import { socket } from './socket';
 
 const texts = [...Array.from(Array(10).keys())];
 const colors = Object.values(CardColor);
@@ -102,10 +103,43 @@ const generateDummyCards = () => {
 function App() {
   const [selectedCardIndex, setSelectedCardIndex] = useState(0);
   const cards = useCallback(generateDummyCards, []);
+  const [isConnected, setIsConnected] = useState(socket.connected);
+  const [id, setId] = useState(socket.id);
+
+  useEffect(() => {
+    function onConnect() {
+      setIsConnected(true);
+      setId(socket.id);
+    }
+
+    function onDisconnect() {
+      setIsConnected(false);
+      setId('');
+    }
+
+    socket.on('connect', onConnect);
+    socket.on('disconnect', onDisconnect);
+
+    return () => {
+      socket.off('connect', onConnect);
+      socket.off('disconnect', onDisconnect);
+    };
+  }, []);
 
   return (
     <div>
-      <h1>Test</h1>
+      <div className="my-4 flex flex-col items-center">
+        <span
+          className={`${
+            isConnected ? 'bg-green-300' : 'bg-red-500'
+          } px-4 py-2 rounded-md`}
+        >
+          {isConnected ? 'Connected' : 'Disconnected'}
+        </span>
+        <span className="bg-gray-300 px-3 py-1 mt-1 rounded-md">
+          Session id: {id}
+        </span>
+      </div>
       <div className="flex flex-row flex-wrap">
         {cards().map((c, i) => (
           <div key={i}>{c}</div>
