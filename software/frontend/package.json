@@ -10,10 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "express": "^4.19.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "socket.io": "^4.7.5",
-    "socket.io-client": "^4.7.5"
+    "socket.io-client": "^4.7.5",
+    "ws": "^8.17.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
