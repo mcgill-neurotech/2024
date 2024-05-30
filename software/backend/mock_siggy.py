@@ -7,11 +7,11 @@ import numpy as np
 # See https://zguide.zeromq.org/docs/chapter2/#Pub-Sub-Message-Envelopes
 
 
-# it is possible something like protocol buffers later once schema is better defined, but this is good enough for now
 def softmax(arr: np.ndarray):
     return np.exp(arr) / np.exp(arr).sum()
 
 
+# it is possible to use something like protocol buffers later once a schema is better defined, but this is good enough for now
 def mock_categorical(socket: zmq.Socket, player: int):
     if player == 1:
         topic = "c0"

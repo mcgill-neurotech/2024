@@ -3,33 +3,48 @@ import { Socket } from "socket.io";
 
 class GameClient {
   id: string;
-  socket: Socket;
   playerIndex: number = -1;
+  socket: Socket;
+  game: Game;
 
-  constructor(socket: Socket) {
-    this.id = socket.id;
+  constructor(playerIndex: number, socket: Socket, game: Game) {
+    this.playerIndex = playerIndex;
     this.socket = socket;
+    this.id = socket.id;
+    this.game = game;
+
+    socket.on("disconnect", (reason) => {
+      console.log(`client ${this.id} disconencted due to ${reason}`);
+      this.onDisconnect();
+    });
   }
 
-  // siggy predictions
+  public onDisconnect() {
+    this.game.handleDisconnect(this);
+  }
+
   public onCategoricalPrediction(prediction: CategoricalPrediction) {
-    console.log(this.id, prediction.action);
+    console.log("onPredictedAction", this.id, prediction.action);
   }
 
   public onDistributionalPrediction(distribution: number[]) {
-    console.log("onPredictedDistribution");
+    console.log("onPredictedDistribution", this.id, distribution);
   }
+
+  private sendXMessage() {
+    this.socket.emit("<event>", {});
+  }
+  // ...
 }
 
 class Game {
   clients = new Map<string, GameClient>();
-  siggy_listener: SiggyListener;
+  siggyListener: SiggyListener;
   numPlayers: number;
-  turn: number = 0;
 
-  constructor(num_players: number, siggyListener: SiggyListener) {
-    this.numPlayers = num_players;
-    this.siggy_listener = siggyListener;
+  constructor(numPlayers: number, siggyListener: SiggyListener) {
+    this.numPlayers = numPlayers;
+    this.siggyListener = siggyListener;
   }
 
   public getAvailablePlayers() {
@@ -44,29 +59,28 @@ class Game {
     return availableIndices;
   }
 
-  public addPlayer = (client: GameClient) => {
+  public createPlayer(socket: Socket) {
     const availablePlayers = this.getAvailablePlayers();
     if (availablePlayers.length == 0) return false;
 
-    const player = availablePlayers[0];
-    client.playerIndex = player;
-    this.clients.set(client.id, client);
-    this.siggy_listener.attachClient(player, client);
-
-    client.socket.on("disconnect", (reason) => {
-      console.log(`client ${client.id} disconencted due to ${reason}`);
-      this.onClientDisconnect(client);
-    });
+    const playerIndex = availablePlayers[0];
+    const gameClient = new GameClient(playerIndex, socket, this);
+    this.clients.set(socket.id, gameClient);
+    this.siggyListener.attachPlayer(playerIndex, gameClient);
 
     return true;
-  };
+  }
 
-  public onClientDisconnect = (client: GameClient) => {
-    if (!this.clients.has(client.id)) return;
-    const player = client.playerIndex;
-    this.siggy_listener.attachClient(player, null);
+  public handleDisconnect(client: GameClient) {
+    this.siggyListener.detachPlayer(client.playerIndex);
     this.clients.delete(client.id);
-  };
+  }
+
+  public broadcast(topic: string, ...msg: any[]) {
+    this.clients.forEach((c) => {
+      c.socket.emit(topic, ...msg);
+    });
+  }
 }
 
 export { Game, GameClient };
