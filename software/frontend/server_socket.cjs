@@ -15,7 +15,7 @@ const handleMessage = (chosenCard, uuid) => {
     // remove card from user.state.hand 
     // change user.state.turn and opponent's user.state.turn
     // change topcard & display on other client
-    // ws.send to send message from server to client
+    // ws.send to send message from client to the server
 }
 
 const handleClose = (uuid) => {
