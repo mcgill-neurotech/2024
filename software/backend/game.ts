@@ -71,9 +71,7 @@ class Game {
     return true;
   }
 
-  public startGame(socket: Socket, clients) {
-    
-  }
+  public startGame(socket: Socket, clients) {}
 
   public handleDisconnect(client: GameClient) {
     this.siggyListener.detachPlayer(client.playerIndex);
@@ -87,4 +85,40 @@ class Game {
   }
 }
 
-export { Game, GameClient };
+class GameState {
+  deck: Card[] = [];
+  played_cards: Card[] = [];
+  top_card: Card | null = null;
+
+  constructor() {
+    this.top_card = this.played_cards[0] || null;
+  }
+}
+
+class Card {
+  color: string = "";
+  number: number = 0;
+  joker: boolean = false;
+
+  constructor(color: string, number: number, joker: boolean = false) {
+    this.color = color;
+    this.number = number;
+    this.joker = joker;
+  }
+}
+
+class Player {
+  hand: Card[] = [];
+  possible_hand: Card[] = [];
+  selected_card: number = 0;
+  impossible_hand: Card[] = [];
+
+  constructor() {
+    this.hand = [];
+    this.possible_hand = [];
+    this.selected_card = 0;
+    this.impossible_hand = [];
+  }
+}
+
+export { Game, GameClient, GameState, Card, Player };
