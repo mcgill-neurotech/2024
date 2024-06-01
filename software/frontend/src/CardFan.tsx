@@ -32,7 +32,7 @@ const CardFanLinear: React.FC<ICardFanProps> = ({
       <div className="relative">
         {cards.map((card, i) => {
           const active = selected === i;
-          const z = -Math.abs(i - selected) + cards.length / 2 + 20;
+          const z = -Math.abs(i - selected) + Math.ceil(cards.length / 2) + 20;
           const y = active ? 60 : 30; // Increased y to move cards up
           return (
             <div
