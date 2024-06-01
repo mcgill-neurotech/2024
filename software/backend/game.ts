@@ -1,11 +1,12 @@
-import { SiggyListener, CategoricalPrediction } from "./siggy_listener";
-import { Socket } from "socket.io";
+import { SiggyListener, CategoricalPrediction, Action } from "./siggy_listener";
+import { Server, Socket } from "socket.io";
 
 class GameClient {
   id: string;
   playerIndex: number = -1;
   socket: Socket;
   game: Game;
+  currentPrediction: Action;
 
   constructor(playerIndex: number, socket: Socket, game: Game) {
     this.playerIndex = playerIndex;
@@ -24,11 +25,16 @@ class GameClient {
   }
 
   public onCategoricalPrediction(prediction: CategoricalPrediction) {
-    console.log("onPredictedAction", this.id, prediction.action);
+    // console.log("onPredictedAction", this.id, prediction.action);
+    this.currentPrediction = prediction.action;
   }
 
   public onDistributionalPrediction(distribution: number[]) {
     console.log("onPredictedDistribution", this.id, distribution);
+  }
+
+  public getCurrentPrediction() {
+    return this.currentPrediction;
   }
 
   private sendXMessage() {
@@ -38,13 +44,19 @@ class GameClient {
 }
 
 class Game {
+  server: Server;
   clients = new Map<string, GameClient>();
   siggyListener: SiggyListener;
   numPlayers: number;
   players: Player[];
   gameState: GameState = new GameState();
 
-  constructor(numPlayers: number, siggyListener: SiggyListener) {
+  constructor(
+    server: Server,
+    numPlayers: number,
+    siggyListener: SiggyListener,
+  ) {
+    this.server = server;
     this.numPlayers = numPlayers;
     this.siggyListener = siggyListener;
   }
@@ -77,36 +89,38 @@ class Game {
   // Shuffles deck
   public shuffleDeck() {
     let deck = this.gameState.deck;
-    let currentIndex = deck.length, randomIndex;
+    let currentIndex = deck.length,
+      randomIndex;
 
     // While there remain elements to shuffle.
     while (currentIndex != 0) {
-  
       // Pick a remaining element.
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
-  
+
       // And swap it with the current element.
       [deck[currentIndex], deck[randomIndex]] = [
-        deck[randomIndex], deck[currentIndex]];
+        deck[randomIndex],
+        deck[currentIndex],
+      ];
     }
   }
 
   // Deals initial player hands, adds draw card option to possible hands, and puts down initial top card
   public setGame() {
     const starthand = 7;
-    let deck = this.gameState.deck
+    let deck = this.gameState.deck;
     for (let i = 0; i < this.numPlayers; i++) {
       for (let j = 0; j < starthand; j++) {
-        const drawn_card = deck.pop()
+        const drawn_card = deck.pop();
         if (drawn_card) {
-          this.players[i].hand.push(drawn_card)
+          this.players[i].hand.push(drawn_card);
         }
         /* Add draw card to both player's possible hands */
-      } 
+      }
     }
     // Draws first card on playing deck
-    const first_card = deck.pop()
+    const first_card = deck.pop();
     if (first_card) {
       this.gameState.played_cards.push(first_card)
       this.updateTopCard();
@@ -129,14 +143,17 @@ class Game {
     const color = topCard?.color
     const number = topCard?.number
 
-    const player = this.players[playerIndex]
-    const hand = player.hand
+    const player = this.players[playerIndex];
+    const hand = player.hand;
 
     for (let i = 0; i < hand.length; i++) {
-      if ((hand[i].color == color || hand[i].color == "wild") || (hand[i].number == number)) {
+      if (
+        hand[i].color == color ||
+        hand[i].color == "wild" ||
+        hand[i].number == number
+      ) {
         player.possible_hand.push(hand[i]);
-      }
-      else {
+      } else {
         player.impossible_hand.push(hand[i]);
       }
     }
@@ -148,9 +165,7 @@ class Game {
   }
 
   public broadcast(topic: string, ...msg: any[]) {
-    this.clients.forEach((c) => {
-      c.socket.emit(topic, ...msg);
-    });
+    // this.server.send()
   }
 }
 
@@ -202,6 +217,25 @@ class Player {
     this.selected_card = 0;
     this.impossible_hand = [];
   }
+
+ public moveCard(playerClient: GameClient, gameState : GameState) {
+    const action = playerClient.getCurrentPrediction();
+    if (action === Action.Right) {
+        this.selected_card = (this.selected_card + 1) % this.possible_hand.length;
+    } else if (action === Action.Left) {
+        this.selected_card = (this.selected_card - 1 + this.possible_hand.length) % this.possible_hand.length;
+    } else if (action === Action.Clench) { 
+        this.playCard(gameState);
+    }
+}
+
+public playCard(gameState: GameState) {
+  gameState.top_card = this.possible_hand[this.selected_card];
+  this.possible_hand.splice(this.selected_card, 1);
+  this.hand.splice(this.selected_card, 1);
+    
+}
+  
 }
 
 export { Game, GameClient, GameState, Card, Player };

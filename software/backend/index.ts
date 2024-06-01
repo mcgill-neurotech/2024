@@ -25,6 +25,7 @@ const io = new Server(server, {
 });
 
 const game = new Game(
+  io,
   NUM_PLAYERS,
   new SiggyListener(NUM_PLAYERS, SIGGY_PORT, true),
 );

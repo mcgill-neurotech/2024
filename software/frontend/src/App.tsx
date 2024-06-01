@@ -3,6 +3,10 @@ import Card, { CardColor } from './Card';
 import { CardFanCirular, CardFanLinear } from './CardFan';
 import PlayingPile from './CardPile';
 import { socket } from './socket';
+import SkipIcon from './SkipIcon';
+import SquaresIcon from './SquaresIcon';
+import ColorwheelIcon from './ColorwheelIcon';
+import ReverseIcon from './ReverseIcon';
 
 const texts = [...Array.from(Array(10).keys())];
 const colors = Object.values(CardColor);
@@ -41,9 +45,7 @@ const generateDummyCards = () => {
         corners={<p className="text-white text-4xl text-shadow">{'+2'}</p>}
         color={color}
         center={
-          <p className="text-xl text-shadow" style={{ color: color }}>
-            some svg?
-          </p>
+          <SquaresIcon color={color} width={50} height={50} strokeWidth={2} />
         }
       />
     )),
@@ -51,48 +53,72 @@ const generateDummyCards = () => {
   // "reverse" cards
   cards.push(
     ...colors.map((color) => (
-      <Card corners={'reverse'} color={color} center={'reverse'} />
+      <Card
+        corners={
+          <ReverseIcon
+            color="white"
+            width={35}
+            height={35}
+            className="icon-shadow my-1"
+          />
+        }
+        color={color}
+        center={
+          <ReverseIcon
+            color={color}
+            width={50}
+            height={50}
+            className="icon-shadow"
+          />
+        }
+      />
     )),
   );
   // "skip turn" cards
   cards.push(
     ...colors.map((color) => (
       <Card
-        corners={<p className="text-white text-4xl text-shadow">ø</p>}
+        corners={
+          <SkipIcon
+            color={'white'}
+            width={35}
+            height={35}
+            className="icon-shadow"
+          />
+        }
         color={color}
         center={
-          <p className="text-6xl text-shadow" style={{ color: color }}>
-            ø
-          </p>
+          <SkipIcon
+            color={color}
+            width={50}
+            height={50}
+            className="icon-shadow"
+          />
         }
       />
     )),
   );
   // "color wheel" cards
   cards.push(
-    ...colors.map((color) => (
+    ...colors.map(() => (
       <Card
-        corners={<p className="text-white text-sm">{'color wheel svg'}</p>}
-        color={'#000000'}
-        center={
-          <p className="text-xl text-shadow" style={{ color: color }}>
-            color wheel
-          </p>
+        corners={
+          <ColorwheelIcon width={45} height={45} className="mx-[-6px]" />
         }
+        color={'#000000'}
+        center={<ColorwheelIcon height={200} width={200} />}
+        centerClassName="bg-black"
       />
     )),
   );
   // "+4" cards
   cards.push(
-    ...colors.map((color) => (
+    ...colors.map(() => (
       <Card
         corners={<p className="text-white text-4xl text-shadow">{'+4'}</p>}
         color={'#000000'}
-        center={
-          <p className="text-xl text-shadow" style={{ color: color }}>
-            +4 svg?
-          </p>
-        }
+        center={<ColorwheelIcon height={200} width={200} />}
+        centerClassName="bg-black"
       />
     )),
   );

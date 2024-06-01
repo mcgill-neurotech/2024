@@ -23,3 +23,7 @@ CSS class selector for the center white oval of an uno card,
 .tight {
   letter-spacing: -6px;
 }
+
+.icon-shadow {
+  filter: drop-shadow( 2px 2px 0px black);
+}
