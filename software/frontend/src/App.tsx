@@ -4,6 +4,7 @@ import { CardFanCirular, CardFanLinear } from './CardFan';
 import PlayingPile from './CardPile';
 import { socket } from './socket';
 import SkipIcon from './SkipIcon';
+import SquaresIcon from './SquaresIcon';
 
 const texts = [...Array.from(Array(10).keys())];
 const colors = Object.values(CardColor);
@@ -42,9 +43,7 @@ const generateDummyCards = () => {
         corners={<p className="text-white text-4xl text-shadow">{'+2'}</p>}
         color={color}
         center={
-          <p className="text-xl text-shadow" style={{ color: color }}>
-            some svg?
-          </p>
+          <SquaresIcon color={color} width={50} height={50} strokeWidth={2} />
         }
       />
     )),
