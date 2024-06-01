@@ -1,5 +1,4 @@
-from backend import CSVDataRecorder, DataClassifier
-from backend import MarkerOutlet
+from backend import DataClassifier
 import pathlib
 import logging
 
