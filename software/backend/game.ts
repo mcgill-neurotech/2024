@@ -151,8 +151,23 @@ class GameState {
   played_cards: Card[] = [];
   top_card: Card | null = null;
 
-  constructor() {
+  constructor() { //build initial game state 
     this.top_card = this.played_cards[0] || null;
+    const colour = ['red', 'yellow', 'green', 'blue']
+    /* 10 = skip; 11 = +2; 12 = +4; 13 = wildcard */ 
+    for (let i= 0; i<14; i++){ //build the number cards 
+      let joker_marker = false; 
+      if (i > 9){
+        joker_marker = true; 
+      } 
+      for (let j=0; j<4; j++){
+        if (i < 12){ 
+          this.deck.push(new Card(colour[j], i, joker_marker)); 
+        } else { 
+          this.deck.push(new Card('wild', i, joker_marker)); 
+        }
+      }
+    }
   }
 }
 
