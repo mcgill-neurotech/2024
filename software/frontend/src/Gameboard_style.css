@@ -1,0 +1,53 @@
+/* src/Gameboard_style.css */
+.gameboard {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #99b9fb;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.top-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.middle-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.bottom-section {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 30px 0; /* Adjusted padding to fit the bottom section */
+}
+
+.half-section {
+  width: 48%; /* Slight margin for spacing */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(125, 85, 59);
+  padding: 20px;
+  border-radius: 10px; /* Optional: adds rounded corners */
+}
+
+.card-fan-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.text-center {
+  text-align: center;
+}
+

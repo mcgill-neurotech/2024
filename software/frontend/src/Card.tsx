@@ -20,7 +20,7 @@ interface ICardProps {
   /**
    * The background color of the card, #000000 format
    */
-  color: string;
+  color: CardColor | string;
 }
 
 const Card: React.FC<ICardProps> = ({ color, center, corners }) => {

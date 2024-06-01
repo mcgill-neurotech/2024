@@ -1,11 +1,11 @@
-import React from 'react';
+// src/CardPile.tsx
+import React, { useEffect } from 'react';
+import Card, { ICardProps } from './Card';
 
-// Standard Normal variate using Box-Muller transform.
 function gaussianRandom(mean = 0, stdev = 1) {
-  const u = 1 - Math.random(); // Converting [0,1) to (0,1]
+  const u = 1 - Math.random();
   const v = Math.random();
   const z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
-  // Transform to the desired mean and standard deviation:
   return z * stdev + mean;
 }
 
@@ -18,34 +18,50 @@ function generateRandom(n: number, mean = 0, variance = 1) {
 }
 
 interface IPlayingPileProps {
-  cards: React.ReactNode[];
+  cards: ICardProps[];
+  cardWidth: number;
+  cardHeight: number;
+  setTopCenterCard: (card: ICardProps) => void;
 }
 
 const rotations = generateRandom(200, 0, Math.PI / 12);
 const xPositions = generateRandom(200, 0, 6);
 const yPositions = generateRandom(200, 0, 6);
-const PlayingPile: React.FC<IPlayingPileProps> = ({ cards }) => {
+
+const PlayingPile: React.FC<IPlayingPileProps> = ({
+  cards,
+  cardWidth,
+  cardHeight,
+  setTopCenterCard,
+}) => {
+  useEffect(() => {
+    if (cards.length > 0) {
+      setTopCenterCard(cards[0]);
+    }
+  }, [cards, setTopCenterCard]);
+
   return (
     <div className="flex items-center justify-center">
       <div className="relative items-center justify-center">
-        {cards.map((card, i) => {
-          return (
-            <div
-              key={i}
-              className="absolute"
-              style={{
-                left: xPositions[i],
-                top: yPositions[i],
-                transform: `rotate(${rotations[i]}rad)`,
-              }}
-            >
-              {card}
-            </div>
-          );
-        })}
+        {cards.map((card, i) => (
+          <div
+            key={i}
+            className="absolute"
+            style={{
+              left: `calc(50% + ${xPositions[i]}px - ${cardWidth / 2}px)`,
+              top: `calc(50% + ${yPositions[i]}px - ${cardHeight / 2}px)`,
+              transform: `rotate(${rotations[i]}rad)`,
+              marginLeft: '-30px',
+              marginTop: '-60px',
+            }}
+          >
+            <Card {...card} />
+          </div>
+        ))}
       </div>
     </div>
   );
 };
 
 export default PlayingPile;
+
