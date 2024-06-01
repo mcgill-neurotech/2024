@@ -3,6 +3,7 @@ import Card, { CardColor } from './Card';
 import { CardFanCirular, CardFanLinear } from './CardFan';
 import PlayingPile from './CardPile';
 import { socket } from './socket';
+import SkipIcon from './SkipIcon';
 
 const texts = [...Array.from(Array(10).keys())];
 const colors = Object.values(CardColor);
@@ -58,12 +59,22 @@ const generateDummyCards = () => {
   cards.push(
     ...colors.map((color) => (
       <Card
-        corners={<p className="text-white text-4xl text-shadow">ø</p>}
+        corners={
+          <SkipIcon
+            color={'white'}
+            width={35}
+            height={35}
+            className="icon-shadow"
+          />
+        }
         color={color}
         center={
-          <p className="text-6xl text-shadow" style={{ color: color }}>
-            ø
-          </p>
+          <SkipIcon
+            color={color}
+            width={50}
+            height={50}
+            className="icon-shadow"
+          />
         }
       />
     )),
