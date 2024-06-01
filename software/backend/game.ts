@@ -159,6 +159,63 @@ class Game {
     }
   }
 
+  /* 
+  Takes current playerIndex 
+  Adds a card to the player */ 
+  public addCard(playerIndex){
+    const player = this.players[playerIndex]; 
+    let deck = this.gameState.deck; 
+    if (deck.length != 0){
+      const card = deck.pop(); 
+      if (card){
+        player.hand.push(card); 
+      }
+    }
+  }
+
+  public readTop(playerIndex){
+    const topCard = this.gameState.top_card 
+    const number = topCard?.number 
+    const joker = topCard?.joker 
+    const player = this.players[playerIndex]
+
+    if (joker == true){
+      if (number == 10){ //skip turn => code is missing here 
+        } else if (number == 11){ //add 2 cards 
+          this.addCard(playerIndex); 
+          this.addCard(playerIndex); 
+        } else if (number == 13){ //add 4 cards 
+          for (let i=0; i<4; i++){
+            this.addCard(playerIndex)
+          }
+        } else if (number == 14){ //change colour => needs to open up the oppurtunity to pick the colour you want 
+          //signal for a change 
+        }
+      }
+  }
+
+  /* public playGame() {
+    this.setGame();
+    let currentPlayerIndex = 0;
+
+    while (this.players[currentPlayerIndex].hand.length > 0) {
+      // Listening for move
+
+      // this.moveCard();
+
+      // After move is performed
+      this.updateTopCard();
+      
+      // Check for special card function this.read()
+
+      this.broadcast("Card Played",this.gameState.top_card)
+
+      currentPlayerIndex = (currentPlayerIndex + 1) % 2
+
+    }
+  }
+  */
+
   public handleDisconnect(client: GameClient) {
     this.siggyListener.detachPlayer(client.playerIndex);
     this.clients.delete(client.id);
