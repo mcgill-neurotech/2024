@@ -6,6 +6,7 @@ import { socket } from './socket';
 import SkipIcon from './SkipIcon';
 import SquaresIcon from './SquaresIcon';
 import ColorwheelIcon from './ColorwheelIcon';
+import ReverseIcon from './ReverseIcon';
 
 const texts = [...Array.from(Array(10).keys())];
 const colors = Object.values(CardColor);
@@ -52,7 +53,25 @@ const generateDummyCards = () => {
   // "reverse" cards
   cards.push(
     ...colors.map((color) => (
-      <Card corners={'reverse'} color={color} center={'reverse'} />
+      <Card
+        corners={
+          <ReverseIcon
+            color="white"
+            width={35}
+            height={35}
+            className="icon-shadow my-1"
+          />
+        }
+        color={color}
+        center={
+          <ReverseIcon
+            color={color}
+            width={50}
+            height={50}
+            className="icon-shadow"
+          />
+        }
+      />
     )),
   );
   // "skip turn" cards
@@ -83,7 +102,9 @@ const generateDummyCards = () => {
   cards.push(
     ...colors.map(() => (
       <Card
-        corners={<ColorwheelIcon width={45} height={45} />}
+        corners={
+          <ColorwheelIcon width={45} height={45} className="mx-[-6px]" />
+        }
         color={'#000000'}
         center={<ColorwheelIcon height={200} width={200} />}
         centerClassName="bg-black"
