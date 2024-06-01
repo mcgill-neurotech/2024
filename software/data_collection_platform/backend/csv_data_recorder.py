@@ -7,63 +7,62 @@ import typing
 import logging
 from .constants import markers
 from pathlib import Path
-from einops import rearrange,reduce
+from einops import rearrange, reduce
 from scipy.signal import filtfilt, iirnotch, butter
-from sklearn.svm import SVC
-from sklearn.pipeline import Pipeline
-from mne.decoding import CSP
-from sklearn.feature_selection import SelectKBest, mutual_info_classif
-from sklearn.metrics import accuracy_score, confusion_matrix, ConfusionMatrixDisplay
 import pickle
+import zmq
 
 # Edited from NTX McGill 2021 stream.py, lines 16-23
 # https://github.com/NTX-McGill/NeuroTechX-McGill-2021/blob/main/software/backend/dcp/bci/stream.py
 logger = logging.getLogger(__name__)
 
-def apply_notch(x,y,fs,notch_freq=50):
-		"""
-		Apply pre-processing before concatenating everything in a single array.
-		Easier to manage multiple splits
-		By default, it only applies a notch filter at 50 Hz
-		"""
 
-		n,d,t = x.shape
-		x = rearrange(x,"n t d -> (n d) t")
-		b,a = iirnotch(notch_freq,30,fs)
-		x = filtfilt(b,a,x)
-		x = rearrange(x,"(n d) t -> n t d",n=n)
-		return x,y
+def apply_notch(x, y, fs, notch_freq=50):
+    """
+    Apply pre-processing before concatenating everything in a single array.
+    Easier to manage multiple splits
+    By default, it only applies a notch filter at 50 Hz
+    """
 
-def bandpass(x,
-			  fs,
-			  low,
-			  high,):
-		
-		nyquist = fs/2
-		b,a = butter(4,[low/nyquist,high/nyquist],"bandpass",analog=False)
-		n,d,t = x.shape
-		x = rearrange(x,"n t d -> (n d) t")
-		x = filtfilt(b,a,x)
-		x = rearrange(x,"(n d) t -> n t d",n=n)
-		return x
+    n, d, t = x.shape
+    x = rearrange(x, "n t d -> (n d) t")
+    b, a = iirnotch(notch_freq, 30, fs)
+    x = filtfilt(b, a, x)
+    x = rearrange(x, "(n d) t -> n t d", n=n)
+    return x, y
 
-def epoch_preprocess(x, 
-					 y,
-					 fs,
-					 notch_freq=50):
 
-		x,y = apply_notch(x, y,fs,notch_freq)
-	
-		ax = []
+def bandpass(
+    x,
+    fs,
+    low,
+    high,
+):
 
-		for i in range(1,10):
-			ax.append(bandpass(x,fs,4*i,4*i+4))
-		x = np.concatenate(ax,-1)
+    nyquist = fs / 2
+    b, a = butter(4, [low / nyquist, high / nyquist], "bandpass", analog=False)
+    n, d, t = x.shape
+    x = rearrange(x, "n t d -> (n d) t")
+    x = filtfilt(b, a, x)
+    x = rearrange(x, "(n d) t -> n t d", n=n)
+    return x
 
-		mu = np.mean(x,axis=-1)
-		sigma = np.std(x,axis=-1)
-		x = (x-rearrange(mu,"n d -> n d 1"))/rearrange(sigma,"n d -> n d 1")
-		return x,y
+
+def epoch_preprocess(x, y, fs, notch_freq=50):
+
+    x, y = apply_notch(x, y, fs, notch_freq)
+
+    ax = []
+
+    for i in range(1, 10):
+        ax.append(bandpass(x, fs, 4 * i, 4 * i + 4))
+    x = np.concatenate(ax, -1)
+
+    mu = np.mean(x, axis=-1)
+    sigma = np.std(x, axis=-1)
+    x = (x - rearrange(mu, "n d -> n d 1")) / rearrange(sigma, "n d -> n d 1")
+    return x, y
+
 
 def find_bci_inlet(debug=False):
     """Find an EEG stream and return an inlet to it.
@@ -295,15 +294,29 @@ class DataClassifier:
         self.last_time_index = 0
         self.current_time_index = 0
 
+        self.zmq_ctx = zmq.Context()
+        self.socket = self.zmq_ctx.socket(zmq.PUB)
+
     def find_streams(self):
-        """Find EEG and marker streams. Updates the ready flag."""
+        """Find EEG and ZMQ socket endpoint. Updates the ready flag."""
         self.find_eeg_inlet()
+        self.connect_zmq()
         self.ready = self.eeg_inlet is not None
 
     def find_eeg_inlet(self):
         """Find the EEG stream and update the inlet."""
         self.eeg_inlet = find_bci_inlet(debug=False)
         logger.info(f"EEG Inlet found:{self.eeg_inlet}")
+
+    def connect_zmq(self):
+        self.socket.connect("tcp://localhost:3001")
+        print("zmq socket connected.")
+
+    def send_categorical_prediction(self, time: float, action: int, player: int):
+        topic = f"c{player}"
+        self.socket.send_string(topic, zmq.SNDMORE)
+        self.socket.send_string(f"{time}", zmq.SNDMORE)
+        self.socket.send_string(f"{action}")
 
     def start(self, filename="test_data_0.csv"):
         """Start recording data to a CSV file. The recording will continue until stop() is called.
@@ -327,9 +340,7 @@ class DataClassifier:
         # Flush the inlets to remove old data
         self.eeg_inlet.flush()
 
-        count = 0
-
-        with open("model.p","rb") as f:
+        with open(filename, "rb") as f:
             clf = pickle.load(f)
 
         while self.recording:
@@ -351,20 +362,18 @@ class DataClassifier:
 
             # print(self.get_buffer_samples().shape)
 
-            count += 1
-
             x = self.get_buffer_samples()
-            c,t = x.shape
+            c, t = x.shape
             if t > 256:
-                x = rearrange(x[np.array([3,5]),:],"c t -> 1 t c")
-                x,_ = epoch_preprocess(x,None,256,60)
-                x = rearrange(x,"b t c ->b c t")
+                x = rearrange(x[np.array([3, 5]), :], "c t -> 1 t c")
+                x, _ = epoch_preprocess(x, None, 256, 60)
+                x = rearrange(x, "b t c ->b c t")
                 y = clf.predict(x)
-                print(f"predicted class {y}")
+                # print(f"predicted class {int(y)}")
+                self.send_categorical_prediction(
+                    time=time.time(), action=int(y), player=0
+                )
 
-            if count >= 3000:
-                raise(ValueError("bla bla bla"))
-            
     def get_buffer_samples(self):
         if self.last_time_index > self.current_time_index:
             begin = self.buffer[range(8), self.last_time_index : self.bufsize]
