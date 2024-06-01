@@ -1,4 +1,4 @@
-import { SiggyListener, CategoricalPrediction } from "./siggy_listener";
+import { SiggyListener, CategoricalPrediction, Action } from "./siggy_listener";
 import { Server, Socket } from "socket.io";
 
 class GameClient {
@@ -6,6 +6,7 @@ class GameClient {
   playerIndex: number = -1;
   socket: Socket;
   game: Game;
+  currentPrediction: Action;
 
   constructor(playerIndex: number, socket: Socket, game: Game) {
     this.playerIndex = playerIndex;
@@ -24,11 +25,16 @@ class GameClient {
   }
 
   public onCategoricalPrediction(prediction: CategoricalPrediction) {
-    console.log("onPredictedAction", this.id, prediction.action);
+    // console.log("onPredictedAction", this.id, prediction.action);
+    this.currentPrediction = prediction.action;
   }
 
   public onDistributionalPrediction(distribution: number[]) {
     console.log("onPredictedDistribution", this.id, distribution);
+  }
+
+  public getCurrentPrediction() {
+    return this.currentPrediction;
   }
 
   private sendXMessage() {
@@ -83,38 +89,40 @@ class Game {
   // Shuffles deck
   public shuffleDeck() {
     let deck = this.gameState.deck;
-    let currentIndex = deck.length, randomIndex;
+    let currentIndex = deck.length,
+      randomIndex;
 
     // While there remain elements to shuffle.
     while (currentIndex != 0) {
-  
       // Pick a remaining element.
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
-  
+
       // And swap it with the current element.
       [deck[currentIndex], deck[randomIndex]] = [
-        deck[randomIndex], deck[currentIndex]];
+        deck[randomIndex],
+        deck[currentIndex],
+      ];
     }
   }
 
   // Deals initial player hands, adds draw card option to possible hands, and puts down initial top card
   public setGame() {
     const starthand = 7;
-    let deck = this.gameState.deck
+    let deck = this.gameState.deck;
     for (let i = 0; i < this.numPlayers; i++) {
       for (let j = 0; j < starthand; j++) {
-        const drawn_card = deck.pop()
+        const drawn_card = deck.pop();
         if (drawn_card) {
-          this.players[i].hand.push(drawn_card)
+          this.players[i].hand.push(drawn_card);
         }
         /* Add draw card to both player's possible hands */
-      } 
+      }
     }
     // Draws first card on playing deck
-    const first_card = deck.pop()
+    const first_card = deck.pop();
     if (first_card) {
-      this.gameState.played_cards.push(first_card)
+      this.gameState.played_cards.push(first_card);
     }
   }
 
@@ -123,18 +131,21 @@ class Game {
   Sorts cards in the current player's hand into possible or impossible hand
   */
   public sortPossibleHand(playerIndex) {
-    const topCard = this.gameState.top_card
-    const color = topCard?.color
-    const number = topCard?.number
+    const topCard = this.gameState.top_card;
+    const color = topCard?.color;
+    const number = topCard?.number;
 
-    const player = this.players[playerIndex]
-    const hand = player.hand
+    const player = this.players[playerIndex];
+    const hand = player.hand;
 
     for (let i = 0; i < hand.length; i++) {
-      if ((hand[i].color == color || hand[i].color == "wild") || (hand[i].number == number)) {
+      if (
+        hand[i].color == color ||
+        hand[i].color == "wild" ||
+        hand[i].number == number
+      ) {
         player.possible_hand.push(hand[i]);
-      }
-      else {
+      } else {
         player.impossible_hand.push(hand[i]);
       }
     }
@@ -155,20 +166,22 @@ class GameState {
   played_cards: Card[] = [];
   top_card: Card | null = null;
 
-  constructor() { //build initial game state 
+  constructor() {
+    //build initial game state
     this.top_card = this.played_cards[0] || null;
-    const colour = ['red', 'yellow', 'green', 'blue']
-    /* 10 = skip; 11 = +2; 12 = +4; 13 = wildcard */ 
-    for (let i= 0; i<14; i++){ //build the number cards 
-      let joker_marker = false; 
-      if (i > 9){
-        joker_marker = true; 
-      } 
-      for (let j=0; j<4; j++){
-        if (i < 12){ 
-          this.deck.push(new Card(colour[j], i, joker_marker)); 
-        } else { 
-          this.deck.push(new Card('wild', i, joker_marker)); 
+    const colour = ["red", "yellow", "green", "blue"];
+    /* 10 = skip; 11 = +2; 12 = +4; 13 = wildcard */
+    for (let i = 0; i < 14; i++) {
+      //build the number cards
+      let joker_marker = false;
+      if (i > 9) {
+        joker_marker = true;
+      }
+      for (let j = 0; j < 4; j++) {
+        if (i < 12) {
+          this.deck.push(new Card(colour[j], i, joker_marker));
+        } else {
+          this.deck.push(new Card("wild", i, joker_marker));
         }
       }
     }
