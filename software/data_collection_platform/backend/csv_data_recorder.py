@@ -288,7 +288,8 @@ class DataClassifier:
         if self.ready:
             logger.info("Ready to start recording.")
 
-        self.bufsize = 1000
+        self.window_length_sec = 2
+        self.bufsize = 1000 * self.window_length_sec
         self.buffer = np.ndarray((self.bufsize, 8))
         self.time_buffer = np.ndarray(self.bufsize)
         self.last_time_index = 0
@@ -350,7 +351,7 @@ class DataClassifier:
         while self.recording:
             eeg_sample, eeg_timestamp = self.eeg_inlet.pull_sample()
 
-            two_seconds_before = eeg_timestamp - 2
+            two_seconds_before = eeg_timestamp - self.window_length_sec
 
             self.time_buffer[self.current_time_index] = eeg_timestamp
             self.buffer[self.current_time_index] = eeg_sample
@@ -368,9 +369,9 @@ class DataClassifier:
             x = self.get_buffer_samples()
 
             t, c = x.shape
-            if t > 256:
+            if t > 256 * self.window_length_sec / 2:
                 p1 = rearrange(x[:, np.array([3, 5])], "t c -> 1 t c")
-                p1, _ = epoch_preprocess(p1, None, 256, 60)
+                p1, _ = epoch_preprocess(p1, None, 256 * self.window_length_sec / 2, 60)
                 p1 = rearrange(p1, "b t c -> b c t")
                 y1 = clf.predict(p1)
 
@@ -381,8 +382,10 @@ class DataClassifier:
                 self.add_prediction(pred_time, action)
                 self.send_categorical_prediction(time=pred_time, action=action, player=0)
 
-            print(f"{x.shape[0]} timestamps")
-            print(f"{len(self.get_last_predictions()) / 2} predictions/sec")
+            print(f"{t} timestamps")
+            print(
+                f"{len(self.get_last_predictions()) / self.window_length_sec} predictions/sec"
+            )
 
     def get_buffer_samples(self):
         if self.last_time_index > self.current_time_index:
