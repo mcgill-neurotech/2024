@@ -5,6 +5,7 @@ import PlayingPile from './CardPile';
 import { socket } from './socket';
 import SkipIcon from './SkipIcon';
 import SquaresIcon from './SquaresIcon';
+import ColorwheelIcon from './ColorwheelIcon';
 
 const texts = [...Array.from(Array(10).keys())];
 const colors = Object.values(CardColor);
@@ -80,29 +81,23 @@ const generateDummyCards = () => {
   );
   // "color wheel" cards
   cards.push(
-    ...colors.map((color) => (
+    ...colors.map(() => (
       <Card
-        corners={<p className="text-white text-sm">{'color wheel svg'}</p>}
+        corners={<ColorwheelIcon width={45} height={45} />}
         color={'#000000'}
-        center={
-          <p className="text-xl text-shadow" style={{ color: color }}>
-            color wheel
-          </p>
-        }
+        center={<ColorwheelIcon height={200} width={200} />}
+        centerClassName="bg-black"
       />
     )),
   );
   // "+4" cards
   cards.push(
-    ...colors.map((color) => (
+    ...colors.map(() => (
       <Card
         corners={<p className="text-white text-4xl text-shadow">{'+4'}</p>}
         color={'#000000'}
-        center={
-          <p className="text-xl text-shadow" style={{ color: color }}>
-            +4 svg?
-          </p>
-        }
+        center={<ColorwheelIcon height={200} width={200} />}
+        centerClassName="bg-black"
       />
     )),
   );
