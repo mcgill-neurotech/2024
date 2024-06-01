@@ -7,10 +7,61 @@ import typing
 import logging
 from .constants import markers
 from pathlib import Path
+from einops import rearrange, reduce
+from scipy.signal import filtfilt, iirnotch, butter
+import pickle
+import zmq
 
 # Edited from NTX McGill 2021 stream.py, lines 16-23
 # https://github.com/NTX-McGill/NeuroTechX-McGill-2021/blob/main/software/backend/dcp/bci/stream.py
 logger = logging.getLogger(__name__)
+
+
+def apply_notch(x, y, fs, notch_freq=50):
+    """
+    Apply pre-processing before concatenating everything in a single array.
+    Easier to manage multiple splits
+    By default, it only applies a notch filter at 50 Hz
+    """
+
+    n, d, t = x.shape
+    x = rearrange(x, "n t d -> (n d) t")
+    b, a = iirnotch(notch_freq, 30, fs)
+    x = filtfilt(b, a, x)
+    x = rearrange(x, "(n d) t -> n t d", n=n)
+    return x, y
+
+
+def bandpass(
+    x,
+    fs,
+    low,
+    high,
+):
+
+    nyquist = fs / 2
+    b, a = butter(4, [low / nyquist, high / nyquist], "bandpass", analog=False)
+    n, d, t = x.shape
+    x = rearrange(x, "n t d -> (n d) t")
+    x = filtfilt(b, a, x)
+    x = rearrange(x, "(n d) t -> n t d", n=n)
+    return x
+
+
+def epoch_preprocess(x, y, fs, notch_freq=50):
+
+    x, y = apply_notch(x, y, fs, notch_freq)
+
+    ax = []
+
+    for i in range(1, 10):
+        ax.append(bandpass(x, fs, 4 * i, 4 * i + 4))
+    x = np.concatenate(ax, -1)
+
+    mu = np.mean(x, axis=-1)
+    sigma = np.std(x, axis=-1)
+    x = (x - rearrange(mu, "n d -> n d 1")) / rearrange(sigma, "n d -> n d 1")
+    return x, y
 
 
 def find_bci_inlet(debug=False):
@@ -237,21 +288,40 @@ class DataClassifier:
         if self.ready:
             logger.info("Ready to start recording.")
 
-        self.bufsize = 1000
-        self.buffer = np.ndarray((8, self.bufsize))
+        self.window_length_sec = 2
+        self.bufsize = 1000 * self.window_length_sec
+        self.buffer = np.ndarray((self.bufsize, 8))
         self.time_buffer = np.ndarray(self.bufsize)
         self.last_time_index = 0
         self.current_time_index = 0
 
+        self.prediction_buffer = np.ndarray((self.bufsize, 2))
+        self.pred_last_time_index = 0
+        self.pred_current_time_index = 0
+
+        self.zmq_ctx = zmq.Context()
+        self.socket = self.zmq_ctx.socket(zmq.PUB)
+
     def find_streams(self):
-        """Find EEG and marker streams. Updates the ready flag."""
+        """Find EEG and ZMQ socket endpoint. Updates the ready flag."""
         self.find_eeg_inlet()
+        self.connect_zmq()
         self.ready = self.eeg_inlet is not None
 
     def find_eeg_inlet(self):
         """Find the EEG stream and update the inlet."""
         self.eeg_inlet = find_bci_inlet(debug=False)
         logger.info(f"EEG Inlet found:{self.eeg_inlet}")
+
+    def connect_zmq(self):
+        self.socket.connect("tcp://localhost:3001")
+        print("zmq socket connected.")
+
+    def send_categorical_prediction(self, time: float, action: int, player: int):
+        topic = f"c{player}"
+        self.socket.send_string(topic, zmq.SNDMORE)
+        self.socket.send_string(f"{time}", zmq.SNDMORE)
+        self.socket.send_string(f"{action}")
 
     def start(self, filename="test_data_0.csv"):
         """Start recording data to a CSV file. The recording will continue until stop() is called.
@@ -275,32 +345,72 @@ class DataClassifier:
         # Flush the inlets to remove old data
         self.eeg_inlet.flush()
 
+        with open(filename, "rb") as f:
+            clf = pickle.load(f)
+
         while self.recording:
             eeg_sample, eeg_timestamp = self.eeg_inlet.pull_sample()
-            two_seconds_before = eeg_timestamp - 2
+
+            two_seconds_before = eeg_timestamp - self.window_length_sec
 
             self.time_buffer[self.current_time_index] = eeg_timestamp
-            for i in range(8):
-                self.buffer[i][self.current_time_index] = eeg_sample[i]
+            self.buffer[self.current_time_index] = eeg_sample
             self.current_time_index = (self.current_time_index + 1) % self.bufsize
 
             while self.time_buffer[self.last_time_index] < two_seconds_before:
                 self.last_time_index = (self.last_time_index + 1) % self.bufsize
 
-            if self.last_time_index > self.current_time_index:
-                print(self.bufsize - (self.last_time_index - self.current_time_index))
-            else:
-                print(self.current_time_index - self.last_time_index)
+            available_samples = self.eeg_inlet.samples_available()
+            if available_samples > 16:
+                # if we are buffering samples, skip prediction to allow fetching the latest samples
+                # print(f"available samples: {available_samples} > 10, skipping prediction")
+                continue
 
-            print(self.get_buffer_samples().shape)
+            x = self.get_buffer_samples()
+
+            t, c = x.shape
+            if t > 256 * self.window_length_sec / 2:
+                p1 = rearrange(x[:, np.array([3, 5])], "t c -> 1 t c")
+                p1, _ = epoch_preprocess(p1, None, 256 * self.window_length_sec / 2, 60)
+                p1 = rearrange(p1, "b t c -> b c t")
+                y1 = clf.predict(p1)
+
+                pred_time = time.time()
+                action = int(y1)
+                print(f"predicted class {int(y1)}")
+
+                self.add_prediction(pred_time, action)
+                self.send_categorical_prediction(time=pred_time, action=action, player=0)
+
+            print(f"{t} timestamps")
+            print(
+                f"{len(self.get_last_predictions()) / self.window_length_sec} predictions/sec"
+            )
 
     def get_buffer_samples(self):
         if self.last_time_index > self.current_time_index:
-            begin = self.buffer[range(8), self.last_time_index : self.bufsize]
-            end = self.buffer[range(8), 0 : self.current_time_index]
-            return np.concatenate((begin, end), 1)
+            begin = self.buffer[self.last_time_index : self.bufsize]
+            end = self.buffer[0 : self.current_time_index]
+            return np.concatenate((begin, end), 0)
         else:
-            return self.buffer[range(8), self.last_time_index : self.current_time_index]
+            return self.buffer[self.last_time_index : self.current_time_index]
+
+    def add_prediction(self, pred_time, pred):
+        self.prediction_buffer[self.pred_current_time_index] = [pred_time, pred]
+        self.pred_current_time_index = (self.pred_current_time_index + 1) % self.bufsize
+
+        while self.prediction_buffer[self.pred_last_time_index][0] < pred_time - 1:
+            self.pred_last_time_index = (self.pred_last_time_index + 1) % self.bufsize
+
+    def get_last_predictions(self):
+        if self.pred_last_time_index > self.pred_current_time_index:
+            begin = self.prediction_buffer[self.pred_last_time_index : self.bufsize]
+            end = self.prediction_buffer[0 : self.pred_current_time_index]
+            return np.concatenate((begin, end), 0)
+        else:
+            return self.prediction_buffer[
+                self.pred_last_time_index : self.pred_current_time_index
+            ]
 
     def stop(self):
         """Finish recording data to a CSV file."""

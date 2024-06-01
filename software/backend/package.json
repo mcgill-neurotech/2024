@@ -4,6 +4,7 @@
   "dependencies": {
     "express": "^4.19.2",
     "socket.io": "^4.7.5",
+    "socketio": "^1.0.0",
     "ts-node-dev": "^2.0.0",
     "zeromq": "^5.3.1"
   },

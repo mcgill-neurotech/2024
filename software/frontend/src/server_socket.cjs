@@ -2,18 +2,27 @@ const express = require('express');
 const http = require('http');
 const webSocket = require('ws');
 
-const port = 8080;
+const port = 3000;
 const server = http.createServer(express);
 const wss = new webSocket.Server( { server } );
 
 const connections = { }
 const users = { }
 
+
+
 const handleMessage = (chosenCard, uuid) => {
-    // message = {chosencard}
-    // user = users[uuid]
-    // remove card from user.state.hand 
-    // change user.state.turn and opponent's user.state.turn
+    // JSON chosenCard = {"color": color, "number": number}
+    const card = JSON.parse(chosenCard)
+    const user = users[uuid]
+    const hand = user.state.hand
+
+    // Removes chosen card from player's hand
+    const index = hand.indexOf(chosenCard);
+    hand.splice(index, 1);
+
+    // Change user.state.turn and opponent's user.state.turn
+    user.state.turn = !user.state.turn
     // change topcard & display on other client
     // ws.send to send message from client to the server
 }

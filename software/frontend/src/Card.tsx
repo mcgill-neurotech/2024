@@ -13,6 +13,7 @@ interface ICardProps {
    * The element to place at the center of the card, e.g. a p, svg, img, etc
    */
   center: React.ReactNode;
+  centerClassName?: string;
   /**
    * The element to place at the top left and bottom right of each card, e.g. a p, svg, img, etc
    */
@@ -23,7 +24,12 @@ interface ICardProps {
   color: CardColor | string;
 }
 
-const Card: React.FC<ICardProps> = ({ color, center, corners }) => {
+const Card: React.FC<ICardProps> = ({
+  color,
+  center,
+  centerClassName = '',
+  corners,
+}) => {
   return (
     <div className="w-40 h-56 border-2 border-black rounded-md flex justify-center items-stretch font-sans bg-white">
       <div
@@ -37,7 +43,9 @@ const Card: React.FC<ICardProps> = ({ color, center, corners }) => {
         <div className="grow relative flex items-stretch">
           <div className="grow flex items-stretch">
             <div className="ellipse bg-white grow" />
-            <div className="absolute w-full h-full flex items-center justify-center">
+            <div
+              className={`absolute w-full h-full flex items-center justify-center ${centerClassName}`}
+            >
               {center}
             </div>
           </div>

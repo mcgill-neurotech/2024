@@ -1,0 +1,6 @@
+[submodule "software/backend/OpenBCI_LSL"]
+	path = software/backend/OpenBCI_LSL
+	url = https://github.com/openbci-archive/OpenBCI_LSL
+[submodule "software/data_collection_platform/OpenBCI_LSL"]
+	path = software/data_collection_platform/OpenBCI_LSL
+	url = https://github.com/openbci-archive/OpenBCI_LSL
