@@ -71,6 +71,10 @@ class Game {
     return true;
   }
 
+  public startGame(socket: Socket, clients) {
+    
+  }
+
   public handleDisconnect(client: GameClient) {
     this.siggyListener.detachPlayer(client.playerIndex);
     this.clients.delete(client.id);
