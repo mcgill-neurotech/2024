@@ -289,10 +289,14 @@ class DataClassifier:
             logger.info("Ready to start recording.")
 
         self.bufsize = 1000
-        self.buffer = np.ndarray((8, self.bufsize))
+        self.buffer = np.ndarray((self.bufsize, 8))
         self.time_buffer = np.ndarray(self.bufsize)
         self.last_time_index = 0
         self.current_time_index = 0
+
+        self.prediction_buffer = np.ndarray((self.bufsize, 2))
+        self.pred_last_time_index = 0
+        self.pred_current_time_index = 0
 
         self.zmq_ctx = zmq.Context()
         self.socket = self.zmq_ctx.socket(zmq.PUB)
@@ -345,42 +349,65 @@ class DataClassifier:
 
         while self.recording:
             eeg_sample, eeg_timestamp = self.eeg_inlet.pull_sample()
+
             two_seconds_before = eeg_timestamp - 2
 
             self.time_buffer[self.current_time_index] = eeg_timestamp
-            for i in range(8):
-                self.buffer[i][self.current_time_index] = eeg_sample[i]
+            self.buffer[self.current_time_index] = eeg_sample
             self.current_time_index = (self.current_time_index + 1) % self.bufsize
 
             while self.time_buffer[self.last_time_index] < two_seconds_before:
                 self.last_time_index = (self.last_time_index + 1) % self.bufsize
 
-            if self.last_time_index > self.current_time_index:
-                print(self.bufsize - (self.last_time_index - self.current_time_index))
-            else:
-                print(self.current_time_index - self.last_time_index)
-
-            # print(self.get_buffer_samples().shape)
+            available_samples = self.eeg_inlet.samples_available()
+            if available_samples > 16:
+                # if we are buffering samples, skip prediction to allow fetching the latest samples
+                # print(f"available samples: {available_samples} > 10, skipping prediction")
+                continue
 
             x = self.get_buffer_samples()
-            c, t = x.shape
+
+            t, c = x.shape
             if t > 256:
-                x = rearrange(x[np.array([3, 5]), :], "c t -> 1 t c")
-                x, _ = epoch_preprocess(x, None, 256, 60)
-                x = rearrange(x, "b t c ->b c t")
-                y = clf.predict(x)
-                # print(f"predicted class {int(y)}")
-                self.send_categorical_prediction(
-                    time=time.time(), action=int(y), player=0
-                )
+                p1 = rearrange(x[:, np.array([3, 5])], "t c -> 1 t c")
+                p1, _ = epoch_preprocess(p1, None, 256, 60)
+                p1 = rearrange(p1, "b t c -> b c t")
+                y1 = clf.predict(p1)
+
+                pred_time = time.time()
+                action = int(y1)
+                print(f"predicted class {int(y1)}")
+
+                self.add_prediction(pred_time, action)
+                self.send_categorical_prediction(time=pred_time, action=action, player=0)
+
+            print(f"{x.shape[0]} timestamps")
+            print(f"{len(self.get_last_predictions()) / 2} predictions/sec")
 
     def get_buffer_samples(self):
         if self.last_time_index > self.current_time_index:
-            begin = self.buffer[range(8), self.last_time_index : self.bufsize]
-            end = self.buffer[range(8), 0 : self.current_time_index]
-            return np.concatenate((begin, end), 1)
+            begin = self.buffer[self.last_time_index : self.bufsize]
+            end = self.buffer[0 : self.current_time_index]
+            return np.concatenate((begin, end), 0)
         else:
-            return self.buffer[range(8), self.last_time_index : self.current_time_index]
+            return self.buffer[self.last_time_index : self.current_time_index]
+
+    def add_prediction(self, pred_time, pred):
+        self.prediction_buffer[self.pred_current_time_index] = [pred_time, pred]
+        self.pred_current_time_index = (self.pred_current_time_index + 1) % self.bufsize
+
+        while self.prediction_buffer[self.pred_last_time_index][0] < pred_time - 1:
+            self.pred_last_time_index = (self.pred_last_time_index + 1) % self.bufsize
+
+    def get_last_predictions(self):
+        if self.pred_last_time_index > self.pred_current_time_index:
+            begin = self.prediction_buffer[self.pred_last_time_index : self.bufsize]
+            end = self.prediction_buffer[0 : self.pred_current_time_index]
+            return np.concatenate((begin, end), 0)
+        else:
+            return self.prediction_buffer[
+                self.pred_last_time_index : self.pred_current_time_index
+            ]
 
     def stop(self):
         """Finish recording data to a CSV file."""

@@ -3,7 +3,7 @@ import pathlib
 import logging
 from OpenBCI_LSL.lib.open_bci_v3 import OpenBCIBoard
 from pylsl import StreamInfo
-from software.data_collection_platform.bci_streamer import BciStreamer
+from bci_streamer import BciStreamer
 
 
 log_path = pathlib.Path(f"logs/cli.log")
