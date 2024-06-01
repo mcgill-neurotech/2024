@@ -109,7 +109,13 @@ class Game {
     const first_card = deck.pop()
     if (first_card) {
       this.gameState.played_cards.push(first_card)
+      this.updateTopCard();
     }
+  }
+
+  public updateTopCard() {
+    const played = this.gameState.played_cards;
+    this.gameState.top_card = played[played.length-1];
   }
 
   /* 
@@ -117,6 +123,8 @@ class Game {
   Sorts cards in the current player's hand into possible or impossible hand
   */
   public sortPossibleHand(playerIndex) {
+    // splice possible hand from 1 -> end, preserve draw card
+    // clear everything in impossible hand 
     const topCard = this.gameState.top_card
     const color = topCard?.color
     const number = topCard?.number
@@ -152,15 +160,14 @@ class GameState {
   top_card: Card | null = null;
 
   constructor() { //build initial game state 
-    this.top_card = this.played_cards[0] || null;
     const colour = ['red', 'yellow', 'green', 'blue']
     /* 10 = skip; 11 = +2; 12 = +4; 13 = wildcard */ 
-    for (let i= 0; i<14; i++){ //build the number cards 
+    for (let i = 0; i < 14; i++){ //build the number cards 
       let joker_marker = false; 
       if (i > 9){
         joker_marker = true; 
       } 
-      for (let j=0; j<4; j++){
+      for (let j = 0; j < 4; j++){
         if (i < 12){ 
           this.deck.push(new Card(colour[j], i, joker_marker)); 
         } else { 
