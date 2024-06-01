@@ -1,5 +1,5 @@
 import { SiggyListener, CategoricalPrediction } from "./siggy_listener";
-import { Socket } from "socket.io";
+import { Server, Socket } from "socket.io";
 
 class GameClient {
   id: string;
@@ -38,11 +38,17 @@ class GameClient {
 }
 
 class Game {
+  server: Server;
   clients = new Map<string, GameClient>();
   siggyListener: SiggyListener;
   numPlayers: number;
 
-  constructor(numPlayers: number, siggyListener: SiggyListener) {
+  constructor(
+    server: Server,
+    numPlayers: number,
+    siggyListener: SiggyListener,
+  ) {
+    this.server = server;
     this.numPlayers = numPlayers;
     this.siggyListener = siggyListener;
   }
@@ -77,9 +83,7 @@ class Game {
   }
 
   public broadcast(topic: string, ...msg: any[]) {
-    this.clients.forEach((c) => {
-      c.socket.emit(topic, ...msg);
-    });
+    // this.server.send()
   }
 }
 
