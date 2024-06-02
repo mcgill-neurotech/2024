@@ -1,53 +1,63 @@
-/* src/Gameboard_style.css */
 .gameboard {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  background-color: #99b9fb;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  height: 100vh;
+  background-color: #87ceeb;
+  padding-bottom: 20px;
 }
 
-.top-section {
+.top-section, .middle-section, .bottom-section {
+  width: 100%;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  margin-top: 20px;
 }
 
 .middle-section {
+  flex-grow: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-grow: 1;
+}
+
+.playing-pile {
+  position: relative;
+  width: 100px; /* Adjust as needed */
+  height: 150px; /* Adjust as needed */
+  margin: auto;
+}
+
+.pile {
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 
 .bottom-section {
-  width: 100%;
   display: flex;
+  width: 100%;
   justify-content: space-around;
-  align-items: center;
-  padding: 30px 0; /* Adjusted padding to fit the bottom section */
+  margin-top: auto;
 }
 
 .half-section {
-  width: 48%; /* Slight margin for spacing */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: rgb(125, 85, 59);
-  padding: 20px;
-  border-radius: 10px; /* Optional: adds rounded corners */
+  background-color: brown;
+  border-radius: 8px;
+  padding: 16px;
+  width: 45%;
+  height: 250px; /* Adjust as needed to fit the entire card height */
+  position: relative;
+  overflow: hidden;
 }
 
 .card-fan-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   position: relative;
+  width: 100%;
+  height: 100%;
 }
 
-.text-center {
-  text-align: center;
+.card-fan-container .absolute {
+  transition: top 0.3s, left 0.3s;
 }
-

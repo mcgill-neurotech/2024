@@ -8,7 +8,7 @@ export enum CardColor {
   Yellow = '#FFAA00',
 }
 
-interface ICardProps {
+export interface ICardProps {
   /**
    * The element to place at the center of the card, e.g. a p, svg, img, etc
    */

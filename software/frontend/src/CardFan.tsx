@@ -1,14 +1,16 @@
-// src/CardFan.tsx
 import React from 'react';
 
-function calculate_fan_angles(N: number, selected: number, spread: number) {
-  const B = N % 2 === 0 ? (N - 1) / 2 : Math.floor(N / 2);
-  const arr = [];
+function calculate_fan_positions(N: number, selected: number, spread: number) {
+  const B = Math.floor((N - 1) / 2);
+  const positions = [];
   for (let n = -B; n <= B; n++) {
-    arr.push(n);
+    positions.push(n);
   }
-  const center = arr[selected];
-  return arr.map((i) => Math.atan(spread * (i - center)) + Math.PI / 2);
+  const center = positions[selected];
+  return positions.map((i) => ({
+    left: (i - center) * spread * 50, // Spread horizontally
+    zIndex: -Math.abs(i - center) + B + 1
+  }));
 }
 
 interface ICardFanProps {
@@ -24,27 +26,24 @@ const CardFanLinear: React.FC<ICardFanProps> = ({
   selected,
   onSelected,
 }) => {
-  const xPositions = calculate_fan_angles(cards.length, selected, spread).map(
-    (x) => (x - Math.PI / 2) * 200, // arbitrary but could be changed
-  );
+  const positions = calculate_fan_positions(cards.length, selected, spread);
   return (
     <div className="flex items-center justify-center card-fan-container">
       <div className="relative">
         {cards.map((card, i) => {
+          const { left, zIndex } = positions[i];
           const active = selected === i;
-          const z = -Math.abs(i - selected) + Math.ceil(cards.length / 2) + 20;
-          const y = active ? 60 : 30; // Increased y to move cards up
+          const y = active ? -140 : -130; // Adjust this value to move the cards up
           return (
             <div
               onClick={() => onSelected(i)}
               key={i}
               className="absolute"
               style={{
-                left: xPositions[i],
-                zIndex: z,
-                top: -y,
-                marginTop: '-90px',
-                marginLeft: '-65px',
+                left: `calc(50% + ${left}px)`,
+                zIndex,
+                top: `${y}px`, // Adjust this value to move the cards up
+                transform: 'translateX(-50%)'
               }}
             >
               {card}
@@ -57,3 +56,6 @@ const CardFanLinear: React.FC<ICardFanProps> = ({
 };
 
 export { CardFanLinear };
+
+
+

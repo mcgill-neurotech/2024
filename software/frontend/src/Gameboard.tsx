@@ -1,4 +1,3 @@
-// src/Gameboard.tsx
 import React, { useCallback, useState, useEffect } from 'react';
 import './Gameboard_style.css';
 import useSocket from './useSocket';
@@ -82,6 +81,9 @@ const Gameboard: React.FC = () => {
       const unplayable = allCards.filter(card => card.color !== topCenterCard.color);
       setPlayableCards(playable);
       setUnplayableCards(unplayable);
+    } else {
+      // Initially set topCenterCard to a random card from allCards to start the game
+      setTopCenterCard(allCards[Math.floor(Math.random() * allCards.length)]);
     }
   }, [topCenterCard, allCards]);
 
@@ -134,6 +136,7 @@ const Gameboard: React.FC = () => {
 };
 
 export default Gameboard;
+
 
 
 

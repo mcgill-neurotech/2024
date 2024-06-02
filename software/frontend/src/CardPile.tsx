@@ -1,4 +1,3 @@
-// src/CardPile.tsx
 import React, { useEffect } from 'react';
 import Card, { ICardProps } from './Card';
 
@@ -64,4 +63,3 @@ const PlayingPile: React.FC<IPlayingPileProps> = ({
 };
 
 export default PlayingPile;
-
