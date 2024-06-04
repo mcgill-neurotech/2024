@@ -232,7 +232,7 @@ class Game {
     while (this.players[currentPlayerIndex].hand.length > 0) {
       // Calculate possible hand and send to specific client
       this.sortPossibleHand(currentPlayerIndex);
-      // .emit("Possible cards", this.players[])
+      this.clients[currentPlayerIndex].socket.emit("Possible Cards", this.players[currentPlayerIndex].possible_hand);
       
       // Listening for move
       this.players[currentPlayerIndex].moveCard(this.clients[currentPlayerIndex], this.gameState);
@@ -252,6 +252,7 @@ class Game {
 
   public broadcast(topic: string, ...msg: any[]) {
     // this.server.send()
+    this.server.emit(topic, ...msg);
   }
 }
 
@@ -311,8 +312,10 @@ class Player {
     if (action === Action.Right) {
         this.selected_card = (this.selected_card + 1) % this.possible_hand.length;
         // Tell client about action
+        playerClient.socket.emit("Direction", "right");
     } else if (action === Action.Left) {
         this.selected_card = (this.selected_card - 1 + this.possible_hand.length) % this.possible_hand.length;
+        playerClient.socket.emit("Direction", "left");
     } else if (action === Action.Clench) { 
         this.playCard(gameState);
         break;
