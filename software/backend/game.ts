@@ -136,24 +136,48 @@ class Game {
   Sorts cards in the current player's hand into possible or impossible hand
   */
   public sortPossibleHand(playerIndex: number) {
-    // splice possible hand from 1 -> end, preserve draw card
-    // clear everything in impossible hand 
     const topCard = this.gameState.top_card
     const color = topCard?.color
     const number = topCard?.number
 
     const player = this.players[playerIndex];
     const hand = player.hand;
+    let possible = player.possible_hand;
+    let impossible = player.impossible_hand;
+    
+    // splice possible hand from 1 -> end, preserve draw card
+    // clear everything in impossible hand 
+    possible.splice(1,possible.length-1);
+    impossible.length = 0;
 
-    for (let i = 0; i < hand.length; i++) {
-      if (
-        hand[i].color == color ||
-        hand[i].color == "wild" ||
-        hand[i].number == number
-      ) {
-        player.possible_hand.push(hand[i]);
-      } else {
-        player.impossible_hand.push(hand[i]);
+    // Handles wild card color choice
+    if (number == 12 || number == 13) {
+      const colour = ['red', 'yellow', 'green', 'blue'];
+      const solidnum = 15;
+
+      // Pops draw card
+      possible.pop();
+
+      for (let i = 0; i < colour.length; i++) {
+        possible.push(new Card(colour[i], solidnum, true));
+      }
+    }
+
+    else {
+      // Adds draw card if doesn't exist
+      if (hand.length == 0) {
+        possible.push(new Card("wild", 14, true));
+      }
+      for (let i = 0; i < hand.length; i++) {
+        if (
+          hand[i].color == color ||
+          hand[i].color == "wild" ||
+          hand[i].number == number
+        ) {
+          possible.push(hand[i]);
+        } else {
+          impossible.push(hand[i]);
+        }
       }
     }
   }
@@ -178,23 +202,24 @@ class Game {
     const number = topCard?.number 
     const opp = (playerIndex + 1) % 2
 
-    if (number == 13 || number == 14) {
-      // wild card -- could it be handled on front end? 
-    } else if (number == 11){ //add 2 cards 
+    if (number == 11){ //add 2 cards 
       this.addCard(opp); 
       this.addCard(opp); 
-    } else if (number == 13){ //add 4 cards 
+    } else if (number == 12){ //add 4 cards 
       for (let i=0; i < 4; i++) {
       this.addCard(opp);
       }
     };
     
     // Returns player index for the next round
-    if (number == 10 || number == 11) {
-      return playerIndex;
-    }
-    else {
-      return opp;
+    // Same player's turn if skip or +2 or allow player to choose wild card
+    if (number) {
+      if (number > 9 && number < 14) {
+        return playerIndex;
+      }
+      else {
+        return opp;
+      };
     };
     
   }
@@ -205,25 +230,20 @@ class Game {
     let currentPlayerIndex = 0;
 
     while (this.players[currentPlayerIndex].hand.length > 0) {
+      // Calculate possible hand and send to specific client
+      this.sortPossibleHand(currentPlayerIndex);
+      // .emit("Possible cards", this.players[])
+      
       // Listening for move
       this.players[currentPlayerIndex].moveCard(this.clients[currentPlayerIndex], this.gameState);
 
       // After move is performed
-      currentPlayerIndex = this.readTop(currentPlayerIndex) // Performs special functions and changes turn if applicable
+      currentPlayerIndex = Number(this.readTop(currentPlayerIndex)) // Performs special functions and changes turn if applicable
 
       // Sends top_card to clients 
-      this.broadcast("Card Played",this.gameState.top_card)
+      this.broadcast("Card Played", this.gameState.top_card);
+      }
     }
-  }
-  */
-
-  private changeTurn(currentPlayerIndex: number) {
-    const topNum = this.gameState.top_card?.number
-    if ((topNum != 10) && (topNum != 11)) {
-      currentPlayerIndex = (currentPlayerIndex + 1) % 2
-    }
-    return currentPlayerIndex
-  }
 
   public handleDisconnect(client: GameClient) {
     this.siggyListener.detachPlayer(client.playerIndex);
@@ -242,10 +262,11 @@ class GameState {
 
   constructor() { //build initial game state 
     const colour = ['red', 'yellow', 'green', 'blue']
-    /* 10 = skip; 11 = +2; 12 = +4; 13 = wildcard 14 = draw card */ 
+    /* 10 = skip; 11 = +2; 12 = +4; 13 = wildcard 14 = draw card 15 = solid color*/ 
     for (let i = 0; i < 14; i++){ //build the number cards 
+      // joker_marker is true for wild cards and solid color cards -- allows solid color to be placed on wild
       let joker_marker = false; 
-      if (i > 9){
+      if (i > 12){
         joker_marker = true; 
       } 
       for (let j = 0; j < 4; j++){
@@ -289,6 +310,7 @@ class Player {
     const action = playerClient.getCurrentPrediction();
     if (action === Action.Right) {
         this.selected_card = (this.selected_card + 1) % this.possible_hand.length;
+        // Tell client about action
     } else if (action === Action.Left) {
         this.selected_card = (this.selected_card - 1 + this.possible_hand.length) % this.possible_hand.length;
     } else if (action === Action.Clench) { 
