@@ -228,7 +228,7 @@ class Game {
   public playGame() {
     this.setGame();
     let currentPlayerIndex = 0;
-    const player_sockets = []
+    const player_sockets = new Array<string>();
     for (let i = 0; i < this.numPlayers; i++) {
       player_sockets.push(this.players[i].player_socket);
     }
