@@ -6,7 +6,7 @@ class GameClient {
   playerIndex: number = -1;
   socket: Socket;
   game: Game;
-  currentPrediction: Action;
+  currentPrediction: Action | undefined;
 
   constructor(playerIndex: number, socket: Socket, game: Game) {
     this.playerIndex = playerIndex;
@@ -48,7 +48,7 @@ class Game {
   clients = new Map<string, GameClient>();
   siggyListener: SiggyListener;
   numPlayers: number;
-  players: Player[];
+  players: Player[] = [];
   gameState: GameState = new GameState();
 
   constructor(
@@ -81,7 +81,7 @@ class Game {
     const gameClient = new GameClient(playerIndex, socket, this);
     this.clients.set(socket.id, gameClient);
     this.siggyListener.attachPlayer(playerIndex, gameClient);
-    this.players.push(new Player());
+    this.players.push(new Player(socket.id));
 
     return true;
   }
@@ -185,7 +185,7 @@ class Game {
   /* 
   Takes current playerIndex 
   Adds a card to the player */ 
-  public addCard(playerIndex){
+  public addCard(playerIndex: number){
     const player = this.players[playerIndex]; 
     let deck = this.gameState.deck; 
     if (deck.length != 0){
@@ -228,22 +228,34 @@ class Game {
   public playGame() {
     this.setGame();
     let currentPlayerIndex = 0;
-
+    const player_sockets = []
+    for (let i = 0; i < this.numPlayers; i++) {
+      player_sockets.push(this.players[i].player_socket);
+    }
+    
     while (this.players[currentPlayerIndex].hand.length > 0) {
       // Calculate possible hand and send to specific client
+      const current_client = this.clients.get(player_sockets[currentPlayerIndex])
       this.sortPossibleHand(currentPlayerIndex);
-      this.clients[currentPlayerIndex].socket.emit("Possible Cards", this.players[currentPlayerIndex].possible_hand);
-      
-      // Listening for move
-      this.players[currentPlayerIndex].moveCard(this.clients[currentPlayerIndex], this.gameState);
 
-      // After move is performed
-      currentPlayerIndex = Number(this.readTop(currentPlayerIndex)) // Performs special functions and changes turn if applicable
+      if (current_client) {
+        current_client.socket.emit("Possible Cards", this.players[currentPlayerIndex].possible_hand);
+        current_client.socket.emit("Impossible Cards", this.players[currentPlayerIndex].impossible_hand);
 
-      // Sends top_card to clients 
-      this.broadcast("Card Played", this.gameState.top_card);
+        // Listening for move
+        this.players[currentPlayerIndex].moveCard(current_client, this.gameState);
+
+        // Special functions can be performed
+        currentPlayerIndex = Number(this.readTop(currentPlayerIndex)) // Performs special functions and changes turn if applicable
+
+        // Sends top_card to clients 
+        this.broadcast("Card Played", this.gameState.top_card);
+      }
+      else {
+        this.error("socket.id does not correspond to client")
       }
     }
+  }
 
   public handleDisconnect(client: GameClient) {
     this.siggyListener.detachPlayer(client.playerIndex);
@@ -253,6 +265,10 @@ class Game {
   public broadcast(topic: string, ...msg: any[]) {
     // this.server.send()
     this.server.emit(topic, ...msg);
+  }
+  
+  private error(message: string) {
+    console.log(`Error: ${message}`);
   }
 }
 
@@ -294,43 +310,43 @@ class Card {
 }
 
 class Player {
+  player_socket: string = "";
   hand: Card[] = [];
   possible_hand: Card[] = [];
   selected_card: number = 0;
   impossible_hand: Card[] = [];
 
-  constructor() {
+  constructor(player_socket: string) {
+    this.player_socket = player_socket;
     this.hand = [];
     this.possible_hand = [];
     this.selected_card = 0;
     this.impossible_hand = [];
   }
 
- public moveCard(playerClient: GameClient, gameState : GameState) {
-  while (true) {
-    const action = playerClient.getCurrentPrediction();
-    if (action === Action.Right) {
-        this.selected_card = (this.selected_card + 1) % this.possible_hand.length;
-        // Tell client about action
-        playerClient.socket.emit("Direction", "right");
-    } else if (action === Action.Left) {
-        this.selected_card = (this.selected_card - 1 + this.possible_hand.length) % this.possible_hand.length;
-        playerClient.socket.emit("Direction", "left");
-    } else if (action === Action.Clench) { 
-        this.playCard(gameState);
-        break;
+  public moveCard(playerClient: GameClient, gameState : GameState) {
+    while (true) {
+      const action = playerClient.getCurrentPrediction();
+      if (action === Action.Right) {
+          this.selected_card = (this.selected_card + 1) % this.possible_hand.length;
+          playerClient.socket.emit("direction", "right");
+      } else if (action === Action.Left) {
+          this.selected_card = (this.selected_card - 1 + this.possible_hand.length) % this.possible_hand.length;
+          playerClient.socket.emit("direction", "left");
+      } else if (action === Action.Clench) { 
+          this.playCard(gameState);
+          break;
+      }
     }
   }
-}
 
-public playCard(gameState: GameState) {
-  gameState.top_card = this.possible_hand[this.selected_card];
-  this.possible_hand.splice(this.selected_card, 1);
-  gameState.played_cards.push(this.possible_hand[this.selected_card]);
-  this.hand.splice(this.selected_card, 1);
-    
-}
-  
+  public playCard(gameState: GameState) {
+    gameState.top_card = this.possible_hand[this.selected_card];
+    this.possible_hand.splice(this.selected_card, 1);
+    gameState.played_cards.push(this.possible_hand[this.selected_card]);
+    this.hand.splice(this.selected_card, 1);
+      
+  }
 }
 
 export { Game, GameClient, GameState, Card, Player };
