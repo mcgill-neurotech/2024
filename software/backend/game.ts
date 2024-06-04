@@ -216,6 +216,14 @@ class Game {
   }
   */
 
+  private changeTurn(currentPlayerIndex: number) {
+    const topNum = this.gameState.top_card?.number
+    if ((topNum != 10) && (topNum != 11)) {
+      currentPlayerIndex = (currentPlayerIndex + 1) % 2
+    }
+    return currentPlayerIndex
+  }
+
   public handleDisconnect(client: GameClient) {
     this.siggyListener.detachPlayer(client.playerIndex);
     this.clients.delete(client.id);
@@ -276,6 +284,7 @@ class Player {
   }
 
  public moveCard(playerClient: GameClient, gameState : GameState) {
+  while (true) {
     const action = playerClient.getCurrentPrediction();
     if (action === Action.Right) {
         this.selected_card = (this.selected_card + 1) % this.possible_hand.length;
@@ -283,12 +292,15 @@ class Player {
         this.selected_card = (this.selected_card - 1 + this.possible_hand.length) % this.possible_hand.length;
     } else if (action === Action.Clench) { 
         this.playCard(gameState);
+        break;
     }
+  }
 }
 
 public playCard(gameState: GameState) {
   gameState.top_card = this.possible_hand[this.selected_card];
   this.possible_hand.splice(this.selected_card, 1);
+  gameState.played_cards.push(this.possible_hand[this.selected_card]);
   this.hand.splice(this.selected_card, 1);
     
 }
