@@ -196,9 +196,8 @@ class Game {
   }
 
   // After playing a card, checks if special power is used and changes turn accordingly
-  public readTop(playerIndex: number) {
-    const topCard = this.gameState.top_card 
-    const number = topCard?.number 
+  public readSpecial(playerIndex: number, selected: Card) {
+    const number = selected.number 
     const opp = (playerIndex + 1) % 2
 
     if (number == 11){ //add 2 cards 
@@ -206,7 +205,7 @@ class Game {
       this.addCard(opp); 
     } else if (number == 12){ //add 4 cards 
       for (let i=0; i < 4; i++) {
-      this.addCard(opp);
+        this.addCard(opp);
       }
     };
     
@@ -242,10 +241,10 @@ class Game {
         current_client.socket.emit("Impossible Cards", this.players[currentPlayerIndex].impossible_hand);
 
         // Listening for move
-        this.players[currentPlayerIndex].moveCard(current_client, this.gameState);
+        const selected = this.players[currentPlayerIndex].moveCard(current_client, this.gameState);
 
         // Special functions can be performed
-        currentPlayerIndex = Number(this.readTop(currentPlayerIndex)) // Performs special functions and changes turn if applicable
+        currentPlayerIndex = Number(this.readSpecial(currentPlayerIndex, selected)) // Performs special functions and changes turn if applicable
 
         // Sends top_card to clients 
         this.broadcast("Card Played", this.gameState.top_card);
@@ -333,15 +332,14 @@ class Player {
           this.selected_card = (this.selected_card - 1 + this.possible_hand.length) % this.possible_hand.length;
           playerClient.socket.emit("direction", "left");
       } else if (action === Action.Clench) { 
-          this.playCard(gameState);
-          break;
+         return this.playCard(gameState);
       }
     }
   }
 
   // Returns true if card played (new card placed onto played cards), false if no card played (draw card)
   public playCard(gameState: GameState) {
-    const selected = this.possible_hand[this.selected_card]
+    const selected = this.possible_hand[this.selected_card];
     if (selected.number != 14) {
       gameState.top_card = selected;
       this.possible_hand.splice(this.selected_card, 1);
@@ -354,6 +352,7 @@ class Player {
         this.hand.push(drawn);
       }
     }
+    return selected;
   }
 }
 

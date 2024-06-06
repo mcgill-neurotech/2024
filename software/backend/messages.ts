@@ -1,15 +1,18 @@
+import { Card } from "./game"
+
 enum GameEvents {
   PlayerJoined = "player joined",
   PlayerReady = "player ready",
   GameStarted = "game started",
   Scroll = "scroll",
-  PlayedPlayedCard = "played played card",
+  PlayerPlayedCard = "player played card",
   PlayerPicksUpCardsMessage = "player picks up card",
+  PlayerPossibleHand = "player possible hand"
 }
 
 interface PlayerJoinedMessage {
   playerIndex: number;
-}
+} 
 
 interface PlayerReadyMessage {
   playerIndex: number;
@@ -32,6 +35,11 @@ interface PlayerPlayedCardMessage {
 
 interface PlayerPicksUpCardsMessage {
   playerIndex: number;
+}
+
+interface PlayerPossibleHandMessage {
+  playerIndex: number;
+  possible_hand: Card[];
 }
 
 // interface PlayerUnoMessage {
