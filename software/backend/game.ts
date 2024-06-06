@@ -1,6 +1,5 @@
 import { SiggyListener, CategoricalPrediction, Action } from "./siggy_listener";
 import { Server, Socket } from "socket.io";
-
 class GameClient {
   id: string;
   playerIndex: number = -1;
@@ -340,12 +339,21 @@ class Player {
     }
   }
 
+  // Returns true if card played (new card placed onto played cards), false if no card played (draw card)
   public playCard(gameState: GameState) {
-    gameState.top_card = this.possible_hand[this.selected_card];
-    this.possible_hand.splice(this.selected_card, 1);
-    gameState.played_cards.push(this.possible_hand[this.selected_card]);
-    this.hand.splice(this.selected_card, 1);
-      
+    const selected = this.possible_hand[this.selected_card]
+    if (selected.number != 14) {
+      gameState.top_card = selected;
+      this.possible_hand.splice(this.selected_card, 1);
+      gameState.played_cards.push(this.possible_hand[this.selected_card]);
+      this.hand.splice(this.selected_card, 1);
+    }
+    else {
+      const drawn = gameState.deck.pop()
+      if (drawn) {
+        this.hand.push(drawn);
+      }
+    }
   }
 }
 
