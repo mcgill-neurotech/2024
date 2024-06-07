@@ -86,7 +86,7 @@ class Game {
   }
 
   // Shuffles deck
-  public shuffleDeck() {
+  private shuffleDeck() {
     let deck = this.gameState.deck;
     let currentIndex = deck.length,
       randomIndex;
@@ -106,7 +106,7 @@ class Game {
   }
 
   // Sets initial game state -- 7 cards initially in each player's hands, draw from deck option, first top card
-  public setGame() {
+  private setGame() {
     this.shuffleDeck()
     const starthand = 7;
     let deck = this.gameState.deck;
@@ -226,33 +226,77 @@ class Game {
   public playGame() {
     this.setGame();
     let currentPlayerIndex = 0;
-    const player_sockets = new Array<string>();
-    for (let i = 0; i < this.numPlayers; i++) {
-      player_sockets.push(this.players[i].player_socket);
-    }
     
     while (this.players[currentPlayerIndex].hand.length > 0) {
       // Calculate possible hand and send to specific client
-      const current_client = this.clients.get(player_sockets[currentPlayerIndex])
+      const current_player = this.players[currentPlayerIndex]
+      const current_client = this.clients.get(current_player.player_socket)
       this.sortPossibleHand(currentPlayerIndex);
 
       if (current_client) {
-        current_client.socket.emit("Possible Cards", this.players[currentPlayerIndex].possible_hand);
-        current_client.socket.emit("Impossible Cards", this.players[currentPlayerIndex].impossible_hand);
+        current_client.socket.emit("Possible Cards", current_player.possible_hand);
+        current_client.socket.emit("Impossible Cards", current_player.impossible_hand);
 
         // Listening for move
         const selected = this.players[currentPlayerIndex].moveCard(current_client, this.gameState);
 
+        if (current_player.hand.length == 0) {
+          break;
+        }
+
         // Special functions can be performed
         currentPlayerIndex = Number(this.readSpecial(currentPlayerIndex, selected)) // Performs special functions and changes turn if applicable
-
+    
         // Sends top_card to clients 
         this.broadcast("Card Played", this.gameState.top_card);
       }
       else {
-        this.error("socket.id does not correspond to client")
+        this.error("socket.id does not correspond to client");
       }
     }
+
+    this.endGame(currentPlayerIndex);
+  }
+
+  public startGame() {
+    let readyState = new Array(this.numPlayers).fill(false);
+
+    // P1 then P2 confirm readiness with jaw clench
+    for (let i = 0; i < this.numPlayers; i++) {
+      const client = this.clients.get(this.players[i].player_socket)
+      if (client) {
+        readyState[i] = this.players[i].readyAction(client);
+      }
+    }
+
+    this.broadcast("Game Started", true);
+
+    this.playGame();
+  }
+
+  public endGame(winnerIndex: number) {
+    this.broadcast("Game Ended", winnerIndex);
+    // Timeout after 60000
+    const timeoutID = setTimeout(this.closeGame, 60000);
+
+    let readyState = new Array(this.numPlayers).fill(false);
+
+    // P1 then P2 confirm readiness with jaw clench
+    for (let i = 0; i < this.numPlayers; i++) {
+      const client = this.clients.get(this.players[i].player_socket)
+      if (client) {
+        readyState[i] = this.players[i].readyAction(client);
+      }
+    }
+    clearTimeout(timeoutID);
+
+    this.broadcast("Game Started", true);
+
+    this.playGame();
+  }
+
+  private closeGame() {
+    this.broadcast("End Game", true);
   }
 
   public handleDisconnect(client: GameClient) {
@@ -320,6 +364,15 @@ class Player {
     this.possible_hand = [];
     this.selected_card = 0;
     this.impossible_hand = [];
+  }
+
+  public readyAction(playerClient: GameClient) {
+    while (true) {
+      const action = playerClient.getCurrentPrediction();
+      if (action === Action.Clench) {
+        return true;
+      }
+    }
   }
 
   public moveCard(playerClient: GameClient, gameState : GameState) {
