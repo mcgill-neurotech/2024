@@ -17,11 +17,14 @@ interface IUseSocketParams {
   // data = current top card
   onCardPlayed: (data: GameCard) => void;
 
-  // data = {???}
-  // onGameStarted: (data) => void
+  // data = true for started game
+  onGameStarted: (data: boolean) => void;
 
-  // data = {???}
-  // onGameEnded: (data) => void
+  // data = index of winning player
+  onGameEnded: (data: number) => void;
+
+  // data = true for closing game
+  onGameClosed: (data: boolean) => void;
 }
 
 const useSocket = ({
@@ -29,6 +32,9 @@ const useSocket = ({
   onInpossibleCards,
   onDirection,
   onCardPlayed,
+  onGameStarted,
+  onGameEnded,
+  onGameClosed
 }: IUseSocketParams) => {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [id, setId] = useState(socket.id);
@@ -50,8 +56,9 @@ const useSocket = ({
     socket.on('Impossible Cards', onInpossibleCards);
     socket.on('direction', onDirection);
     socket.on('Card Played', onCardPlayed);
-    // game started handler
-    // game ended handler
+    socket.on('Game Started', onGameStarted);
+    socket.on('Game Ended', onGameEnded);
+    socket.on('Game Closed', onGameClosed);
 
     return () => {
       socket.off('connect', onConnect);
@@ -60,8 +67,9 @@ const useSocket = ({
       socket.off('Impossible Cards', onInpossibleCards);
       socket.off('direction', onDirection);
       socket.off('Card Played', onCardPlayed);
-      // game started handler
-      // game ended handler
+      socket.off('Game Started', onGameStarted);
+      socket.off('Game Ended', onGameEnded);
+      socket.off('Game Closed', onGameClosed);
     };
   }, []);
 
@@ -114,7 +122,20 @@ const useGameSocket = () => {
         }
       }
     },
-  });
+
+    onGameStarted: (data) => {
+
+    },
+    
+    onGameEnded: (data) => {
+    },
+
+    onGameClosed: (data) => {
+
+    }
+  
+  }
+);
 
   return {
     connectionInfo: {

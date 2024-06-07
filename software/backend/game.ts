@@ -296,7 +296,7 @@ class Game {
   }
 
   private closeGame() {
-    this.broadcast("End Game", true);
+    this.broadcast("Game Closed", true);
   }
 
   public handleDisconnect(client: GameClient) {
