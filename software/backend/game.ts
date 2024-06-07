@@ -256,19 +256,23 @@ class Game {
   }
 
   public startGame() {
-    let readyState = new Array(this.numPlayers).fill(false);
+    if (this.players.length = this.numPlayers) {
+      let readyState = new Array(this.numPlayers).fill(false);
 
-    // P1 then P2 confirm readiness with jaw clench
-    for (let i = 0; i < this.numPlayers; i++) {
-      const client = this.clients.get(this.players[i].player_socket)
-      if (client) {
-        readyState[i] = this.players[i].readyAction(client);
+      this.broadcast("Ready Listen");
+
+      // P1 then P2 confirm readiness with jaw clench
+      for (let i = 0; i < this.numPlayers; i++) {
+        const client = this.clients.get(this.players[i].player_socket)
+        if (client) {
+          readyState[i] = this.players[i].readyAction(client);
+        }
       }
+
+      this.broadcast("Game Started");
+
+      this.playGame();
     }
-
-    this.broadcast("Game Started", true);
-
-    this.playGame();
   }
 
   public endGame(winnerIndex: number) {
@@ -287,13 +291,13 @@ class Game {
     }
     clearTimeout(timeoutID);
 
-    this.broadcast("Game Started", true);
+    this.broadcast("Game Started");
 
     this.playGame();
   }
 
   private closeGame() {
-    this.broadcast("Game Closed", true);
+    this.broadcast("Game Closed");
   }
 
   public handleDisconnect(client: GameClient) {

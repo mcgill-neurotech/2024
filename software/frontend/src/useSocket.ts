@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { socket } from './socket';
 import { Card as GameCard } from '../../backend/game';
+import { useNavigate } from 'react-router-dom';
 
 type Direction = 'left' | 'right';
 interface IUseSocketParams {
@@ -17,14 +18,14 @@ interface IUseSocketParams {
   // data = current top card
   onCardPlayed: (data: GameCard) => void;
 
-  // data = true for started game
-  onGameStarted: (data: boolean) => void;
+  // broadcast when both players are ready
+  onGameStarted: () => void;
 
   // data = index of winning player
   onGameEnded: (data: number) => void;
 
-  // data = true for closing game
-  onGameClosed: (data: boolean) => void;
+  // broadcast when players don't restart game
+  onGameClosed: () => void;
 }
 
 const useSocket = ({
@@ -123,15 +124,18 @@ const useGameSocket = () => {
       }
     },
 
-    onGameStarted: (data) => {
-
+    onGameStarted: () => {
+      const navigate = useNavigate();
+      navigate('/game'); // redirect to GameBoard 
     },
-    
+
     onGameEnded: (data) => {
+      // possibly navigate winner and loser to WinScreen and LoseScreen respectively? Could just be a pop-up with a countdown for disconnect
     },
 
-    onGameClosed: (data) => {
-
+    
+    onGameClosed: () => {
+      socket.disconnect(); // disconnect both players 
     }
   
   }
