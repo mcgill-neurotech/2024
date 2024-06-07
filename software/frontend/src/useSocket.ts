@@ -89,14 +89,29 @@ const useGameSocket = () => {
       setSelectedPlayableCardIndex(data.length / 2); // prevent out of bounds errors
     },
     onDirection: (data) => {
+      // scroll to the end of unplayable cards, then roll over to playable cards
       if (data === 'left') {
-        setSelectedPlayableCardIndex(
-          Math.max(0, selectedPlayableCardIndex - 1),
-        );
-      } else {
-        setSelectedPlayableCardIndex(
-          Math.min(selectedPlayableCardIndex + 1, playableCards.length - 1),
-        );
+        if (selectedPlayableCardIndex === 0) {
+          const nextIndex = Math.max(0, selectedUnplayableCardIndex - 1);
+          setSelectedUnplayableCardIndex(nextIndex);
+        } else {
+          const nextIndex = Math.max(0, selectedPlayableCardIndex - 1);
+          setSelectedPlayableCardIndex(nextIndex);
+        }
+      } else if (data === 'right') {
+        if (selectedUnplayableCardIndex === unplayableCards.length - 1) {
+          const nextindex = Math.min(
+            selectedPlayableCardIndex + 1,
+            playableCards.length - 1,
+          );
+          setSelectedPlayableCardIndex(nextindex);
+        } else {
+          const nextIndex = Math.min(
+            selectedUnplayableCardIndex + 1,
+            unplayableCards.length - 1,
+          );
+          setSelectedUnplayableCardIndex(nextIndex);
+        }
       }
     },
   });
