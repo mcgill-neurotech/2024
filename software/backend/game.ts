@@ -1,3 +1,4 @@
+import { socket } from "zeromq";
 import { SiggyListener, CategoricalPrediction, Action } from "./siggy_listener";
 import { Server, Socket } from "socket.io";
 class GameClient {
@@ -232,23 +233,19 @@ class Game {
       const current_player = this.players[currentPlayerIndex]
       const current_client = this.clients.get(current_player.player_socket)
       this.sortPossibleHand(currentPlayerIndex);
-
+  
       if (current_client) {
-        current_client.socket.emit("Possible Cards", current_player.possible_hand);
-        current_client.socket.emit("Impossible Cards", current_player.impossible_hand);
-
+        current_client.socket.emit("Possible Cards", this.players[currentPlayerIndex].possible_hand);
+        current_client.socket.emit("Impossible Cards", this.players[currentPlayerIndex].impossible_hand);
+  
         // Listening for move
         const selected = this.players[currentPlayerIndex].moveCard(current_client, this.gameState);
-
-        if (current_player.hand.length == 0) {
-          break;
-        }
-
+  
         // Special functions can be performed
         currentPlayerIndex = Number(this.readSpecial(currentPlayerIndex, selected)) // Performs special functions and changes turn if applicable
-    
-        // Sends top_card to clients 
-        this.broadcast("Card Played", this.gameState.top_card);
+  
+        // Sends top_card to clients with playerIndex
+        this.broadcast("Card Played", currentPlayerIndex, this.gameState.top_card);
       }
       else {
         this.error("socket.id does not correspond to client");
@@ -358,6 +355,7 @@ class Player {
   selected_card: number = 0;
   impossible_hand: Card[] = [];
 
+
   constructor(player_socket: string) {
     this.player_socket = player_socket;
     this.hand = [];
@@ -385,13 +383,13 @@ class Player {
           this.selected_card = (this.selected_card - 1 + this.possible_hand.length) % this.possible_hand.length;
           playerClient.socket.emit("direction", "left");
       } else if (action === Action.Clench) { 
-         return this.playCard(gameState);
+         return this.playCard(gameState, playerClient);
       }
     }
   }
 
   // Returns true if card played (new card placed onto played cards), false if no card played (draw card)
-  public playCard(gameState: GameState) {
+  public playCard(gameState: GameState, playerClient: GameClient) {
     const selected = this.possible_hand[this.selected_card];
     if (selected.number != 14) {
       gameState.top_card = selected;
@@ -405,6 +403,7 @@ class Player {
         this.hand.push(drawn);
       }
     }
+   playerClient.socket.emit("Card Played", playerClient.playerIndex, selected);
     return selected;
   }
 }
