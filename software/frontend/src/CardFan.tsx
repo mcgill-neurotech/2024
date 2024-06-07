@@ -1,4 +1,5 @@
 import React from 'react';
+import Card, { ICardProps } from './Card';
 
 function calculate_fan_positions(N: number, selected: number, spread: number) {
   const B = Math.floor((N - 1) / 2);
@@ -9,12 +10,12 @@ function calculate_fan_positions(N: number, selected: number, spread: number) {
   const center = positions[selected];
   return positions.map((i) => ({
     left: (i - center) * spread * 50, // Spread horizontally
-    zIndex: -Math.abs(i - center) + B + 1
+    zIndex: -Math.abs(i - center) + B + 1,
   }));
 }
 
 interface ICardFanProps {
-  cards: React.ReactElement[];
+  cards: ICardProps[];
   spread: number;
   selected: number;
   onSelected: (index: number) => void;
@@ -30,7 +31,7 @@ const CardFanLinear: React.FC<ICardFanProps> = ({
   return (
     <div className="flex items-center justify-center card-fan-container">
       <div className="relative">
-        {cards.map((card, i) => {
+        {cards.map((props, i) => {
           const { left, zIndex } = positions[i];
           const active = selected === i;
           const y = active ? -140 : -130; // Adjust this value to move the cards up
@@ -43,10 +44,10 @@ const CardFanLinear: React.FC<ICardFanProps> = ({
                 left: `calc(50% + ${left}px)`,
                 zIndex,
                 top: `${y}px`, // Adjust this value to move the cards up
-                transform: 'translateX(-50%)'
+                transform: 'translateX(-50%)',
               }}
             >
-              {card}
+              <Card key={i} {...props} />
             </div>
           );
         })}
@@ -56,6 +57,3 @@ const CardFanLinear: React.FC<ICardFanProps> = ({
 };
 
 export { CardFanLinear };
-
-
-

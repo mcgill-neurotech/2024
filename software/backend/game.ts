@@ -6,7 +6,7 @@ class GameClient {
   playerIndex: number = -1;
   socket: Socket;
   game: Game;
-  currentPrediction: Action;
+  currentPrediction: Action | undefined;
 
   constructor(playerIndex: number, socket: Socket, game: Game) {
     this.playerIndex = playerIndex;
@@ -48,7 +48,7 @@ class Game {
   clients = new Map<string, GameClient>();
   siggyListener: SiggyListener;
   numPlayers: number;
-  players: Player[];
+  players: Player[] = [];
   gameState: GameState = new GameState();
 
   constructor(
@@ -136,7 +136,7 @@ class Game {
   Takes current playerIndex
   Sorts cards in the current player's hand into possible or impossible hand
   */
-  public sortPossibleHand(playerIndex) {
+  public sortPossibleHand(playerIndex: number) {
     // splice possible hand from 1 -> end, preserve draw card
     // clear everything in impossible hand
     const topCard = this.gameState.top_card;
@@ -162,7 +162,7 @@ class Game {
   /* 
   Takes current playerIndex 
   Adds a card to the player */
-  public addCard(playerIndex) {
+  public addCard(playerIndex: number) {
     const player = this.players[playerIndex];
     let deck = this.gameState.deck;
     if (deck.length != 0) {
@@ -173,7 +173,7 @@ class Game {
     }
   }
 
-  public readTop(playerIndex) {
+  public readTop(playerIndex: number) {
     const topCard = this.gameState.top_card;
     const number = topCard?.number;
     const joker = topCard?.joker;

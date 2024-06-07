@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Card, { ICardProps } from './Card';
 
 function gaussianRandom(mean = 0, stdev = 1) {
@@ -20,7 +20,6 @@ interface IPlayingPileProps {
   cards: ICardProps[];
   cardWidth: number;
   cardHeight: number;
-  setTopCenterCard: (card: ICardProps) => void;
 }
 
 const rotations = generateRandom(200, 0, Math.PI / 12);
@@ -31,14 +30,7 @@ const PlayingPile: React.FC<IPlayingPileProps> = ({
   cards,
   cardWidth,
   cardHeight,
-  setTopCenterCard,
 }) => {
-  useEffect(() => {
-    if (cards.length > 0) {
-      setTopCenterCard(cards[0]);
-    }
-  }, [cards, setTopCenterCard]);
-
   return (
     <div className="flex items-center justify-center">
       <div className="relative items-center justify-center">
