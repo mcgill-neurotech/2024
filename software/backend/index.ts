@@ -2,7 +2,7 @@ import express from "express";
 import http from "http";
 import { Server } from "socket.io";
 import { SiggyListener } from "./siggy_listener";
-import { Game, GameClient } from "./game";
+import { Game } from "./game";
 
 const NUM_PLAYERS = 2;
 const WS_PORT = 3000;

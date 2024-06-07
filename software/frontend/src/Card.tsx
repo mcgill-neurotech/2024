@@ -6,9 +6,10 @@ export enum CardColor {
   Green = '#55AA55',
   Blue = '#5555FD',
   Yellow = '#FFAA00',
+  Black = '#000000',
 }
 
-interface ICardProps {
+export interface ICardProps {
   /**
    * The element to place at the center of the card, e.g. a p, svg, img, etc
    */
@@ -21,7 +22,7 @@ interface ICardProps {
   /**
    * The background color of the card, #000000 format
    */
-  color: string;
+  color: CardColor | string;
 }
 
 const Card: React.FC<ICardProps> = ({

@@ -1,0 +1,63 @@
+.gameboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100vh;
+  background-color: #87ceeb;
+  padding-bottom: 20px;
+}
+
+.top-section, .middle-section, .bottom-section {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.middle-section {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.playing-pile {
+  position: relative;
+  width: 100px; /* Adjust as needed */
+  height: 150px; /* Adjust as needed */
+  margin: auto;
+}
+
+.pile {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.bottom-section {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  margin-top: auto;
+}
+
+.half-section {
+  background-color: brown;
+  border-radius: 8px;
+  padding: 16px;
+  width: 45%;
+  height: 250px; /* Adjust as needed to fit the entire card height */
+  position: relative;
+  overflow: hidden;
+}
+
+.card-fan-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.card-fan-container .absolute {
+  transition: top 0.3s, left 0.3s;
+}

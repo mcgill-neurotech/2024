@@ -1,0 +1,39 @@
+/* HomeScreen_style.css */
+.home-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #003366; /* Dark blue background */
+  }
+  
+  .title {
+    color: #003366; /* Same dark blue color as the background */
+    background-color: white;
+    border: 2px solid #003366; /* Dark blue border */
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+  }
+  
+  .start-button {
+    color: #003366; /* Same dark blue color as the background */
+    background-color: white;
+    border: 2px solid #003366; /* Dark blue border */
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 16px;
+    text-decoration: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+  }
+  
+  .fade {
+    opacity: 1;
+  }
+  

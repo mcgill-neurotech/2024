@@ -1,6 +1,9 @@
 from backend import DataClassifier
 import pathlib
 import logging
+from OpenBCI_LSL.lib.open_bci_v3 import OpenBCIBoard
+from pylsl import StreamInfo
+from bci_streamer import BciStreamer
 
 
 log_path = pathlib.Path(f"logs/cli.log")
@@ -28,7 +31,16 @@ title_string = """
 
 
 def cli():
-    # Create a data recorder
+    #
+    # stream using libs provided by OpenBCI_LSL - couldn't get to work on WSL2 (serial port finding issues), maybe someone can try on windows or a mac
+    # autodetect board
+    # def on_sample(sample):
+    #     channel_data = sample.channel_data
+    #     print(channel_data)
+
+    # bci_streamer = BciStreamer()
+    # bci_streamer.start_streaming(on_sample)
+
     data_recorder = DataClassifier(find_streams=True)
     print(title_string)
 
