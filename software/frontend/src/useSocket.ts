@@ -81,10 +81,12 @@ const useGameSocket = () => {
       setPlayedCards([...playedCards, data]);
     },
     onInpossibleCards: (data) => {
-      setUnplayableCards(data);
+      setUnplayableCards(data); // maybe sort by color then number for better experience?
+      setSelectedUnplayableCardIndex(data.length / 2); // prevent out of bounds errors
     },
     onPossibleCards: (data) => {
-      setPlayableCards(data);
+      setPlayableCards(data); // maybe sort by color then number for better experience?
+      setSelectedPlayableCardIndex(data.length / 2); // prevent out of bounds errors
     },
     onDirection: (data) => {
       if (data === 'left') {
