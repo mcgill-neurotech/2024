@@ -1,7 +1,7 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './Gameboard_style.css';
 import useSocket from './useSocket';
-import Card, { CardColor, ICardProps } from './Card';
+import { CardColor, ICardProps } from './Card';
 import { CardFanLinear } from './CardFan';
 import PlayingPile from './CardPile';
 import { Card as GameCard } from '../../backend/game';
@@ -9,30 +9,49 @@ import SkipIcon from './SkipIcon';
 import SquaresIcon from './SquaresIcon';
 import ColorwheelIcon from './ColorwheelIcon';
 
-const texts = [...Array.from(Array(10).keys())];
-const colors = Object.values(CardColor);
+const cardColorMap = new Map<string, CardColor>([
+  ['blue', CardColor.Blue],
+  ['yellow', CardColor.Yellow],
+  ['green', CardColor.Green],
+  ['red', CardColor.Red],
+  ['wild', CardColor.Black],
+]);
 
-const cartesian = (...sets: any[]): any[] =>
-  sets.reduce((a, b) =>
-    a.flatMap((d: any) => b.map((e: any) => [d, e].flat())),
-  );
+const specialCornerMap = new Map<number, (color: string) => React.ReactNode>([
+  [
+    10,
+    (c) => (
+      <SkipIcon color={c} width={50} height={50} className="icon-shadow" />
+    ),
+  ],
+  [11, (c) => <p className="text-white text-4xl text-shadow">{'+2'}</p>],
+  [12, (c) => <p className="text-white text-4xl text-shadow">{'+4'}</p>],
+  [13, (c) => <ColorwheelIcon width={45} height={45} />],
+]);
 
-const colorMap = (color: string) => {
-  if (color === 'blue') return CardColor.Blue;
-  else if (color === 'yellow') return CardColor.Yellow;
-  else if (color === 'red') return CardColor.Red;
-  else if (color === 'green') return CardColor.Green;
-  else if (color === 'wild') return '#000000';
-  return '#000000';
-};
+const specialCenterMap = new Map<number, (color: string) => React.ReactNode>([
+  [10, (c) => <SkipIcon color={c} width={50} height={50} strokeWidth={2} />],
+  [
+    11,
+    (c) => (
+      <SquaresIcon color={c} width={50} height={50} className="icon-shadow" />
+    ),
+  ],
+  [12, (c) => <ColorwheelIcon height={200} width={200} />],
+  [13, (c) => <ColorwheelIcon height={200} width={200} />],
+]);
+
+const specialClassNameMap = new Map<number, string>([
+  [12, 'bg-black'],
+  [13, 'bg-black'],
+]);
 
 const makeCardProps = (card: GameCard) => {
   let ret: ICardProps = {
+    color: cardColorMap.get(card.color) ?? '#000000',
     center: undefined,
     corners: undefined,
-    color: '',
   };
-  ret.center = colorMap(card.color);
 
   if (card.number <= 9) {
     ret.corners = (
@@ -43,37 +62,10 @@ const makeCardProps = (card: GameCard) => {
         {card.number}
       </p>
     );
-  } else if (card.number === 10) {
-    /* 10 = skip; 11 = +2; 12 = +4; 13 = wildcard */
-    ret.corners = (
-      <SkipIcon
-        color={ret.color}
-        width={50}
-        height={50}
-        className="icon-shadow"
-      />
-    );
-    ret.center = (
-      <SkipIcon color={ret.color} width={50} height={50} strokeWidth={2} />
-    );
-  } else if (card.number === 11) {
-    ret.corners = <p className="text-white text-4xl text-shadow">{'+2'}</p>;
-    ret.center = (
-      <SquaresIcon
-        color={ret.color}
-        width={50}
-        height={50}
-        className="icon-shadow"
-      />
-    );
-  } else if (card.number === 12) {
-    ret.corners = <p className="text-white text-4xl text-shadow">{'+4'}</p>;
-    ret.center = <ColorwheelIcon height={200} width={200} />;
-    ret.centerClassName = 'bg-black';
-  } else if (card.number === 13) {
-    ret.corners = <ColorwheelIcon width={45} height={45} />;
-    ret.center = <ColorwheelIcon height={200} width={200} />;
-    ret.centerClassName = 'bg-black';
+  } else {
+    ret.corners = specialCornerMap.get(card.number)!(card.color);
+    ret.center = specialCenterMap.get(card.number)!(card.color);
+    ret.centerClassName = specialClassNameMap.get(card.number);
   }
 
   return ret;
@@ -107,7 +99,7 @@ const Gameboard: React.FC = () => {
         );
       } else {
         setSelectedPlayableCardIndex(
-          Math.min(selectedPlayableCardIndex + 1, playableCards.length),
+          Math.min(selectedPlayableCardIndex + 1, playableCards.length - 1),
         );
       }
     },

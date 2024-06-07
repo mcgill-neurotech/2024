@@ -6,6 +6,7 @@ export enum CardColor {
   Green = '#55AA55',
   Blue = '#5555FD',
   Yellow = '#FFAA00',
+  Black = '#000000',
 }
 
 export interface ICardProps {
