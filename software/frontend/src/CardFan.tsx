@@ -18,14 +18,14 @@ interface ICardFanProps {
   cards: ICardProps[];
   spread: number;
   selected: number;
-  onSelected: (index: number) => void;
+  // onSelected: (index: number) => void; // was only for testing
 }
 
 const CardFanLinear: React.FC<ICardFanProps> = ({
   cards,
   spread,
   selected,
-  onSelected,
+  // onSelected,
 }) => {
   const positions = calculate_fan_positions(cards.length, selected, spread);
   return (
@@ -37,7 +37,7 @@ const CardFanLinear: React.FC<ICardFanProps> = ({
           const y = active ? -140 : -130; // Adjust this value to move the cards up
           return (
             <div
-              onClick={() => onSelected(i)}
+              // onClick={() => onSelected(i)}
               key={i}
               className="absolute"
               style={{

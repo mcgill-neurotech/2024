@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Gameboard_style.css';
-import useSocket from './useSocket';
+import { useGameSocket } from './useSocket';
 import { CardColor, ICardProps } from './Card';
 import { CardFanLinear } from './CardFan';
 import PlayingPile from './CardPile';
@@ -75,35 +75,16 @@ const CARD_WIDTH = 100; // Replace with actual card width
 const CARD_HEIGHT = 150; // Replace with actual card height
 
 const Gameboard: React.FC = () => {
-  const [playableCards, setPlayableCards] = useState<GameCard[]>([]);
-  const [unplayableCards, setUnplayableCards] = useState<GameCard[]>([]);
-  const [selectedPlayableCardIndex, setSelectedPlayableCardIndex] = useState(0);
-  const [selectedUnplayableCardIndex, setSelectedUnplayableCardIndex] =
-    useState(0);
-  const [playedCards, setPlayedCards] = useState<GameCard[]>([]);
-
-  const { isConnected, id } = useSocket({
-    onCardPlayed: (data) => {
-      setPlayedCards([...playedCards, data]);
-    },
-    onInpossibleCards: (data) => {
-      setUnplayableCards(data);
-    },
-    onPossibleCards: (data) => {
-      setPlayableCards(data);
-    },
-    onDirection: (data) => {
-      if (data === 'left') {
-        setSelectedPlayableCardIndex(
-          Math.max(0, selectedPlayableCardIndex - 1),
-        );
-      } else {
-        setSelectedPlayableCardIndex(
-          Math.min(selectedPlayableCardIndex + 1, playableCards.length - 1),
-        );
-      }
-    },
-  });
+  const { connectionInfo, gameInfo } = useGameSocket();
+  const isConnected = connectionInfo.isConnected;
+  const id = connectionInfo.id;
+  const {
+    playedCards,
+    playableCards,
+    unplayableCards,
+    selectedPlayableCardIndex,
+    selectedUnplayableCardIndex,
+  } = gameInfo;
 
   return (
     <div className="gameboard">
@@ -134,7 +115,6 @@ const Gameboard: React.FC = () => {
           <CardFanLinear
             selected={selectedUnplayableCardIndex}
             spread={1}
-            onSelected={(i) => setSelectedUnplayableCardIndex(i)}
             cards={unplayableCards.map((c) => makeCardProps(c))}
           />
         </div>
@@ -143,7 +123,6 @@ const Gameboard: React.FC = () => {
           <CardFanLinear
             selected={selectedPlayableCardIndex}
             spread={1}
-            onSelected={(i) => setSelectedPlayableCardIndex(i)}
             cards={playableCards.map((c) => makeCardProps(c))}
           />
         </div>
