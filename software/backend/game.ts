@@ -25,7 +25,7 @@ class GameClient {
   }
 
   public onCategoricalPrediction(prediction: CategoricalPrediction) {
-    // console.log("onPredictedAction", this.id, prediction.action);
+    console.log("onPredictedAction", this.id, prediction.action);
     this.currentPrediction = prediction.action;
   }
 
@@ -83,6 +83,12 @@ class Game {
     this.siggyListener.attachPlayer(playerIndex, gameClient);
     this.players.push(new Player(socket.id));
 
+    const remainingSlots = this.getAvailablePlayers().length;
+
+    console.log(remainingSlots, "slots remaining");
+    if (remainingSlots === 0) {
+      this.startGame();
+    }
     return true;
   }
 
@@ -112,7 +118,7 @@ class Game {
     const starthand = 7;
     let deck = this.gameState.deck;
     for (let i = 0; i < this.numPlayers; i++) {
-       /* Add draw from deck card to both player's possible hand -- OR hand */
+      /* Add draw from deck card to both player's possible hand -- OR hand */
       this.players[i].possible_hand.push(new Card("wild", 14, true))
 
       for (let j = 0; j < starthand; j++) {
@@ -144,9 +150,9 @@ class Game {
     const hand = player.hand;
     let possible = player.possible_hand;
     let impossible = player.impossible_hand;
-    
+
     // splice possible hand from 1 -> end, preserve draw card
-    // clear everything in impossible hand 
+    // clear everything in impossible hand
     possible.splice(1,possible.length-1);
     impossible.length = 0;
 
@@ -184,14 +190,14 @@ class Game {
 
   /* 
   Takes current playerIndex 
-  Adds a card to the player */ 
+  Adds a card to the player */
   public addCard(playerIndex: number){
-    const player = this.players[playerIndex]; 
-    let deck = this.gameState.deck; 
+    const player = this.players[playerIndex];
+    let deck = this.gameState.deck;
     if (deck.length != 0){
-      const card = deck.pop(); 
+      const card = deck.pop();
       if (card){
-        player.hand.push(card); 
+        player.hand.push(card);
       }
     }
   }
@@ -202,14 +208,14 @@ class Game {
     const opp = (playerIndex + 1) % 2
 
     if (number == 11){ //add 2 cards 
-      this.addCard(opp); 
-      this.addCard(opp); 
+      this.addCard(opp);
+      this.addCard(opp);
     } else if (number == 12){ //add 4 cards 
       for (let i=0; i < 4; i++) {
         this.addCard(opp);
       }
-    };
-    
+    }
+
     // Returns player index for the next round
     // Same player's turn if skip or +2 or allow player to choose wild card
     if (number) {
@@ -218,32 +224,33 @@ class Game {
       }
       else {
         return opp;
-      };
-    };
+      }
+    }
     
   }
 
   // Method to play Game -- will continue until one player has no cards
   public playGame() {
+    console.log('playing game')
     this.setGame();
     let currentPlayerIndex = 0;
-    
+
     while (this.players[currentPlayerIndex].hand.length > 0) {
       // Calculate possible hand and send to specific client
       const current_player = this.players[currentPlayerIndex]
       const current_client = this.clients.get(current_player.player_socket)
       this.sortPossibleHand(currentPlayerIndex);
-  
+
       if (current_client) {
         current_client.socket.emit("Possible Cards", this.players[currentPlayerIndex].possible_hand);
         current_client.socket.emit("Impossible Cards", this.players[currentPlayerIndex].impossible_hand);
-  
+
         // Listening for move
         const selected = this.players[currentPlayerIndex].moveCard(current_client, this.gameState);
-  
+
         // Special functions can be performed
         currentPlayerIndex = Number(this.readSpecial(currentPlayerIndex, selected)) // Performs special functions and changes turn if applicable
-  
+
         // Sends top_card to clients with playerIndex
         this.broadcast("Card Played", currentPlayerIndex, this.gameState.top_card);
       }
@@ -255,18 +262,27 @@ class Game {
     this.endGame(currentPlayerIndex);
   }
 
-  public startGame() {
-    if (this.players.length = this.numPlayers) {
-      let readyState = new Array(this.numPlayers).fill(false);
-
+  public async startGame() {
+    console.log("started game, waiting for clenches");
+    if (this.players.length === this.numPlayers) {
       this.broadcast("Ready Listen");
 
-      // P1 then P2 confirm readiness with jaw clench
-      for (let i = 0; i < this.numPlayers; i++) {
-        const client = this.clients.get(this.players[i].player_socket)
-        if (client) {
-          readyState[i] = this.players[i].readyAction(client);
+      // all confirm readiness with jaw clench
+      let ready = false;
+      while (!ready) {
+        console.log("not all ready");
+        for (let i = 0; i < this.numPlayers; i++) {
+          ready = true;
+          const client = this.clients.get(this.players[i].player_socket);
+          if (!client) {
+            ready = false;
+          } else {
+            if (client.getCurrentPrediction() !== Action.Clench) {
+              ready = false;
+            }
+          }
         }
+        await new Promise((r) => setTimeout(r, 100)); //sleep for 100 ms
       }
 
       this.broadcast("Game Started");
@@ -309,7 +325,7 @@ class Game {
     // this.server.send()
     this.server.emit(topic, ...msg);
   }
-  
+
   private error(message: string) {
     console.log(`Error: ${message}`);
   }
@@ -322,17 +338,17 @@ class GameState {
 
   constructor() { //build initial game state 
     const colour = ['red', 'yellow', 'green', 'blue']
-    /* 10 = skip; 11 = +2; 12 = +4; 13 = wildcard 14 = draw card 15 = solid color*/ 
+    /* 10 = skip; 11 = +2; 12 = +4; 13 = wildcard 14 = draw card 15 = solid color*/
     for (let i = 0; i < 14; i++){ //build the number cards 
       // joker_marker is true for wild cards and solid color cards -- allows solid color to be placed on wild
-      let joker_marker = false; 
+      let joker_marker = false;
       if (i > 12){
-        joker_marker = true; 
-      } 
+        joker_marker = true;
+      }
       for (let j = 0; j < 4; j++){
         if (i < 12){ 
-          this.deck.push(new Card(colour[j], i, joker_marker)); 
-        } else { 
+          this.deck.push(new Card(colour[j], i, joker_marker));
+        } else {
           this.deck.push(new Card('wild', i, joker_marker)); 
         }
       }
@@ -382,12 +398,12 @@ class Player {
       const action = playerClient.getCurrentPrediction();
       if (action === Action.Right) {
           this.selected_card = (this.selected_card + 1) % this.possible_hand.length;
-          playerClient.socket.emit("direction", "right");
+        playerClient.socket.emit("direction", "right");
       } else if (action === Action.Left) {
           this.selected_card = (this.selected_card - 1 + this.possible_hand.length) % this.possible_hand.length;
-          playerClient.socket.emit("direction", "left");
-      } else if (action === Action.Clench) { 
-         return this.playCard(gameState, playerClient);
+        playerClient.socket.emit("direction", "left");
+      } else if (action === Action.Clench) {
+        return this.playCard(gameState, playerClient);
       }
     }
   }
@@ -407,7 +423,7 @@ class Player {
         this.hand.push(drawn);
       }
     }
-   playerClient.socket.emit("Card Played", playerClient.playerIndex, selected);
+    playerClient.socket.emit("Card Played", playerClient.playerIndex, selected);
     return selected;
   }
 }

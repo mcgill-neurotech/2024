@@ -18,14 +18,14 @@ def mock_categorical(socket: zmq.Socket, player: int):
     else:
         topic = "c1"
     while True:
-        print("send")
+        action = input(f"(player {player}) select an action: ")
         t = time.time()
-        action = random.randint(0, 3)
+        # action = random.randint(0, 3)
         # 0 -> nothing, 1 -> jaw clench, 2 -> left, 3 -> right
         socket.send_string(topic, zmq.SNDMORE)
         socket.send_string(f"{t}", zmq.SNDMORE)
         socket.send_string(f"{action}")
-        time.sleep(0.1)
+        print("sent")
 
 
 def mock_distributions(socket: zmq.Socket, player: int):
