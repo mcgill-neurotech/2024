@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import './Gameboard_style.css';
-import { useGameSocket } from './useSocket';
 import { CardColor, ICardProps } from './Card';
 import { CardFanLinear } from './CardFan';
 import PlayingPile from './CardPile';
@@ -8,6 +7,7 @@ import { Card as GameCard } from '../../backend/game';
 import SkipIcon from './SkipIcon';
 import SquaresIcon from './SquaresIcon';
 import ColorwheelIcon from './ColorwheelIcon';
+import { GameContext } from './gameContext';
 
 const cardColorMap = new Map<string, CardColor>([
   ['blue', CardColor.Blue],
@@ -75,7 +75,7 @@ const CARD_WIDTH = 100; // Replace with actual card width
 const CARD_HEIGHT = 150; // Replace with actual card height
 
 const Gameboard: React.FC = () => {
-  const { connectionInfo, gameInfo } = useGameSocket();
+  const { connectionInfo, gameInfo } = useContext(GameContext)!;
   const isConnected = connectionInfo.isConnected;
   const id = connectionInfo.id;
   const {

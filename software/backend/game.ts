@@ -83,8 +83,16 @@ class Game {
     this.siggyListener.attachPlayer(playerIndex, gameClient);
     this.players.push(new Player(socket.id));
 
-    const remainingSlots = this.getAvailablePlayers().length;
+    const data = []
+    for (const v of this.clients.values()) {
+      data.push({playerIndex: v.playerIndex, ready: this.players[playerIndex].ready})
+    }
 
+    gameClient.socket.emitWithAck('Joined', data, this.numPlayers, playerIndex).then(() => {
+      this.broadcast('Player connection state update', playerIndex, true)
+    })
+
+    const remainingSlots = this.getAvailablePlayers().length;
     console.log(remainingSlots, "slots remaining");
     if (remainingSlots === 0) {
       this.startGame();
@@ -232,10 +240,12 @@ class Game {
   // Method to play Game -- will continue until one player has no cards
   public playGame() {
     console.log('playing game')
+    this.broadcast("Game Started");
     this.setGame();
     let currentPlayerIndex = 0;
 
     while (this.players[currentPlayerIndex].hand.length > 0) {
+      console.log('while')
       // Calculate possible hand and send to specific client
       const current_player = this.players[currentPlayerIndex]
       const current_client = this.clients.get(current_player.player_socket)
@@ -270,28 +280,27 @@ class Game {
       // all confirm readiness with jaw clench
       let ready = false;
       while (!ready) {
-        console.log("not all ready");
-        for (let i = 0; i < this.numPlayers; i++) {
-          ready = true;
-          const client = this.clients.get(this.players[i].player_socket);
-          if (!client) {
-            ready = false;
-          } else {
-            if (client.getCurrentPrediction() !== Action.Clench) {
-              ready = false;
+        // console.log("not all ready");
+        ready = true;
+        for (const player of this.players) {
+          const client = this.clients.get(player.player_socket);
+          if (!!client) {
+            const [clientReady, updated] = player.checkReady(client)
+            ready = ready && clientReady
+            if (updated) {
+              console.log('updated')
+              this.broadcast("Player ready state update", client.playerIndex, player.ready)
             }
           }
         }
         await new Promise((r) => setTimeout(r, 100)); //sleep for 100 ms
       }
 
-      this.broadcast("Game Started");
-
       this.playGame();
     }
   }
 
-  public endGame(winnerIndex: number) {
+  public async endGame(winnerIndex: number) {
     this.broadcast("Game Ended", winnerIndex);
     // Timeout after 60000
     const timeoutID = setTimeout(this.closeGame, 60000);
@@ -299,12 +308,22 @@ class Game {
     let readyState = new Array(this.numPlayers).fill(false);
 
     // P1 then P2 confirm readiness with jaw clench
-    for (let i = 0; i < this.numPlayers; i++) {
-      const client = this.clients.get(this.players[i].player_socket)
-      if (client) {
-        readyState[i] = this.players[i].readyAction(client);
+      let ready = false;
+      while (!ready) {
+        console.log("not all ready");
+        ready = true;
+        for (const player of this.players) {
+          const client = this.clients.get(player.player_socket);
+          if (!!client) {
+            const [clientReady, updated] = player.checkReady(client)
+            ready = ready && clientReady
+            if (updated) {
+              this.broadcast("Player ready state update", client.playerIndex, player.ready)
+            }
+          }
+        }
+        await new Promise((r) => setTimeout(r, 100)); //sleep for 100 ms
       }
-    }
     clearTimeout(timeoutID);
 
     this.broadcast("Game Started");
@@ -319,6 +338,11 @@ class Game {
   public handleDisconnect(client: GameClient) {
     this.siggyListener.detachPlayer(client.playerIndex);
     this.clients.delete(client.id);
+    const player = this.players.at(client.playerIndex)
+    if (player) {
+      player.ready=false
+    }
+    this.broadcast('Player connection state update', client.playerIndex, )
   }
 
   public broadcast(topic: string, ...msg: any[]) {
@@ -369,6 +393,7 @@ class Card {
 }
 
 class Player {
+  ready = false
   player_socket: string = "";
   hand: Card[] = [];
   possible_hand: Card[] = [];
@@ -384,13 +409,10 @@ class Player {
     this.impossible_hand = [];
   }
 
-  public readyAction(playerClient: GameClient) {
-    while (true) {
-      const action = playerClient.getCurrentPrediction();
-      if (action === Action.Clench) {
-        return true;
-      }
-    }
+  public checkReady(playerClient: GameClient) {
+    const prev = this.ready
+    this.ready = playerClient.getCurrentPrediction() === Action.Clench
+    return [this.ready, prev !== this.ready]
   }
 
   public moveCard(playerClient: GameClient, gameState : GameState) {

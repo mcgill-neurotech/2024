@@ -1,39 +1,44 @@
 // src/HomeScreen.tsx
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext } from 'react';
 import './HomeScreen_style.css';
+import { GameContext } from './gameContext';
 
 const HomeScreen: React.FC = () => {
-  const [showTitle, setShowTitle] = useState(false);
-  const [showStartButton, setShowStartButton] = useState(false);
-
-  useEffect(() => {
-    const timer1 = setTimeout(() => {
-      setShowTitle(true);
-    }, 500); // Show title after 0.5 seconds
-
-    const timer2 = setTimeout(() => {
-      setShowTitle(false);
-    }, 1500); // Hide title after 1 second of being visible
-
-    const timer3 = setTimeout(() => {
-      setShowStartButton(true);
-    }, 2000); // Show start button after title disappears
-
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
-    };
-  }, []);
-
+  const info = useContext(GameContext);
+  console.log(info);
   return (
     <div className="home-screen">
-      {showTitle && <h1 className="title fade">Welcome to the Uno-like Game!</h1>}
-      {showStartButton && (
-        <Link to="/game">
-          <button className="start-button fade">Start Game</button>
-        </Link>
+      <div className="top-section">
+        <div className="my-4 flex flex-col items-center">
+          <span
+            className={`${
+              info?.connectionInfo.isConnected ? 'bg-green-300' : 'bg-red-500'
+            } px-4 py-2 rounded-md`}
+          >
+            {info?.connectionInfo.isConnected ? 'Connected' : 'Disconnected'}
+          </span>
+          <span className="bg-gray-300 px-3 py-1 mt-1 rounded-md">
+            Session id: {info?.connectionInfo.id}
+          </span>
+        </div>
+      </div>
+      <h1 className="title fade">
+        Welcome to the Uno-like Game! Waiting for all players to be ready...
+      </h1>
+      {info && info.gameInfo.playerIndex !== -1 && (
+        <>
+          <p className="text-white text-lg">{`you are player ${info?.gameInfo.playerIndex}`}</p>
+          {info?.gameInfo.players.map((p, i) => {
+            return (
+              <div key={i} className="text-white">
+                <p>{`player ${i}`}</p>
+                <p>{`connected: ${p.connected}`}</p>
+                <p>{`ready: ${p.ready}`}</p>
+                <hr />
+              </div>
+            );
+          })}
+        </>
       )}
     </div>
   );
