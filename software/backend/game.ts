@@ -83,7 +83,7 @@ class Game {
     this.siggyListener.attachPlayer(playerIndex, gameClient);
     this.players.push(new Player(socket.id));
 
-    const data = []
+    const data: any[] = []
     for (const v of this.clients.values()) {
       data.push({playerIndex: v.playerIndex, ready: this.players[playerIndex].ready})
     }
