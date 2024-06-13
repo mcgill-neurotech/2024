@@ -161,9 +161,7 @@ cython_debug/
 data/
 misc/
 *wandb/
-*results/
 *wandb/
-*results/
 *saved_models/
 **/processed/
 **/debug/
