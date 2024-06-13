@@ -4,9 +4,9 @@ import math
 import numpy as np
 import torch
 import torch.nn as nn
+from einops import repeat,rearrange,reduce
 
 log = logging.getLogger(__name__)
-
 
 class Diffusion(nn.Module):
     """
@@ -57,6 +57,9 @@ class Diffusion(nn.Module):
         self.register_buffer("alphas", 1.0 - self.betas)
         self.register_buffer("alpha_bars", torch.cumprod(self.alphas, dim=0))
         self.register_buffer("unormalized_probs", torch.ones(self.diffusion_time_steps))
+        self.fixed_steps = self.unormalized_probs.multinomial(
+            num_samples=128, replacement=True
+        )
 
     def to(self, *args, **kwargs):
         super().to(*args, **kwargs)
@@ -65,7 +68,11 @@ class Diffusion(nn.Module):
         self.mal_dist_computer.to(*args, **kwargs)
         return self
 
-    def train_batch(self, batch, cond=None, mask=None):
+    def train_batch(self, 
+                    batch, 
+                    cond=None, 
+                    mask=None,
+                    p_uncond=0):
         self.train()
         batch_size = batch.shape[0]
         time_index = self.unormalized_probs.multinomial(
@@ -86,6 +93,10 @@ class Diffusion(nn.Module):
             torch.sqrt(train_alpha_bars) * batch
             + torch.sqrt(1.0 - train_alpha_bars) * noise
         )
+
+        drop = torch.rand(len(cond))
+        cond[drop<p_uncond] = 0
+
         res = self.network.forward(noisy_sig, time_index, cond=cond)
         diff = noise - res
         malhabonis = self.mal_dist_computer.sqrt_mal(diff)
@@ -94,6 +105,43 @@ class Diffusion(nn.Module):
             # Compute loss only on the observed samples
             malhabonis = malhabonis * mask
         return torch.einsum("icl,icl->i", malhabonis, malhabonis)
+    
+    def test_batch(self, 
+                    batch,
+                    conditions,
+                    mask=None,
+                    p_uncond=0):
+        self.test()
+
+        losses = []
+
+        for cond in conditions:
+            batch_size = batch.shape[0]
+            time_index = self.fixed_steps
+            n = len(time_index)
+            time_index = repeat(time_index,"n -> (n b)",b=batch_size)
+            batch = repeat(batch,"b ... -> (n b) ...",n=n)
+            train_alpha_bars = self.alpha_bars[time_index].unsqueeze(-1).unsqueeze(-1)
+            noise = self.noise_sampler.sample(
+                sample_shape=(
+                    batch_size,
+                    self.network.signal_channel,
+                    self.network.signal_length,
+                )
+            )
+            if noise.shape != batch.shape:
+                raise ValueError(f"shape mismatch between noise ({noise.shape}) and batch ({batch.shape})")
+            
+            noisy_sig = (
+                torch.sqrt(train_alpha_bars) * batch
+                + torch.sqrt(1.0 - train_alpha_bars) * noise
+            )
+
+            res = self.network.forward(noisy_sig, time_index, cond=cond)
+            diff = rearrange(noise - res,"(n b) ... -> b n ...",n=n)
+            norms = reduce((diff)**2,"b ... -> b",reduction="mean")
+            losses.append(norms)
+        return torch.stack(losses,-1)
 
     def sample(
         self,
@@ -103,6 +151,7 @@ class Diffusion(nn.Module):
         sampler=None,
         noise_type="alpha_beta",
         history=False,
+        w=0,
     ):
         if sampler is None:
             sampler = self.noise_sampler
@@ -141,20 +190,39 @@ class Diffusion(nn.Module):
                     )
                 )
 
-                state = (1 / torch.sqrt(self.alphas[timestep])) * (
+                if w>0:
+                    state = (1 / torch.sqrt(self.alphas[timestep])) * (
                     state
-                    - (
-                        (
-                            (1.0 - self.alphas[timestep])
-                            / (torch.sqrt(1.0 - self.alpha_bars[timestep]))
-                        )
-                        * self.network.forward(
-                            state,
-                            time_vector,
-                            cond=cond,
+                        - (
+                            (
+                                (1.0 - self.alphas[timestep])
+                                / (torch.sqrt(1.0 - self.alpha_bars[timestep]))
+                            )
+                            * self.network.conditional_forward(
+                                state,
+                                time_vector,
+                                cond=cond,
+                                w=w,
+                            )
                         )
                     )
-                )
+
+                else:
+
+                    state = (1 / torch.sqrt(self.alphas[timestep])) * (
+                        state
+                        - (
+                            (
+                                (1.0 - self.alphas[timestep])
+                                / (torch.sqrt(1.0 - self.alpha_bars[timestep]))
+                            )
+                            * self.network.forward(
+                                state,
+                                time_vector,
+                                cond=cond,
+                            )
+                        )
+                    )
 
                 if timestep > 0:
                     if noise_type == "beta":

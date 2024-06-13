@@ -167,3 +167,5 @@ misc/
 *saved_models/
 **/processed/
 **/debug/
+**debug/
+**/processed/

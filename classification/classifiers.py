@@ -14,12 +14,21 @@ from sklearn.feature_selection import SelectKBest, mutual_info_classif
 from sklearn.metrics import ConfusionMatrixDisplay
 from mne.decoding import CSP
 import torch
-from .loaders import EEGDataset, subject_dataset
 from torch import nn,optim
 from torch.utils.data import DataLoader
 from lightning import Fabric
 from lightning.fabric.wrappers import _FabricModule
 import copy
+from typing import Optional, Iterable
+from einops import reduce
+import wandb
+
+import sys
+
+sys.path.append("../../motor-imagery-classification-2024/")
+
+from classification.loaders import EEGDataset, subject_dataset, CSP_subject_dataset
+from models.unet.eeg_unets import Unet,UnetConfig, BottleNeckClassifier, Unet1D
 
 def load_data(folder,idx):
     path_train = os.path.join(folder,f"B0{idx}T.mat")
@@ -44,9 +53,9 @@ def k_fold_splits(k=9,
 		for i in range(n_participants):
 			if i in fold:
 				if leave_out:
-					train_split.append(["train"])
-				else:
 					train_split.append([])
+				else:
+					train_split.append(["train"])
 				test_split.append(["test"])
 			else:
 				train_split.append(["train","test"])
@@ -382,59 +391,184 @@ class CSPClassifier(Classifier):
 class DeepClassifier:
     def __init__(self,
                  model,
-                 mat_dataset,
-                 train_split,
-                 test_split,
-                 batch_size=32, 
-                 t_baseline=0, 
-                 t_epoch=9, 
-                 fs=250,
-                 start=3.5,
-                 length=2,
-                 index_cutoff=256):
+                 save_paths:list[str],
+                 train_split:list[list[str]],
+                 test_split:list[list[str]],
+                 dataset:Optional[dict] = None,
+				 subject_dataset_type: Optional[subject_dataset] = None,
+                 channels:Iterable = np.array([0,1,2]),
+                 fake_data: Optional[list[str]] = None,
+                 fake_percentage: float = 0.5,
+                 batch_size:int = 32, 
+                 fs:float = 250, 
+				 t_baseline:float = 0, 
+				 t_epoch:float = 9,
+				 start:float = 3.5,
+				 length:float = 2,
+                 index_cutoff:int = 256,
+                 sanity_check:bool = False,
+                 **dataset_kwargs):
         self.fs = fs
         self.t_epoch = t_epoch
         self.t_baseline = t_baseline
         self.batch_size = batch_size
-        self.train_loader = self.get_loader(mat_dataset,train_split, batch_size)
-        self.val_loader = self.get_loader(mat_dataset,test_split,batch_size)
-        self.dataset = mat_dataset
+        self.subject_dataset_type = subject_dataset_type
+        self.start = start
+        self.length = length
+        self.channels = channels
+        self.save_paths = save_paths
+        self.fake_data = fake_data
+        self.dataset = dataset
+        self.train_split = train_split
+        self.test_split = test_split
+        self.save_paths = save_paths
+
+        self.setup_dataloaders(use_fake=True,
+                               sanity_check=sanity_check,
+                               fake_percentage=fake_percentage,
+                               test=True,
+                               **dataset_kwargs)
+        
         self.model = model
         self.init_weights = copy.deepcopy(self.model.state_dict())
         self.index_cutoff = index_cutoff
 
-    def get_loader(self,dataset,splits,batch_size,shuffle=True):
-        dset = EEGDataset(dataset,splits,fs=self.fs,t_baseline=self.t_baseline,t_epoch=
-                          self.t_epoch)
-        return DataLoader(dset,batch_size,shuffle=shuffle)
+    def get_loader(self,
+                   save_paths:list[str],
+                   batch_size:int,
+                   subject_splits:list[list[str]],
+                   fake_data: Optional[list[str]] = None,
+                   dataset:Optional[dict] = None,
+                   subject_dataset_type: Optional[subject_dataset] = None,
+                   dataset_type: Optional[EEGDataset] = EEGDataset,
+                   shuffle=True,
+                   sanity_check=False,
+                   fake_percentage=0.5,
+                   test=False,
+                   **dataset_kwargs):
+        
+        dset = dataset_type(subject_splits=subject_splits,dataset=dataset,
+                          save_paths=save_paths,
+                          subject_dataset_type=subject_dataset_type,
+                          fake_data=fake_data,
+                          fake_percentage=fake_percentage,
+                          fs=self.fs,t_baseline=self.t_baseline,
+                          t_epoch=self.t_epoch,start=self.start,
+                          length=self.length,channels=self.channels,
+                          sanity_check=sanity_check,
+                          **dataset_kwargs)
+        if test:
+            n_val = int(len(dset)*0.5)
+            n_test = len(dset)-n_val
+            val_set,test_set = torch.utils.data.random_split(dset,[n_val,n_test])
+            # val_set = torch.utils.data.Subset(dset,val_idx)
+            # test_set = torch.utils.data.Subset(dset,test_idx)
+            val_loader = DataLoader(val_set,batch_size=batch_size,shuffle=shuffle)
+            test_loader = DataLoader(test_set,batch_size=batch_size,shuffle=shuffle)
+            return val_loader,test_loader
 
-    def get_val_loader(self, mat_dataset):
-        val_dataset = EEGDataset(mat_dataset, train=False, fs=self.fs, t_baseline=self.t_baseline, t_epoch=self.t_epoch)
-        return DataLoader(val_dataset, batch_size=self.batch_size, shuffle=False)
+        return DataLoader(dset,batch_size,shuffle=shuffle,)
+    
+    def setup_dataloaders(self,
+                          splits=None,
+                          use_fake=True,
+                          sanity_check=False,
+                          fake_percentage=0.5,
+                          test=False,
+                          **dataset_kwargs):
+        
+        if splits is not None:
+            train_split = splits[0]
+            test_split = splits[1]
+        else:
+            train_split = self.train_split
+            test_split = self.test_split
+        
+        fake_data = self.fake_data if use_fake else None
+
+        self.train_loader = self.get_loader(batch_size=self.batch_size,
+                                            subject_splits=train_split,
+                                            dataset=self.dataset,
+                                            fake_data=fake_data,
+                                            save_paths=self.save_paths,
+                                            subject_dataset_type=self.subject_dataset_type,
+                                            shuffle=True,
+                                            sanity_check=sanity_check,
+                                            fake_percentage=fake_percentage,
+                                            **dataset_kwargs)
+
+        if test:
+            self.val_loader,self.test_loader = self.get_loader(batch_size=self.batch_size,
+                                            subject_splits=test_split,
+                                            dataset=self.dataset,
+                                            save_paths=self.save_paths,
+                                            subject_dataset_type=self.subject_dataset_type,
+                                            shuffle=False,
+                                            sanity_check=sanity_check,
+                                            fake_percentage=fake_percentage,
+                                            test=test,
+                                            **dataset_kwargs)
+    
+        else:
+            self.val_loader = self.get_loader(batch_size=self.batch_size,
+                                                subject_splits=test_split,
+                                                dataset=self.dataset,
+                                                save_paths=self.save_paths,
+                                                subject_dataset_type=self.subject_dataset_type,
+                                                shuffle=False,
+                                                sanity_check=sanity_check,
+                                                fake_percentage=fake_percentage,
+                                                **dataset_kwargs)
+    
+    def sample_batch(self):
+        return next(iter(self.train_loader))[0][:, :, :self.index_cutoff]
 
     def fit(self,
             fabric:Fabric, 
             num_epochs=10,
             lr=1E-4,
             weight_decay=1E-4,
-            verbose=True):
+            verbose=True,
+            validation_step=1,
+            optimizer=None,
+            stop_threshold=None,
+            log=False,
+            id=None,
+            forward_fn=None,
+            test=False,
+            setup_test=True):
+        self.model.load_state_dict(self.init_weights)
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         criterion = nn.CrossEntropyLoss()
-        optimizer = optim.Adam(self.model.parameters(), lr=lr,weight_decay=weight_decay)
+        if optimizer is None:
+            optimizer = optim.Adam(self.model.parameters(), lr=lr,weight_decay=weight_decay)
+        else:
+            print("using specified optimizer")
         stats = []
         if not isinstance(self.model,_FabricModule):
             self.model = fabric.setup(self.model)
         optimizer = fabric.setup_optimizers(optimizer)
         train_loader,val_loader = fabric.setup_dataloaders(self.train_loader,self.val_loader)
+
+        stop_counter = 0
+        stop_threshold = num_epochs if stop_threshold is None else stop_threshold
+
+        checkpoint = copy.deepcopy(self.model.state_dict())
+        val_losses = [10]
+
         for epoch in range(num_epochs):
             self.model.train()
             running_loss = 0.0
             correct = 0
             total = 0
             for inputs, labels in train_loader:
+                labels = labels.to(torch.long)
                 with fabric.autocast():
                     inputs, labels = inputs[:, :, :self.index_cutoff], labels
-                    outputs = self.model.classify(inputs)
+                    if forward_fn is None:
+                        outputs = self.model.classify(inputs)
+                    else:
+                        outputs = forward_fn(model,inputs)
                     loss = criterion(outputs, labels)
                 fabric.backward(loss)
                 optimizer.step()
@@ -449,26 +583,76 @@ class DeepClassifier:
             val_loss = 0.0
             correct = 0
             total = 0
+            if epoch%validation_step == 0:
+                self.model.eval()
+                with torch.no_grad():
+                    for inputs, labels in val_loader:
+                        labels = labels.to(torch.long)
+                        with fabric.autocast():
+                            inputs, labels = inputs[:, :, :self.index_cutoff], labels
+                            outputs = self.model.classify(inputs)
+                            _, predicted = torch.max(outputs, 1)
+                        total += labels.size(0)
+                        correct += (predicted == labels).sum().item()
+                        val_loss += criterion(outputs, labels).item()
+
+                val_accuracy = 100 * correct / total
+
+                avg_val_loss = val_loss/len(self.val_loader)
+
+                if avg_val_loss < min(val_losses):
+                    print("checkpointing")
+                    checkpoint = copy.deepcopy(self.model.state_dict())
+                else:
+                    print(f"Min loss: {min(val_losses)} vs {avg_val_loss}")
+
+                val_losses.append(avg_val_loss)
+
+                if log:
+                    wandb.log({f"epoch_{id}":epoch,
+                               f"training_loss_{id}":running_loss/len(self.train_loader),
+                               f"validation_loss_{id}":val_loss/len(self.val_loader),
+                               f"training_accuracy_{id}":train_accuracy,
+                               f"validation_accuracy_{id}":val_accuracy})
+
+                if verbose:
+                    print(f'Epoch [{epoch+1}/{num_epochs}], '
+                        f'Training Loss: {running_loss/len(self.train_loader):.3f}, '
+                        f'Training Accuracy: {train_accuracy:.2f}%, '
+                        f'Validation Loss: {val_loss/len(self.val_loader):.3f}, '
+                        f'Validation Accuracy: {val_accuracy:.2f}%')
+                stats.append(val_accuracy*1+0*train_accuracy)
+
+                if (running_loss/len(self.train_loader))*1.25<val_loss/len(self.val_loader):
+                    stop_counter += 1
+                if (running_loss/len(self.train_loader))>val_loss/len(self.val_loader):
+                    stop_counter -= 1
+                if stop_counter < 0:
+                    stop_counter = 0
+                
+            if stop_counter > stop_threshold:
+                break
+        
+        test_loss = 0.0
+        correct = 0
+        total = 0
+        if test:
+            if setup_test:
+                self.test_loader = fabric.setup_dataloaders(self.test_loader)
+            self.model.load_state_dict(checkpoint)
             self.model.eval()
             with torch.no_grad():
-                for inputs, labels in val_loader:
+                for inputs, labels in self.test_loader:
+                    labels = labels.to(torch.long)
                     with fabric.autocast():
                         inputs, labels = inputs[:, :, :self.index_cutoff], labels
                         outputs = self.model.classify(inputs)
                         _, predicted = torch.max(outputs, 1)
                     total += labels.size(0)
                     correct += (predicted == labels).sum().item()
-                    val_loss += criterion(outputs, labels).item()
-
-            val_accuracy = 100 * correct / total
-
-            if verbose:
-                print(f'Epoch [{epoch+1}/{num_epochs}], '
-                    f'Training Loss: {running_loss/len(self.train_loader):.3f}, '
-                    f'Training Accuracy: {train_accuracy:.2f}%, '
-                    f'Validation Loss: {val_loss/len(self.val_loader):.3f}, '
-                    f'Validation Accuracy: {val_accuracy:.2f}%')
-            stats.append(val_accuracy*1+0*train_accuracy)
+                    test_loss += criterion(outputs, labels).item()
+            test_acc = 100 * correct / total
+            return test_acc
 
         print('Finished Training')
         return max(stats)
@@ -477,15 +661,20 @@ class DeepClassifier:
                   fabric,
                   k=9,
                   n=9,
-                  lr=1E-4,
-                  weight_decay=1E-5,
+                  lr=1E-3,
+                  use_fake=True,
+                  weight_decay=1E-4,
                   verbose=False,
-                  leave_out=False):
+                  leave_out=False,
+                  **dataset_kwargs):
         folds = k_fold_splits(k,n,leave_out)
         accuracies = []
         for fold in folds:
-            self.train_loader = self.get_loader(self.dataset,fold[0],self.batch_size,True)
-            self.val_loader = self.get_loader(self.dataset,fold[1],self.batch_size,True)
+            self.setup_dataloaders(fold,use_fake)
+            self.train_loader = self.get_loader(self.dataset,fold[0],
+                                                self.batch_size,True,**dataset_kwargs)
+            self.val_loader = self.get_loader(self.dataset,fold[1],
+                                              self.batch_size,True,**dataset_kwargs)
             self.model.load_state_dict(self.init_weights)
             max_accuracy = self.fit(fabric,
                         num_epochs=20,
@@ -504,3 +693,203 @@ class DeepClassifier:
             outputs = self.model(inputs)
             _, predicted = torch.max(outputs.data, 1)
         return predicted
+    
+class MLPClassifier(nn.Module):
+    def __init__(self, input_channels):
+        super(MLPClassifier, self).__init__()
+        self.conv = nn.Conv1d(input_channels,32,3)
+        self.fc = nn.Linear(32, 2) 
+
+    def forward(self, x):
+        x = self.conv(x)
+        x = reduce(x,"batch channel ... -> batch channel","mean")
+        x = self.fc(x)
+        return x
+    
+    def classify(self,x):
+        return self.forward(x)
+    
+    
+class SimpleCSP:
+
+    def __init__(self,
+                 save_paths:list[str],
+                 train_split:list[list[str]],
+                 test_split:list[list[str]],
+                 dataset:Optional[dict] = None,
+                 fake_paths=None,
+                 fake_percentage=0.5,
+                 dataset_type: Optional[EEGDataset] = EEGDataset,
+				 subject_dataset_type: Optional[subject_dataset] = None,
+                 channels:Iterable = np.array([0,1,2]),
+                 fs:float = 250, 
+				 t_baseline:float = 0, 
+				 t_epoch:float = 9,
+				 start:float = 3.5,
+				 length:float = 2.05,
+                 sanity_check:bool = False):
+        
+        self.fs = fs
+        self.t_epoch = t_epoch
+        self.t_baseline = t_baseline
+        self.subject_dataset_type = subject_dataset_type
+        self.start = start
+        self.length = length
+        self.channels = channels
+
+        self.train_set = dataset_type(subject_splits=train_split,dataset=dataset,
+                          save_paths=save_paths,subject_dataset_type=subject_dataset_type,
+                          fake_data=fake_paths,
+                          fake_percentage=fake_percentage,
+                          fs=self.fs,t_baseline=self.t_baseline,
+                          t_epoch=self.t_epoch,start=self.start,
+                          length=self.length,channels=self.channels,
+                          sanity_check=sanity_check)
+        
+        self.test_set = dataset_type(subject_splits=test_split,dataset=dataset,
+                          save_paths=save_paths,subject_dataset_type=subject_dataset_type,
+                          fake_data=None,
+                          fake_percentage=0,
+                          fs=self.fs,t_baseline=self.t_baseline,
+                          t_epoch=self.t_epoch,start=self.start,
+                          length=self.length,channels=self.channels,
+                          sanity_check=sanity_check)
+        
+        self.set_epoch(start,length)
+    
+    def set_epoch(self,start,length):
+        self.input_start = start + self.t_baseline
+        self.input_end = self.input_start + length
+
+    def fit(self,
+            data = None,
+            preprocess = False):
+
+        if data is None:
+            x_train,y_train = self.train_set.data[0], self.train_set.data[1]
+        else:
+            x_train,y_train = data
+
+        if preprocess:
+            x_train,y_train = self.preprocess(x_train,y_train)
+
+        x_test,y_test = self.test_set.data[0], self.test_set.data[1]
+        x_train = np.float64(x_train)
+        x_test = np.float64(x_test)
+
+        print(f"input shape: {x_train.shape}")
+
+        csp = CSP(n_components=x_train.shape[1],reg=None,log=True,norm_trace=False)
+        svm = SVC(C=1)
+
+        clf = Pipeline(steps=[("csp",csp),
+                            ("classification",svm)])
+
+        clf.fit(x_train,y_train)
+
+        if preprocess:
+            x_test,y_test = self.preprocess(x_test,y_test)
+
+        y_discrete = clf.predict(x_test)
+            
+        acc = accuracy_score(y_test,y_discrete)
+        # confusion = confusion_matrix(y_test,y_discrete,normalize="true") 
+        # kappa = cohen_kappa_score(y_discrete,y_test) 
+
+        return acc
+    
+    def get_train(self):
+        return self.train_set.data[0], self.train_set.data[1]
+    
+    def passband(self,
+                x,
+                low,
+                high):
+        
+        nyquist = self.fs/2
+        b,a = butter(4,[low/nyquist,high/nyquist],"bandpass",analog=False)
+        n,d,t = x.shape
+        x = rearrange(x,"n d t -> (n d) t")
+        x = filtfilt(b,a,x)
+        x = rearrange(x,"(n d) t -> n d t",n=n)
+        return x
+    
+    def preprocess(self, x, y):
+        x = x[:,[0,2],:]
+        ax = []
+        
+        for i in range(1,10):
+            ax.append(self.passband(x,4*i,4*i+4))
+
+        x = np.concatenate(ax,1)
+        return x,y
+
+if __name__ == "__main__":
+
+    dataset = {}
+    for i in range(1,10):
+        mat_train,mat_test = load_data("../data/2b_iv",i)
+        dataset[f"subject_{i}"] = {"train":mat_train,"test":mat_test}
+
+    save_path = "../data/2b_iv/csp"
+
+    train_split = 6*[["train","test"]] + 3*[["train"]]
+    test_split = 6*[[]] + 3* [["test"]]
+
+    channels = np.split(np.arange(0,6*9),6)
+    channels = np.concatenate([channels[0],channels[2]])
+    
+    model = MLPClassifier(18)
+
+    csp_config = UnetConfig(
+        input_shape=(256),
+        input_channels=18,
+        conv_op=nn.Conv1d,
+        norm_op=nn.InstanceNorm1d,
+        non_lin=nn.ReLU,
+        pool_op=nn.AvgPool1d,
+        up_op=nn.ConvTranspose1d,
+        starting_channels=32,
+        max_channels=256,
+        conv_group=1,
+        conv_padding=(1),
+        conv_kernel=(3),
+        pool_fact=2,
+        deconv_group=1,
+        deconv_padding=(0),
+        deconv_kernel=(2),
+        deconv_stride=(2),
+        residual=True
+    )
+
+    mlp = BottleNeckClassifier((4096,512))
+    model = Unet(csp_config,mlp)
+
+    clf = DeepClassifier(model=model,
+                         train_split=train_split,
+                         test_split=test_split,
+                         dataset=None,
+                         save_paths=[save_path],
+                         subject_dataset_type=CSP_subject_dataset,
+                         channels=channels,
+                         batch_size=32,
+                         fs=250,
+                         t_baseline=0,
+                         t_epoch=9,
+                         start=3.5,
+                         length=2.05,
+                         index_cutoff=512,
+                         sanity_check=False)
+    
+    torch.set_float32_matmul_precision("medium")
+    
+    fabric = Fabric(accelerator="cuda",precision="bf16-mixed")
+    fabric.launch()
+
+    print(clf.sample_batch().shape)
+    
+    clf.fit(fabric=fabric,
+            num_epochs=50,
+            lr=1E-3,
+            weight_decay=1E-3,
+            verbose=True)

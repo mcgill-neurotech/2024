@@ -142,6 +142,14 @@ class Convdown(L.LightningModule):
 			x = self.non_lin(x)
 		x = self.instance_norm(x)
 		return x
+	
+class SingleConvDown(L.LightningModule):
+
+	def __init__(self, config) -> None:
+		super().__init__()
+		self.conv = config.conv_op(config.input_channels,config.output_channels,
+							 kernel_size=config.kernel_size,padding=config.padding)
+		self.norm = config.norm_op(config.output_channels)
 
 class Encode(L.LightningModule):
 	def __init__(self, config: ConvConfig) -> None:
