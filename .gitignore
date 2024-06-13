@@ -165,3 +165,5 @@ misc/
 *wandb/
 *results/
 *saved_models/
+**/processed/
+**/debug/
