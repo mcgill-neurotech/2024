@@ -1,13 +1,73 @@
-import React, { useContext } from 'react';
+import React, { useState, useCallback } from 'react';
 import './Gameboard_style.css';
+import { useGameSocket } from './useSocket';
 import { CardColor, ICardProps } from './Card';
 import { CardFanLinear } from './CardFan';
 import PlayingPile from './CardPile';
-import { Card as GameCard } from '../../backend/game';
+import { Card as GameCard } from '../../backend/src/game';
 import SkipIcon from './SkipIcon';
 import SquaresIcon from './SquaresIcon';
 import ColorwheelIcon from './ColorwheelIcon';
-import { GameContext } from './gameContext';
+
+//DUMMY CARDS- CAN DELETE LATER!!!
+const texts = [...Array.from(Array(10).keys())];
+const colors = Object.values(CardColor);
+
+const cartesian = (...sets: any[]): any[] =>
+  sets.reduce((a, b) =>
+    a.flatMap((d: any) => b.map((e: any) => [d, e].flat())),
+  );
+
+const generateDummyCards = (): ICardProps[] => {
+  const cards: ICardProps[] = [];
+
+  cards.push(
+    ...colors.map((color) => ({
+      corners: <p className="text-white text-4xl text-shadow">{'+2'}</p>,
+      color,
+      center: <p className="text-xl text-shadow" style={{ color: color }}>some svg?</p>,
+    })),
+  );
+  cards.push(
+    ...colors.map((color) => ({
+      corners: 'reverse',
+      color,
+      center: 'reverse',
+    })),
+  );
+  cards.push(
+    ...colors.map((color) => ({
+      corners: <p className="text-white text-4xl text-shadow">ø</p>,
+      color,
+      center: <p className="text-6xl text-shadow" style={{ color: color }}>ø</p>,
+    })),
+  );
+  cards.push(
+    ...colors.map((color) => ({
+      corners: <p className="text-white text-sm">{'color wheel svg'}</p>,
+      color: '#000000',
+      center: <p className="text-xl text-shadow" style={{ color: color }}>color wheel</p>,
+    })),
+  );
+  cards.push(
+    ...colors.map((color) => ({
+      corners: <p className="text-white text-4xl text-shadow">{'+4'}</p>,
+      color: '#000000',
+      center: <p className="text-xl text-shadow" style={{ color: color }}>+4 svg?</p>,
+    })),
+  );
+  cards.push(
+    ...cartesian(texts, colors).map(([text, color]: [string, CardColor]) => ({
+      corners: <p className="text-white text-4xl text-shadow">{text}</p>,
+      color,
+      center: <p className="text-6xl text-shadow" style={{ color: color }}>{text}</p>,
+    })),
+  );
+  return cards;
+};
+
+/// END  OF DUMMY CARDS SECTION 
+
 
 const cardColorMap = new Map<string, CardColor>([
   ['blue', CardColor.Blue],
@@ -24,9 +84,9 @@ const specialCornerMap = new Map<number, (color: string) => React.ReactNode>([
       <SkipIcon color={c} width={50} height={50} className="icon-shadow" />
     ),
   ],
-  [11, (c) => <p className="text-white text-4xl text-shadow">{'+2'}</p>],
-  [12, (c) => <p className="text-white text-4xl text-shadow">{'+4'}</p>],
-  [13, (c) => <ColorwheelIcon width={45} height={45} />],
+  [11, (_c) => <p className="text-white text-4xl text-shadow">{'+2'}</p>],
+  [12, (_c) => <p className="text-white text-4xl text-shadow">{'+4'}</p>],
+  [13, (_c) => <ColorwheelIcon width={45} height={45} />],
 ]);
 
 const specialCenterMap = new Map<number, (color: string) => React.ReactNode>([
@@ -37,8 +97,8 @@ const specialCenterMap = new Map<number, (color: string) => React.ReactNode>([
       <SquaresIcon color={c} width={50} height={50} className="icon-shadow" />
     ),
   ],
-  [12, (c) => <ColorwheelIcon height={200} width={200} />],
-  [13, (c) => <ColorwheelIcon height={200} width={200} />],
+  [12, (_c) => <ColorwheelIcon height={200} width={200} />],
+  [13, (_c) => <ColorwheelIcon height={200} width={200} />],
 ]);
 
 const specialClassNameMap = new Map<number, string>([
@@ -75,16 +135,16 @@ const CARD_WIDTH = 100; // Replace with actual card width
 const CARD_HEIGHT = 150; // Replace with actual card height
 
 const Gameboard: React.FC = () => {
-  const { connectionInfo, gameInfo } = useContext(GameContext)!;
+  //DUMMY CARD GENERATOR STUFF
+  const [selectedCardIndex, setSelectedCardIndex] = useState(0);
+  const generateCards = useCallback(generateDummyCards, []);
+  const allCards = generateCards();
+  //END DUMMY CARD GENERATOR STUFF
+
+  const { connectionInfo, gameInfo } = useGameSocket();
   const isConnected = connectionInfo.isConnected;
   const id = connectionInfo.id;
-  const {
-    playedCards,
-    playableCards,
-    unplayableCards,
-    selectedPlayableCardIndex,
-    selectedUnplayableCardIndex,
-  } = gameInfo;
+  const { playedCards } = gameInfo;
 
   return (
     <div className="gameboard">
@@ -104,26 +164,18 @@ const Gameboard: React.FC = () => {
       </div>
       <div className="middle-section relative">
         <PlayingPile
-          cards={playedCards.map((c) => makeCardProps(c))}
+          cards={playedCards.length ? playedCards.map((c) => makeCardProps(c)) : allCards}
           cardWidth={CARD_WIDTH}
           cardHeight={CARD_HEIGHT}
         />
       </div>
       <div className="bottom-section">
-        <div className="half-section">
-          <h2 className="text-center text-white">Unplayable Cards</h2>
+        <div className="card-container">
           <CardFanLinear
-            selected={selectedUnplayableCardIndex}
+            selected={selectedCardIndex}
             spread={1}
-            cards={unplayableCards.map((c) => makeCardProps(c))}
-          />
-        </div>
-        <div className="half-section">
-          <h2 className="text-center text-white">Playable Cards</h2>
-          <CardFanLinear
-            selected={selectedPlayableCardIndex}
-            spread={1}
-            cards={playableCards.map((c) => makeCardProps(c))}
+            //onSelected={(i) => setSelectedCardIndex(i)}
+            cards={allCards}
           />
         </div>
       </div>

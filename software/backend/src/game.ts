@@ -76,22 +76,28 @@ class Game {
   public createPlayer(socket: Socket) {
     const availablePlayers = this.getAvailablePlayers();
     if (availablePlayers.length == 0) return false;
-
+  
     const playerIndex = availablePlayers[0];
     const gameClient = new GameClient(playerIndex, socket, this);
     this.clients.set(socket.id, gameClient);
     this.siggyListener.attachPlayer(playerIndex, gameClient);
-    this.players.push(new Player(socket.id));
-
-    const data: any[] = []
-    for (const v of this.clients.values()) {
-      data.push({playerIndex: v.playerIndex, ready: this.players[playerIndex].ready})
+  
+    // Ensure players array is properly initialized
+    if (!this.players[playerIndex]) {
+      this.players[playerIndex] = new Player(socket.id);
+    } else {
+      this.players[playerIndex].player_socket = socket.id;
     }
-
+  
+    const data: any[] = [];
+    for (const v of this.clients.values()) {
+      data.push({ playerIndex: v.playerIndex, ready: this.players[playerIndex].ready });
+    }
+  
     gameClient.socket.emitWithAck('Joined', data, this.numPlayers, playerIndex).then(() => {
-      this.broadcast('Player connection state update', playerIndex, true)
-    })
-
+      this.broadcast('Player connection state update', playerIndex, true);
+    });
+  
     const remainingSlots = this.getAvailablePlayers().length;
     console.log(remainingSlots, "slots remaining");
     if (remainingSlots === 0) {
@@ -99,6 +105,8 @@ class Game {
     }
     return true;
   }
+  
+  
 
   // Shuffles deck
   private shuffleDeck() {
@@ -239,38 +247,52 @@ class Game {
 
   // Method to play Game -- will continue until one player has no cards
   public playGame() {
-    console.log('playing game')
+    console.log('playing game');
     this.broadcast("Game Started");
     this.setGame();
     let currentPlayerIndex = 0;
-
+  
+    // Ensure currentPlayerIndex is valid
+    if (!this.players[currentPlayerIndex]) {
+      this.error(`Invalid currentPlayerIndex: ${currentPlayerIndex}`);
+      return;
+    }
+  
     while (this.players[currentPlayerIndex].hand.length > 0) {
-      console.log('while')
+      console.log('while loop', currentPlayerIndex, this.players);
+  
       // Calculate possible hand and send to specific client
-      const current_player = this.players[currentPlayerIndex]
-      const current_client = this.clients.get(current_player.player_socket)
+      const current_player = this.players[currentPlayerIndex];
+      const current_client = this.clients.get(current_player.player_socket);
       this.sortPossibleHand(currentPlayerIndex);
-
+  
       if (current_client) {
         current_client.socket.emit("Possible Cards", this.players[currentPlayerIndex].possible_hand);
         current_client.socket.emit("Impossible Cards", this.players[currentPlayerIndex].impossible_hand);
-
+  
         // Listening for move
         const selected = this.players[currentPlayerIndex].moveCard(current_client, this.gameState);
-
+  
         // Special functions can be performed
-        currentPlayerIndex = Number(this.readSpecial(currentPlayerIndex, selected)) // Performs special functions and changes turn if applicable
-
+        currentPlayerIndex = Number(this.readSpecial(currentPlayerIndex, selected)); // Performs special functions and changes turn if applicable
+  
+        // Ensure currentPlayerIndex is valid after update
+        if (!this.players[currentPlayerIndex]) {
+          this.error(`Invalid currentPlayerIndex after update: ${currentPlayerIndex}`);
+          return;
+        }
+  
         // Sends top_card to clients with playerIndex
         this.broadcast("Card Played", currentPlayerIndex, this.gameState.top_card);
-      }
-      else {
+      } else {
         this.error("socket.id does not correspond to client");
       }
     }
-
+  
     this.endGame(currentPlayerIndex);
   }
+  
+  
 
   public async startGame() {
     console.log("started game, waiting for clenches");
@@ -393,13 +415,12 @@ class Card {
 }
 
 class Player {
-  ready = false
+  ready = false;
   player_socket: string = "";
   hand: Card[] = [];
   possible_hand: Card[] = [];
   selected_card: number = 0;
   impossible_hand: Card[] = [];
-
 
   constructor(player_socket: string) {
     this.player_socket = player_socket;
@@ -408,6 +429,7 @@ class Player {
     this.selected_card = 0;
     this.impossible_hand = [];
   }
+
 
   public checkReady(playerClient: GameClient) {
     const prev = this.ready

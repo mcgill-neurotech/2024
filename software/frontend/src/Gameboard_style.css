@@ -42,22 +42,30 @@
   margin-top: auto;
 }
 
-.half-section {
+.card-container {
   background-color: brown;
-  border-radius: 8px;
-  padding: 16px;
-  width: 45%;
-  height: 250px; /* Adjust as needed to fit the entire card height */
+  padding: 10px;
+  border-radius: 10px;
+  width: 80%; /* Adjust width to fit the screen */
+  height: 250px; /* Adjust height to fit the card height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px; /* Optional: add some space above */
+  overflow: hidden; /* Ensure cards stay within the container */
   position: relative;
-  overflow: hidden;
 }
 
-.card-fan-container {
-  position: relative;
+.card-fan-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: 100%;
+  position: relative;
 }
 
-.card-fan-container .absolute {
-  transition: top 0.3s, left 0.3s;
+.card-fan-wrapper .card {
+  position: absolute;
+  transition: transform 0.3s, top 0.3s, left 0.3s;
 }

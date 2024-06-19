@@ -1,7 +1,7 @@
 // src/useSocket.ts
 import { useEffect, useState } from 'react';
 import { socket } from './socket';
-import { Card as GameCard } from '../../backend/game';
+import { Card as GameCard } from '../../backend/src/game';
 import { useNavigate } from 'react-router-dom';
 
 type Direction = 'left' | 'right';

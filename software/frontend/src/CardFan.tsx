@@ -18,40 +18,36 @@ interface ICardFanProps {
   cards: ICardProps[];
   spread: number;
   selected: number;
-  // onSelected: (index: number) => void; // was only for testing
+  //onSelected: (index: number) => void;
 }
 
 const CardFanLinear: React.FC<ICardFanProps> = ({
   cards,
   spread,
   selected,
-  // onSelected,
+  //onSelected,
 }) => {
   const positions = calculate_fan_positions(cards.length, selected, spread);
   return (
-    <div className="flex items-center justify-center card-fan-container">
-      <div className="relative">
-        {cards.map((props, i) => {
-          const { left, zIndex } = positions[i];
-          const active = selected === i;
-          const y = active ? -140 : -130; // Adjust this value to move the cards up
-          return (
-            <div
-              // onClick={() => onSelected(i)}
-              key={i}
-              className="absolute"
-              style={{
-                left: `calc(50% + ${left}px)`,
-                zIndex,
-                top: `${y}px`, // Adjust this value to move the cards up
-                transform: 'translateX(-50%)',
-              }}
-            >
-              <Card key={i} {...props} />
-            </div>
-          );
-        })}
-      </div>
+    <div className="card-fan-wrapper">
+      {cards.map((props, i) => {
+        const { left, zIndex } = positions[i];
+        return (
+          <div
+            //onClick={() => onSelected(i)}
+            key={i}
+            className="card"
+            style={{
+              left: `calc(50% + ${left}px)`,
+              zIndex,
+              top: `50%`, // Center vertically
+              transform: `translate(-50%, -50%)`, // Adjust for centering
+            }}
+          >
+            <Card key={i} {...props} />
+          </div>
+        );
+      })}
     </div>
   );
 };
