@@ -1,0 +1,13 @@
+signal_length: 1624 # If you change the t_baseline and t_epoch, you will need to change this value. The best way I found was to print batch["signal"].shape to find the signal length in the training loop
+signal_channel: 18 # The CSP classifier components
+time_dim: 10
+cond_channel: 1 # The cond channel will contain the cue (0 or 1)
+hidden_channel: 5
+in_kernel_size: 17
+out_kernel_size: 17
+slconv_kernel_size: 17
+num_scales: 5
+decay_min: 2
+decay_max: 2
+heads: 3
+use_fft_conv: False

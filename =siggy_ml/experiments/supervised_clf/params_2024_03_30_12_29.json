@@ -1,0 +1,1 @@
+{"conv_kernel": 19, "max_channels": 256, "pool_op": "avg", "starting_channels": 32, "residual": true, "conv_drop": 0.0, "mlp_dim": 128, "lr": 0.000330227306657115, "weight_decay": 1.9723511474610607e-06}
