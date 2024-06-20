@@ -1,1 +1,0 @@
-{"lr": 0.00034885205571560766, "time_dim": 10, "hidden_channel": 48, "kernel_size": 55, "num_scales": 3, "decay_min": 1, "decay_max": 1, "activation_type": "gelu", "num_timesteps": 100, "schedule": "quad", "end_beta": 0.05}
