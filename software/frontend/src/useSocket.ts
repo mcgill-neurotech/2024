@@ -26,10 +26,10 @@ interface IUseSocketParams {
   onPossibleCards: (data: GameCard[]) => void;
 
   // data = array of current player's impossible hand
-  onInpossibleCards: (data: GameCard[]) => void;
+  onImpossibleCards: (data: GameCard[]) => void;
 
   // data = string "right" or "left"
-  onDirection: (direction: Direction) => void;
+  onDirection: (direction: string) => void;
 
   // data = total number of players on the game
   onJoined: (
@@ -49,7 +49,7 @@ interface IUseSocketParams {
   onPlayerReadyStateUpdate: (playerIndex: number, ready: boolean) => void;
 
   // data = current top card
-  onCardPlayed: (data: GameCard) => void;
+  onCardPlayed: (payerIndex: number, data: GameCard) => void;
 
   // broadcast when both players are ready
   onGameStarted: () => void;
@@ -66,7 +66,7 @@ const useSocket = ({
   onPlayerReadyStateUpdate,
   onPlayerConnectionStateUpdate,
   onPossibleCards,
-  onInpossibleCards,
+  onImpossibleCards,
   onDirection,
   onCardPlayed,
   onGameStarted,
@@ -93,7 +93,7 @@ const useSocket = ({
     socket.on('Player connection state update', onPlayerConnectionStateUpdate);
     socket.on('disconnect', onDisconnect);
     socket.on('Possible Cards', onPossibleCards);
-    socket.on('Impossible Cards', onInpossibleCards);
+    socket.on('Impossible Cards', onImpossibleCards);
     socket.on('direction', onDirection);
     socket.on('Card Played', onCardPlayed);
     socket.on('Game Started', onGameStarted);
@@ -110,7 +110,7 @@ const useSocket = ({
       );
       socket.off('disconnect', onDisconnect);
       socket.off('Possible Cards', onPossibleCards);
-      socket.off('Impossible Cards', onInpossibleCards);
+      socket.off('Impossible Cards', onImpossibleCards);
       socket.off('direction', onDirection);
       socket.off('Card Played', onCardPlayed);
       socket.off('Game Started', onGameStarted);
@@ -177,41 +177,31 @@ const useGameSocket = (): useGameSocketReturn => {
       __players[index].ready = ready;
       setPlayers([...__players]);
     },
-    onCardPlayed: (data) => {
-      setPlayedCards([...playedCards, data]);
+    onCardPlayed: (index, card) => {
+      console.log('on card played', index, card);
+      setPlayedCards([...playedCards, card]);
     },
-    onInpossibleCards: (data) => {
+    onImpossibleCards: (data) => {
+      console.log('on impossible cards', data);
       setUnplayableCards(data); // maybe sort by color then number for better experience?
-      setSelectedUnplayableCardIndex(data.length / 2); // prevent out of bounds errors
+      setSelectedUnplayableCardIndex(Math.floor(data.length / 2)); // prevent out of bounds errors
     },
     onPossibleCards: (data) => {
+      console.log('on possible cards', data);
       setPlayableCards(data);
-      setSelectedPlayableCardIndex(data.length / 2); // prevent out of bounds errors
+      setSelectedPlayableCardIndex(Math.floor(data.length / 2)); // prevent out of bounds errors
     },
     onDirection: (data) => {
-      // scroll to the end of unplayable cards, then roll over to playable cards
+      console.log('on direction', data);
       if (data === 'left') {
-        if (selectedPlayableCardIndex === 0) {
-          const nextIndex = Math.max(0, selectedUnplayableCardIndex - 1);
-          setSelectedUnplayableCardIndex(nextIndex);
-        } else {
-          const nextIndex = Math.max(0, selectedPlayableCardIndex - 1);
-          setSelectedPlayableCardIndex(nextIndex);
-        }
+        setSelectedPlayableCardIndex(
+          (selectedPlayableCardIndex - 1 + playedCards.length) %
+            playableCards.length,
+        );
       } else if (data === 'right') {
-        if (selectedUnplayableCardIndex === unplayableCards.length - 1) {
-          const nextindex = Math.min(
-            selectedPlayableCardIndex + 1,
-            playableCards.length - 1,
-          );
-          setSelectedPlayableCardIndex(nextindex);
-        } else {
-          const nextIndex = Math.min(
-            selectedUnplayableCardIndex + 1,
-            unplayableCards.length - 1,
-          );
-          setSelectedUnplayableCardIndex(nextIndex);
-        }
+        setSelectedPlayableCardIndex(
+          (selectedPlayableCardIndex + 1) % playableCards.length,
+        );
       }
     },
 

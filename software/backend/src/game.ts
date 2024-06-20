@@ -1,4 +1,3 @@
-import { socket } from "zeromq";
 import { SiggyListener, CategoricalPrediction, Action } from "./siggy_listener";
 import { Server, Socket } from "socket.io";
 class GameClient {
@@ -43,6 +42,13 @@ class GameClient {
   // ...
 }
 
+async function sleep(ms: number) {
+  return new Promise((resolve) =>
+    setTimeout(() => {
+      resolve(0);
+    }, ms),
+  );
+}
 class Game {
   server: Server;
   clients = new Map<string, GameClient>();
@@ -152,54 +158,22 @@ class Game {
     if (first_card) {
       this.gameState.top_card = first_card;
       this.gameState.played_cards.push(first_card);
+      this.broadcast("Card Played", -1, first_card);
     }
-  }
 
-  /* 
-  Takes current playerIndex
-  Sorts cards in the current player's hand into possible or impossible hand
-  */
-  public sortPossibleHand(playerIndex: number) {
-    const topCard = this.gameState.top_card;
-    const color = topCard?.color;
-    const number = topCard?.number;
-
-    const player = this.players[playerIndex];
-    const hand = player.hand;
-    let possible = player.possible_hand;
-    let impossible = player.impossible_hand;
-
-    // splice possible hand from 1 -> end, preserve draw card
-    // clear everything in impossible hand
-    possible.splice(1, possible.length - 1);
-    impossible.length = 0;
-
-    // Handles wild card color choice
-    if (number == 12 || number == 13) {
-      const colour = ["red", "yellow", "green", "blue"];
-      const solidnum = 15;
-
-      // Pops draw card
-      possible.pop();
-
-      for (let i = 0; i < colour.length; i++) {
-        possible.push(new Card(colour[i], solidnum, true));
-      }
-    } else {
-      // Adds draw card if doesn't exist
-      if (hand.length == 0) {
-        possible.push(new Card("wild", 14, true));
-      }
-      for (let i = 0; i < hand.length; i++) {
-        if (
-          hand[i].color == color ||
-          hand[i].color == "wild" ||
-          hand[i].number == number
-        ) {
-          possible.push(hand[i]);
-        } else {
-          impossible.push(hand[i]);
+    for (const player of this.players) {
+      for (let j = 0; j < starthand; j++) {
+        const drawn_card = deck.pop();
+        if (drawn_card) {
+          player.hand.push(drawn_card);
         }
+      }
+
+      const client = this.clients.get(player.player_socket);
+      if (client) {
+        player.sortPossibleHand(this.gameState.top_card!, client);
+      } else {
+        console.log("socket id does not correspond to player");
       }
     }
   }
@@ -246,11 +220,13 @@ class Game {
   }
 
   // Method to play Game -- will continue until one player has no cards
-  public playGame() {
+  public async playGame() {
     console.log("playing game");
     this.broadcast("Game Started");
     this.setGame();
     let currentPlayerIndex = 0;
+
+    await sleep(2000);
 
     // Ensure currentPlayerIndex is valid
     if (!this.players[currentPlayerIndex]) {
@@ -264,23 +240,19 @@ class Game {
       // Calculate possible hand and send to specific client
       const current_player = this.players[currentPlayerIndex];
       const current_client = this.clients.get(current_player.player_socket);
-      this.sortPossibleHand(currentPlayerIndex);
 
       if (current_client) {
-        current_client.socket.emit(
-          "Possible Cards",
-          this.players[currentPlayerIndex].possible_hand,
-        );
-        current_client.socket.emit(
-          "Impossible Cards",
-          this.players[currentPlayerIndex].impossible_hand,
+        current_player.sortPossibleHand(
+          this.gameState.top_card!,
+          current_client,
         );
 
         // Listening for move
-        const selected = this.players[currentPlayerIndex].moveCard(
+        const selected = await this.players[currentPlayerIndex].moveCard(
           current_client,
           this.gameState,
         );
+        console.log("selected: %o for player %d", selected, currentPlayerIndex);
 
         // Special functions can be performed
         currentPlayerIndex = Number(
@@ -304,6 +276,7 @@ class Game {
       } else {
         this.error("socket.id does not correspond to client");
       }
+      await sleep(2000);
     }
 
     this.endGame(currentPlayerIndex);
@@ -345,8 +318,6 @@ class Game {
     this.broadcast("Game Ended", winnerIndex);
     // Timeout after 60000
     const timeoutID = setTimeout(this.closeGame, 60000);
-
-    let readyState = new Array(this.numPlayers).fill(false);
 
     // P1 then P2 confirm readiness with jaw clench
     let ready = false;
@@ -461,21 +432,25 @@ class Player {
     return [this.ready, prev !== this.ready];
   }
 
-  public moveCard(playerClient: GameClient, gameState: GameState) {
+  public async moveCard(playerClient: GameClient, gameState: GameState) {
     while (true) {
       const action = playerClient.getCurrentPrediction();
       if (action === Action.Right) {
         this.selected_card =
           (this.selected_card + 1) % this.possible_hand.length;
+        console.log("emit right")
         playerClient.socket.emit("direction", "right");
       } else if (action === Action.Left) {
         this.selected_card =
           (this.selected_card - 1 + this.possible_hand.length) %
           this.possible_hand.length;
+
+        console.log("emit left")
         playerClient.socket.emit("direction", "left");
       } else if (action === Action.Clench) {
         return this.playCard(gameState, playerClient);
       }
+      await sleep(250);
     }
   }
 
@@ -495,6 +470,53 @@ class Player {
     }
     playerClient.socket.emit("Card Played", playerClient.playerIndex, selected);
     return selected;
+  }
+
+  public sortPossibleHand(topCard: Card, playerClient: GameClient) {
+    const color = topCard.color;
+    const number = topCard.number;
+
+    const hand = this.hand;
+
+    // splice possible hand from 1 -> end, preserve draw card
+    // clear everything in impossible hand
+    this.possible_hand.splice(1, this.possible_hand.length - 1);
+    this.impossible_hand = [];
+
+    // Handles wild card color choice
+    if (number == 12 || number == 13) {
+      const colour = ["red", "yellow", "green", "blue"];
+      const solidnum = 15;
+
+      // Pops draw card
+      this.possible_hand.pop();
+
+      for (let i = 0; i < colour.length; i++) {
+        this.possible_hand.push(new Card(colour[i], solidnum, true));
+      }
+    } else {
+      // Adds draw card if doesn't exist
+      if (hand.length == 0) {
+        this.possible_hand.push(new Card("wild", 14, true));
+      }
+      for (let i = 0; i < hand.length; i++) {
+        if (
+          hand[i].color === color ||
+          hand[i].color === "wild" ||
+          hand[i].number === number
+        ) {
+          this.possible_hand.push(hand[i]);
+        } else {
+          this.impossible_hand.push(hand[i]);
+        }
+      }
+    }
+    this.selected_card = Math.floor(this.possible_hand.length / 2) // prevent out of bounds errors
+    playerClient.socket.emit(
+      "Possible Cards",
+      this.possible_hand,
+    );
+    playerClient.socket.emit("Impossible Cards", this.impossible_hand);
   }
 }
 

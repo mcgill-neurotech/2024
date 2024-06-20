@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import './Gameboard_style.css';
 import { useGameSocket } from './useSocket';
 import { CardColor, ICardProps } from './Card';
@@ -87,6 +87,8 @@ const specialCornerMap = new Map<number, (color: string) => React.ReactNode>([
   [11, (_c) => <p className="text-white text-4xl text-shadow">{'+2'}</p>],
   [12, (_c) => <p className="text-white text-4xl text-shadow">{'+4'}</p>],
   [13, (_c) => <ColorwheelIcon width={45} height={45} />],
+  [14, (_c) => <p className="text-white text-4xl text-shadow">{'+draw'}</p>],
+  [15, (_c) => <p className="text-white text-4xl text-shadow">{'+solid'}</p>]
 ]);
 
 const specialCenterMap = new Map<number, (color: string) => React.ReactNode>([
@@ -99,6 +101,8 @@ const specialCenterMap = new Map<number, (color: string) => React.ReactNode>([
   ],
   [12, (_c) => <ColorwheelIcon height={200} width={200} />],
   [13, (_c) => <ColorwheelIcon height={200} width={200} />],
+  [14, (_c) => <p className="text-white text-4xl text-shadow">{'+draw'}</p>],
+  [15, (_c) => <p className="text-white text-4xl text-shadow">{'+solid'}</p>]
 ]);
 
 const specialClassNameMap = new Map<number, string>([
@@ -123,6 +127,7 @@ const makeCardProps = (card: GameCard) => {
       </p>
     );
   } else {
+    console.log(card.number)
     ret.corners = specialCornerMap.get(card.number)!(card.color);
     ret.center = specialCenterMap.get(card.number)!(card.color);
     ret.centerClassName = specialClassNameMap.get(card.number);
@@ -135,16 +140,10 @@ const CARD_WIDTH = 100; // Replace with actual card width
 const CARD_HEIGHT = 150; // Replace with actual card height
 
 const Gameboard: React.FC = () => {
-  //DUMMY CARD GENERATOR STUFF
-  const [selectedCardIndex, setSelectedCardIndex] = useState(0);
-  const generateCards = useCallback(generateDummyCards, []);
-  const allCards = generateCards();
-  //END DUMMY CARD GENERATOR STUFF
-
-  const { connectionInfo, gameInfo } = useGameSocket();
+  const { connectionInfo, gameInfo, } = useGameSocket();
+  const { playedCards, playableCards, unplayableCards, selectedPlayableCardIndex } = gameInfo;
   const isConnected = connectionInfo.isConnected;
   const id = connectionInfo.id;
-  const { playedCards } = gameInfo;
 
   return (
     <div className="gameboard">
@@ -164,7 +163,7 @@ const Gameboard: React.FC = () => {
       </div>
       <div className="middle-section relative">
         <PlayingPile
-          cards={playedCards.length ? playedCards.map((c) => makeCardProps(c)) : allCards}
+          cards={playedCards.map(makeCardProps)}
           cardWidth={CARD_WIDTH}
           cardHeight={CARD_HEIGHT}
         />
@@ -172,10 +171,20 @@ const Gameboard: React.FC = () => {
       <div className="bottom-section">
         <div className="card-container">
           <CardFanLinear
-            selected={selectedCardIndex}
+            selected={selectedPlayableCardIndex}
             spread={1}
             //onSelected={(i) => setSelectedCardIndex(i)}
-            cards={allCards}
+            cards={playableCards.map(makeCardProps)}
+          />
+        </div>
+      </div>
+      <div className="bottom-section">
+        <div className="card-container">
+          <CardFanLinear
+            selected={selectedPlayableCardIndex}
+            spread={1}
+            //onSelected={(i) => setSelectedCardIndex(i)}
+            cards={unplayableCards.map(makeCardProps)}
           />
         </div>
       </div>

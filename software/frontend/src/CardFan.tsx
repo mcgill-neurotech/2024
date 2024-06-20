@@ -7,6 +7,7 @@ function calculate_fan_positions(N: number, selected: number, spread: number) {
   for (let n = -B; n <= B; n++) {
     positions.push(n);
   }
+  if (N % 2 == 0) positions.push(B + 1);
   const center = positions[selected];
   return positions.map((i) => ({
     left: (i - center) * spread * 50, // Spread horizontally
@@ -28,6 +29,8 @@ const CardFanLinear: React.FC<ICardFanProps> = ({
   //onSelected,
 }) => {
   const positions = calculate_fan_positions(cards.length, selected, spread);
+  console.log(cards, positions);
+
   return (
     <div className="card-fan-wrapper">
       {cards.map((props, i) => {
