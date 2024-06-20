@@ -17,6 +17,7 @@ from sklearn.metrics import accuracy_score, confusion_matrix, ConfusionMatrixDis
 import pickle
 from .pre_processing import csp_preprocess
 import os
+import torch
 
 import sys
 print("\n\n\n")
@@ -25,11 +26,12 @@ print("\n\n\n")
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../../..'))
 
-from siggy_ml.models.unet import base_eegnet
-
+from siggy_ml.models.diffusion.classification_heads import EEGNetHead
 # Edited from NTX McGill 2021 stream.py, lines 16-23
 # https://github.com/NTX-McGill/NeuroTechX-McGill-2021/blob/main/software/backend/dcp/bci/stream.py
 logger = logging.getLogger(__name__)
+
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 def apply_notch(x,y,fs,notch_freq=50):
 		"""
@@ -291,6 +293,7 @@ class DataClassifier:
     def __init__(
         self,
         find_streams=True,
+        use_eegnet=True,
     ):
         self.eeg_inlet = find_bci_inlet() if find_streams else None
 
@@ -305,6 +308,15 @@ class DataClassifier:
         self.time_buffer = np.ndarray(self.bufsize)
         self.last_time_index = 0
         self.current_time_index = 0
+
+        self.model = EEGNetHead(18,256)
+
+        eegnet_path = os.path.join(os.path.dirname(__file__), '../eegnet_bands_openbci.pt')
+
+        print("Loading EEGNet")
+        self.model.load_state_dict(torch.load(eegnet_path,map_location=DEVICE))
+
+        self.use_eegnet = use_eegnet
 
     def find_streams(self):
         """Find EEG and marker streams. Updates the ready flag."""
@@ -340,8 +352,11 @@ class DataClassifier:
 
         count = 0
 
-        with open("model.p","rb") as f:
-            clf = pickle.load(f)
+        model_path = os.path.join(os.path.dirname(__file__), '../model.p')
+
+        if not self.use_eegnet:
+            with open(model_path,"rb") as f:
+                clf = pickle.load(f)
 
         while self.recording:
             eeg_sample, eeg_timestamp = self.eeg_inlet.pull_sample()
@@ -370,11 +385,15 @@ class DataClassifier:
                 x = rearrange(x[np.array([3,5]),:],"c t -> 1 t c")
                 x,_ = epoch_preprocess(x,None,256,60)
                 x = rearrange(x,"b t c ->b c t")
-                y = clf.predict(x)
+                if self.use_eegnet:
+                    y = self.model.classify(x)
+                    y = torch.argmax(x,-1)
+                else:
+                    y = clf.predict(x)
                 print(f"predicted class {y}")
 
-            if count >= 3000:
-                raise(ValueError("bla bla bla"))
+            if count >= 1000:
+                raise(ValueError("early stop"))
             
     def get_buffer_samples(self):
         if self.last_time_index > self.current_time_index:
