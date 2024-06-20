@@ -127,7 +127,6 @@ const makeCardProps = (card: GameCard) => {
       </p>
     );
   } else {
-    console.log(card.number)
     ret.corners = specialCornerMap.get(card.number)!(card.color);
     ret.center = specialCenterMap.get(card.number)!(card.color);
     ret.centerClassName = specialClassNameMap.get(card.number);
@@ -145,6 +144,7 @@ const Gameboard: React.FC = () => {
   const isConnected = connectionInfo.isConnected;
   const id = connectionInfo.id;
 
+  console.log(selectedPlayableCardIndex)
   return (
     <div className="gameboard">
       <div className="top-section">

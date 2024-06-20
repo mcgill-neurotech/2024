@@ -43,11 +43,7 @@ class GameClient {
 }
 
 async function sleep(ms: number) {
-  return new Promise((resolve) =>
-    setTimeout(() => {
-      resolve(0);
-    }, ms),
-  );
+  return await new Promise<void>((r) => setTimeout(() => r(), ms));
 }
 class Game {
   server: Server;
@@ -307,10 +303,10 @@ class Game {
             }
           }
         }
-        await new Promise((r) => setTimeout(r, 100)); //sleep for 100 ms
+        await sleep(100);
       }
 
-      this.playGame();
+      await this.playGame();
     }
   }
 
@@ -338,13 +334,13 @@ class Game {
           }
         }
       }
-      await new Promise((r) => setTimeout(r, 100)); //sleep for 100 ms
+      await sleep(100);
     }
     clearTimeout(timeoutID);
 
     this.broadcast("Game Started");
 
-    this.playGame();
+    await this.playGame();
   }
 
   private closeGame() {
@@ -435,22 +431,22 @@ class Player {
   public async moveCard(playerClient: GameClient, gameState: GameState) {
     while (true) {
       const action = playerClient.getCurrentPrediction();
+      if (action === Action.Clench) {
+        return this.playCard(gameState, playerClient);
+      }
+
       if (action === Action.Right) {
         this.selected_card =
           (this.selected_card + 1) % this.possible_hand.length;
-        console.log("emit right")
-        playerClient.socket.emit("direction", "right");
       } else if (action === Action.Left) {
         this.selected_card =
           (this.selected_card - 1 + this.possible_hand.length) %
           this.possible_hand.length;
-
-        console.log("emit left")
-        playerClient.socket.emit("direction", "left");
-      } else if (action === Action.Clench) {
-        return this.playCard(gameState, playerClient);
       }
-      await sleep(250);
+
+      console.log("emit position", this.selected_card);
+      playerClient.socket.emit("position", this.selected_card);
+      await sleep(2000);
     }
   }
 
@@ -511,11 +507,8 @@ class Player {
         }
       }
     }
-    this.selected_card = Math.floor(this.possible_hand.length / 2) // prevent out of bounds errors
-    playerClient.socket.emit(
-      "Possible Cards",
-      this.possible_hand,
-    );
+    this.selected_card = Math.floor(this.possible_hand.length / 2); // prevent out of bounds errors
+    playerClient.socket.emit("Possible Cards", this.possible_hand);
     playerClient.socket.emit("Impossible Cards", this.impossible_hand);
   }
 }

@@ -4,8 +4,6 @@ import { socket } from './socket';
 import { Card as GameCard } from '../../backend/src/game';
 import { useNavigate } from 'react-router-dom';
 
-type Direction = 'left' | 'right';
-
 interface Player {
   connected: boolean;
   ready: boolean;
@@ -28,8 +26,8 @@ interface IUseSocketParams {
   // data = array of current player's impossible hand
   onImpossibleCards: (data: GameCard[]) => void;
 
-  // data = string "right" or "left"
-  onDirection: (direction: string) => void;
+  // data = index
+  onPosition: (position: number) => void;
 
   // data = total number of players on the game
   onJoined: (
@@ -67,7 +65,7 @@ const useSocket = ({
   onPlayerConnectionStateUpdate,
   onPossibleCards,
   onImpossibleCards,
-  onDirection,
+  onPosition,
   onCardPlayed,
   onGameStarted,
   onGameEnded,
@@ -94,7 +92,7 @@ const useSocket = ({
     socket.on('disconnect', onDisconnect);
     socket.on('Possible Cards', onPossibleCards);
     socket.on('Impossible Cards', onImpossibleCards);
-    socket.on('direction', onDirection);
+    socket.on('position', onPosition);
     socket.on('Card Played', onCardPlayed);
     socket.on('Game Started', onGameStarted);
     socket.on('Game Ended', onGameEnded);
@@ -111,7 +109,7 @@ const useSocket = ({
       socket.off('disconnect', onDisconnect);
       socket.off('Possible Cards', onPossibleCards);
       socket.off('Impossible Cards', onImpossibleCards);
-      socket.off('direction', onDirection);
+      socket.off('position', onPosition);
       socket.off('Card Played', onCardPlayed);
       socket.off('Game Started', onGameStarted);
       socket.off('Game Ended', onGameEnded);
@@ -147,11 +145,13 @@ const useGameSocket = (): useGameSocketReturn => {
   let __players: Player[] = [];
   const [players, setPlayers] = useState<Player[]>([]);
   const [playerIndex, setPlayerIndex] = useState(-1);
+  let __playableCards: GameCard[] = [];
   const [playableCards, setPlayableCards] = useState<GameCard[]>([]);
   const [unplayableCards, setUnplayableCards] = useState<GameCard[]>([]);
   const [selectedPlayableCardIndex, setSelectedPlayableCardIndex] = useState(0);
   const [selectedUnplayableCardIndex, setSelectedUnplayableCardIndex] =
     useState(0);
+
   const [playedCards, setPlayedCards] = useState<GameCard[]>([]);
 
   const { isConnected, id } = useSocket({
@@ -188,21 +188,13 @@ const useGameSocket = (): useGameSocketReturn => {
     },
     onPossibleCards: (data) => {
       console.log('on possible cards', data);
-      setPlayableCards(data);
-      setSelectedPlayableCardIndex(Math.floor(data.length / 2)); // prevent out of bounds errors
+      __playableCards = data;
+      setPlayableCards([...__playableCards]);
+      setSelectedPlayableCardIndex(Math.floor(__playableCards.length / 2)); // prevent out of bounds errors
     },
-    onDirection: (data) => {
-      console.log('on direction', data);
-      if (data === 'left') {
-        setSelectedPlayableCardIndex(
-          (selectedPlayableCardIndex - 1 + playedCards.length) %
-            playableCards.length,
-        );
-      } else if (data === 'right') {
-        setSelectedPlayableCardIndex(
-          (selectedPlayableCardIndex + 1) % playableCards.length,
-        );
-      }
+    onPosition: (position) => {
+      console.log('on position', position);
+      setSelectedPlayableCardIndex(position);
     },
 
     onGameStarted: () => {
