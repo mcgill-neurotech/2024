@@ -180,7 +180,7 @@ const useGameSocket = (): useGameSocketReturn => {
     },
     onCardPlayed: (index, card) => {
       console.log('on card played', index, card);
-      __playedCards = [...__playedCards, card]
+      __playedCards = [...__playedCards, card];
       setPlayedCards(__playedCards);
     },
     onImpossibleCards: (data) => {

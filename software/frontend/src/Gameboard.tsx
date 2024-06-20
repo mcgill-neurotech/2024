@@ -25,7 +25,11 @@ const generateDummyCards = (): ICardProps[] => {
     ...colors.map((color) => ({
       corners: <p className="text-white text-4xl text-shadow">{'+2'}</p>,
       color,
-      center: <p className="text-xl text-shadow" style={{ color: color }}>some svg?</p>,
+      center: (
+        <p className="text-xl text-shadow" style={{ color: color }}>
+          some svg?
+        </p>
+      ),
     })),
   );
   cards.push(
@@ -39,35 +43,50 @@ const generateDummyCards = (): ICardProps[] => {
     ...colors.map((color) => ({
       corners: <p className="text-white text-4xl text-shadow">ø</p>,
       color,
-      center: <p className="text-6xl text-shadow" style={{ color: color }}>ø</p>,
+      center: (
+        <p className="text-6xl text-shadow" style={{ color: color }}>
+          ø
+        </p>
+      ),
     })),
   );
   cards.push(
     ...colors.map((color) => ({
       corners: <p className="text-white text-sm">{'color wheel svg'}</p>,
       color: '#000000',
-      center: <p className="text-xl text-shadow" style={{ color: color }}>color wheel</p>,
+      center: (
+        <p className="text-xl text-shadow" style={{ color: color }}>
+          color wheel
+        </p>
+      ),
     })),
   );
   cards.push(
     ...colors.map((color) => ({
       corners: <p className="text-white text-4xl text-shadow">{'+4'}</p>,
       color: '#000000',
-      center: <p className="text-xl text-shadow" style={{ color: color }}>+4 svg?</p>,
+      center: (
+        <p className="text-xl text-shadow" style={{ color: color }}>
+          +4 svg?
+        </p>
+      ),
     })),
   );
   cards.push(
     ...cartesian(texts, colors).map(([text, color]: [string, CardColor]) => ({
       corners: <p className="text-white text-4xl text-shadow">{text}</p>,
       color,
-      center: <p className="text-6xl text-shadow" style={{ color: color }}>{text}</p>,
+      center: (
+        <p className="text-6xl text-shadow" style={{ color: color }}>
+          {text}
+        </p>
+      ),
     })),
   );
   return cards;
 };
 
-/// END  OF DUMMY CARDS SECTION 
-
+/// END  OF DUMMY CARDS SECTION
 
 const cardColorMap = new Map<string, CardColor>([
   ['blue', CardColor.Blue],
@@ -88,7 +107,7 @@ const specialCornerMap = new Map<number, (color: string) => React.ReactNode>([
   [12, (_c) => <p className="text-white text-4xl text-shadow">{'+4'}</p>],
   [13, (_c) => <ColorwheelIcon width={45} height={45} />],
   [14, (_c) => <p className="text-white text-4xl text-shadow">{'+draw'}</p>],
-  [15, (_c) => <p className="text-white text-4xl text-shadow">{'+solid'}</p>]
+  [15, (_c) => <p className="text-white text-4xl text-shadow">{'+solid'}</p>],
 ]);
 
 const specialCenterMap = new Map<number, (color: string) => React.ReactNode>([
@@ -102,7 +121,7 @@ const specialCenterMap = new Map<number, (color: string) => React.ReactNode>([
   [12, (_c) => <ColorwheelIcon height={200} width={200} />],
   [13, (_c) => <ColorwheelIcon height={200} width={200} />],
   [14, (_c) => <p className="text-white text-4xl text-shadow">{'+draw'}</p>],
-  [15, (_c) => <p className="text-white text-4xl text-shadow">{'+solid'}</p>]
+  [15, (_c) => <p className="text-white text-4xl text-shadow">{'+solid'}</p>],
 ]);
 
 const specialClassNameMap = new Map<number, string>([
@@ -139,12 +158,17 @@ const CARD_WIDTH = 100; // Replace with actual card width
 const CARD_HEIGHT = 150; // Replace with actual card height
 
 const Gameboard: React.FC = () => {
-  const { connectionInfo, gameInfo, } = useGameSocket();
-  const { playedCards, playableCards, unplayableCards, selectedPlayableCardIndex } = gameInfo;
+  const { connectionInfo, gameInfo } = useGameSocket();
+  const {
+    playedCards,
+    playableCards,
+    unplayableCards,
+    selectedPlayableCardIndex,
+  } = gameInfo;
   const isConnected = connectionInfo.isConnected;
   const id = connectionInfo.id;
 
-  console.log(selectedPlayableCardIndex)
+  console.log(selectedPlayableCardIndex);
   return (
     <div className="gameboard">
       <div className="top-section">
