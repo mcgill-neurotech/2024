@@ -6,3 +6,4 @@ The team:
 - Malak Oualid
 - Toky Raharison
 - Maxence Lapatrie
+- Janelle Tam
