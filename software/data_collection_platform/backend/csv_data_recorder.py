@@ -303,7 +303,7 @@ class DataClassifier:
         if self.ready:
             logger.info("Ready to start recording.")
 
-        self.bufsize = 1000
+        self.bufsize = 512
         self.buffer = np.ndarray((8, self.bufsize))
         self.time_buffer = np.ndarray(self.bufsize)
         self.last_time_index = 0
@@ -379,15 +379,15 @@ class DataClassifier:
 
             count += 1
 
-            x = self.get_buffer_samples()
+            x = self.buffer
             c,t = x.shape
-            if t > 256:
+            if t >= 512:
                 x = rearrange(x[np.array([3,5]),:],"c t -> 1 t c")
                 x,_ = epoch_preprocess(x,None,256,60)
                 x = rearrange(x,"b t c ->b c t")
                 if self.use_eegnet:
-                    y = self.model.classify(x)
-                    y = torch.argmax(x,-1)
+                    y = self.model.classify(torch.tensor(x).to(torch.float32))
+                    y = torch.argmax(y,-1)
                 else:
                     y = clf.predict(x)
                 print(f"predicted class {y}")
