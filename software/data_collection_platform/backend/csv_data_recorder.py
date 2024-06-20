@@ -15,6 +15,17 @@ from mne.decoding import CSP
 from sklearn.feature_selection import SelectKBest, mutual_info_classif
 from sklearn.metrics import accuracy_score, confusion_matrix, ConfusionMatrixDisplay
 import pickle
+from .pre_processing import csp_preprocess
+import os
+
+import sys
+print("\n\n\n")
+print(os.path.dirname(__file__))
+print("\n\n\n")
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../..'))
+
+from siggy_ml.models.unet import base_eegnet
 
 # Edited from NTX McGill 2021 stream.py, lines 16-23
 # https://github.com/NTX-McGill/NeuroTechX-McGill-2021/blob/main/software/backend/dcp/bci/stream.py

@@ -1,0 +1,3 @@
+2024-06-20 11:02:43,841 backend.csv_data_recorder INFO Looking for an EEG stream...
+2024-06-20 11:02:43,866 backend.csv_data_recorder INFO Connected to stream: obci_eeg1, Stream channel_count: 8
+2024-06-20 11:02:43,866 backend.csv_data_recorder INFO Ready to start recording.
