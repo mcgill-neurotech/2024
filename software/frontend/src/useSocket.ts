@@ -152,6 +152,7 @@ const useGameSocket = (): useGameSocketReturn => {
   const [selectedUnplayableCardIndex, setSelectedUnplayableCardIndex] =
     useState(0);
 
+  let __playedCards: GameCard[] = [];
   const [playedCards, setPlayedCards] = useState<GameCard[]>([]);
 
   const { isConnected, id } = useSocket({
@@ -179,7 +180,8 @@ const useGameSocket = (): useGameSocketReturn => {
     },
     onCardPlayed: (index, card) => {
       console.log('on card played', index, card);
-      setPlayedCards([...playedCards, card]);
+      __playedCards = [...__playedCards, card]
+      setPlayedCards(__playedCards);
     },
     onImpossibleCards: (data) => {
       console.log('on impossible cards', data);
