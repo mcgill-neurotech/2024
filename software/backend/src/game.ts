@@ -76,28 +76,33 @@ class Game {
   public createPlayer(socket: Socket) {
     const availablePlayers = this.getAvailablePlayers();
     if (availablePlayers.length == 0) return false;
-  
+
     const playerIndex = availablePlayers[0];
     const gameClient = new GameClient(playerIndex, socket, this);
     this.clients.set(socket.id, gameClient);
     this.siggyListener.attachPlayer(playerIndex, gameClient);
-  
+
     // Ensure players array is properly initialized
     if (!this.players[playerIndex]) {
       this.players[playerIndex] = new Player(socket.id);
     } else {
       this.players[playerIndex].player_socket = socket.id;
     }
-  
+
     const data: any[] = [];
     for (const v of this.clients.values()) {
-      data.push({ playerIndex: v.playerIndex, ready: this.players[playerIndex].ready });
+      data.push({
+        playerIndex: v.playerIndex,
+        ready: this.players[playerIndex].ready,
+      });
     }
-  
-    gameClient.socket.emitWithAck('Joined', data, this.numPlayers, playerIndex).then(() => {
-      this.broadcast('Player connection state update', playerIndex, true);
-    });
-  
+
+    gameClient.socket
+      .emitWithAck("Joined", data, this.numPlayers, playerIndex)
+      .then(() => {
+        this.broadcast("Player connection state update", playerIndex, true);
+      });
+
     const remainingSlots = this.getAvailablePlayers().length;
     console.log(remainingSlots, "slots remaining");
     if (remainingSlots === 0) {
@@ -105,8 +110,6 @@ class Game {
     }
     return true;
   }
-  
-  
 
   // Shuffles deck
   private shuffleDeck() {
@@ -130,19 +133,18 @@ class Game {
 
   // Sets initial game state -- 7 cards initially in each player's hands, draw from deck option, first top card
   private setGame() {
-    this.shuffleDeck()
+    this.shuffleDeck();
     const starthand = 7;
     let deck = this.gameState.deck;
     for (let i = 0; i < this.numPlayers; i++) {
       /* Add draw from deck card to both player's possible hand -- OR hand */
-      this.players[i].possible_hand.push(new Card("wild", 14, true))
+      this.players[i].possible_hand.push(new Card("wild", 14, true));
 
       for (let j = 0; j < starthand; j++) {
         const drawn_card = deck.pop();
         if (drawn_card) {
           this.players[i].hand.push(drawn_card);
         }
-       
       }
     }
     // Draws first card on playing deck
@@ -158,9 +160,9 @@ class Game {
   Sorts cards in the current player's hand into possible or impossible hand
   */
   public sortPossibleHand(playerIndex: number) {
-    const topCard = this.gameState.top_card
-    const color = topCard?.color
-    const number = topCard?.number
+    const topCard = this.gameState.top_card;
+    const color = topCard?.color;
+    const number = topCard?.number;
 
     const player = this.players[playerIndex];
     const hand = player.hand;
@@ -169,12 +171,12 @@ class Game {
 
     // splice possible hand from 1 -> end, preserve draw card
     // clear everything in impossible hand
-    possible.splice(1,possible.length-1);
+    possible.splice(1, possible.length - 1);
     impossible.length = 0;
 
     // Handles wild card color choice
     if (number == 12 || number == 13) {
-      const colour = ['red', 'yellow', 'green', 'blue'];
+      const colour = ["red", "yellow", "green", "blue"];
       const solidnum = 15;
 
       // Pops draw card
@@ -183,9 +185,7 @@ class Game {
       for (let i = 0; i < colour.length; i++) {
         possible.push(new Card(colour[i], solidnum, true));
       }
-    }
-
-    else {
+    } else {
       // Adds draw card if doesn't exist
       if (hand.length == 0) {
         possible.push(new Card("wild", 14, true));
@@ -207,12 +207,12 @@ class Game {
   /* 
   Takes current playerIndex 
   Adds a card to the player */
-  public addCard(playerIndex: number){
+  public addCard(playerIndex: number) {
     const player = this.players[playerIndex];
     let deck = this.gameState.deck;
-    if (deck.length != 0){
+    if (deck.length != 0) {
       const card = deck.pop();
-      if (card){
+      if (card) {
         player.hand.push(card);
       }
     }
@@ -220,14 +220,16 @@ class Game {
 
   // After playing a card, checks if special power is used and changes turn accordingly
   public readSpecial(playerIndex: number, selected: Card) {
-    const number = selected.number 
-    const opp = (playerIndex + 1) % 2
+    const number = selected.number;
+    const opp = (playerIndex + 1) % 2;
 
-    if (number == 11){ //add 2 cards 
+    if (number == 11) {
+      //add 2 cards
       this.addCard(opp);
       this.addCard(opp);
-    } else if (number == 12){ //add 4 cards 
-      for (let i=0; i < 4; i++) {
+    } else if (number == 12) {
+      //add 4 cards
+      for (let i = 0; i < 4; i++) {
         this.addCard(opp);
       }
     }
@@ -237,62 +239,75 @@ class Game {
     if (number) {
       if (number > 9 && number < 14) {
         return playerIndex;
-      }
-      else {
+      } else {
         return opp;
       }
     }
-    
   }
 
   // Method to play Game -- will continue until one player has no cards
   public playGame() {
-    console.log('playing game');
+    console.log("playing game");
     this.broadcast("Game Started");
     this.setGame();
     let currentPlayerIndex = 0;
-  
+
     // Ensure currentPlayerIndex is valid
     if (!this.players[currentPlayerIndex]) {
       this.error(`Invalid currentPlayerIndex: ${currentPlayerIndex}`);
       return;
     }
-  
+
     while (this.players[currentPlayerIndex].hand.length > 0) {
-      console.log('while loop', currentPlayerIndex, this.players);
-  
+      console.log("while loop", currentPlayerIndex, this.players);
+
       // Calculate possible hand and send to specific client
       const current_player = this.players[currentPlayerIndex];
       const current_client = this.clients.get(current_player.player_socket);
       this.sortPossibleHand(currentPlayerIndex);
-  
+
       if (current_client) {
-        current_client.socket.emit("Possible Cards", this.players[currentPlayerIndex].possible_hand);
-        current_client.socket.emit("Impossible Cards", this.players[currentPlayerIndex].impossible_hand);
-  
+        current_client.socket.emit(
+          "Possible Cards",
+          this.players[currentPlayerIndex].possible_hand,
+        );
+        current_client.socket.emit(
+          "Impossible Cards",
+          this.players[currentPlayerIndex].impossible_hand,
+        );
+
         // Listening for move
-        const selected = this.players[currentPlayerIndex].moveCard(current_client, this.gameState);
-  
+        const selected = this.players[currentPlayerIndex].moveCard(
+          current_client,
+          this.gameState,
+        );
+
         // Special functions can be performed
-        currentPlayerIndex = Number(this.readSpecial(currentPlayerIndex, selected)); // Performs special functions and changes turn if applicable
-  
+        currentPlayerIndex = Number(
+          this.readSpecial(currentPlayerIndex, selected),
+        ); // Performs special functions and changes turn if applicable
+
         // Ensure currentPlayerIndex is valid after update
         if (!this.players[currentPlayerIndex]) {
-          this.error(`Invalid currentPlayerIndex after update: ${currentPlayerIndex}`);
+          this.error(
+            `Invalid currentPlayerIndex after update: ${currentPlayerIndex}`,
+          );
           return;
         }
-  
+
         // Sends top_card to clients with playerIndex
-        this.broadcast("Card Played", currentPlayerIndex, this.gameState.top_card);
+        this.broadcast(
+          "Card Played",
+          currentPlayerIndex,
+          this.gameState.top_card,
+        );
       } else {
         this.error("socket.id does not correspond to client");
       }
     }
-  
+
     this.endGame(currentPlayerIndex);
   }
-  
-  
 
   public async startGame() {
     console.log("started game, waiting for clenches");
@@ -307,11 +322,15 @@ class Game {
         for (const player of this.players) {
           const client = this.clients.get(player.player_socket);
           if (!!client) {
-            const [clientReady, updated] = player.checkReady(client)
-            ready = ready && clientReady
+            const [clientReady, updated] = player.checkReady(client);
+            ready = ready && clientReady;
             if (updated) {
-              console.log('updated')
-              this.broadcast("Player ready state update", client.playerIndex, player.ready)
+              console.log("updated");
+              this.broadcast(
+                "Player ready state update",
+                client.playerIndex,
+                player.ready,
+              );
             }
           }
         }
@@ -330,22 +349,26 @@ class Game {
     let readyState = new Array(this.numPlayers).fill(false);
 
     // P1 then P2 confirm readiness with jaw clench
-      let ready = false;
-      while (!ready) {
-        console.log("not all ready");
-        ready = true;
-        for (const player of this.players) {
-          const client = this.clients.get(player.player_socket);
-          if (!!client) {
-            const [clientReady, updated] = player.checkReady(client)
-            ready = ready && clientReady
-            if (updated) {
-              this.broadcast("Player ready state update", client.playerIndex, player.ready)
-            }
+    let ready = false;
+    while (!ready) {
+      console.log("not all ready");
+      ready = true;
+      for (const player of this.players) {
+        const client = this.clients.get(player.player_socket);
+        if (!!client) {
+          const [clientReady, updated] = player.checkReady(client);
+          ready = ready && clientReady;
+          if (updated) {
+            this.broadcast(
+              "Player ready state update",
+              client.playerIndex,
+              player.ready,
+            );
           }
         }
-        await new Promise((r) => setTimeout(r, 100)); //sleep for 100 ms
       }
+      await new Promise((r) => setTimeout(r, 100)); //sleep for 100 ms
+    }
     clearTimeout(timeoutID);
 
     this.broadcast("Game Started");
@@ -360,11 +383,11 @@ class Game {
   public handleDisconnect(client: GameClient) {
     this.siggyListener.detachPlayer(client.playerIndex);
     this.clients.delete(client.id);
-    const player = this.players.at(client.playerIndex)
+    const player = this.players.at(client.playerIndex);
     if (player) {
-      player.ready=false
+      player.ready = false;
     }
-    this.broadcast('Player connection state update', client.playerIndex, )
+    this.broadcast("Player connection state update", client.playerIndex);
   }
 
   public broadcast(topic: string, ...msg: any[]) {
@@ -382,20 +405,22 @@ class GameState {
   played_cards: Card[] = [];
   top_card: Card | null = null;
 
-  constructor() { //build initial game state 
-    const colour = ['red', 'yellow', 'green', 'blue']
+  constructor() {
+    //build initial game state
+    const colour = ["red", "yellow", "green", "blue"];
     /* 10 = skip; 11 = +2; 12 = +4; 13 = wildcard 14 = draw card 15 = solid color*/
-    for (let i = 0; i < 14; i++){ //build the number cards 
+    for (let i = 0; i < 14; i++) {
+      //build the number cards
       // joker_marker is true for wild cards and solid color cards -- allows solid color to be placed on wild
       let joker_marker = false;
-      if (i > 12){
+      if (i > 12) {
         joker_marker = true;
       }
-      for (let j = 0; j < 4; j++){
-        if (i < 12){ 
+      for (let j = 0; j < 4; j++) {
+        if (i < 12) {
           this.deck.push(new Card(colour[j], i, joker_marker));
         } else {
-          this.deck.push(new Card('wild', i, joker_marker)); 
+          this.deck.push(new Card("wild", i, joker_marker));
         }
       }
     }
@@ -430,21 +455,23 @@ class Player {
     this.impossible_hand = [];
   }
 
-
   public checkReady(playerClient: GameClient) {
-    const prev = this.ready
-    this.ready = playerClient.getCurrentPrediction() === Action.Clench
-    return [this.ready, prev !== this.ready]
+    const prev = this.ready;
+    this.ready = playerClient.getCurrentPrediction() === Action.Clench;
+    return [this.ready, prev !== this.ready];
   }
 
-  public moveCard(playerClient: GameClient, gameState : GameState) {
+  public moveCard(playerClient: GameClient, gameState: GameState) {
     while (true) {
       const action = playerClient.getCurrentPrediction();
       if (action === Action.Right) {
-          this.selected_card = (this.selected_card + 1) % this.possible_hand.length;
+        this.selected_card =
+          (this.selected_card + 1) % this.possible_hand.length;
         playerClient.socket.emit("direction", "right");
       } else if (action === Action.Left) {
-          this.selected_card = (this.selected_card - 1 + this.possible_hand.length) % this.possible_hand.length;
+        this.selected_card =
+          (this.selected_card - 1 + this.possible_hand.length) %
+          this.possible_hand.length;
         playerClient.socket.emit("direction", "left");
       } else if (action === Action.Clench) {
         return this.playCard(gameState, playerClient);
@@ -460,9 +487,8 @@ class Player {
       this.possible_hand.splice(this.selected_card, 1);
       gameState.played_cards.push(this.possible_hand[this.selected_card]);
       this.hand.splice(this.selected_card, 1);
-    }
-    else {
-      const drawn = gameState.deck.pop()
+    } else {
+      const drawn = gameState.deck.pop();
       if (drawn) {
         this.hand.push(drawn);
       }
