@@ -192,6 +192,17 @@ class Game {
       this.addCard(playerIndex);
     }
 
+    // handle solid color / wild color swaps
+    if (selected.number === 12 || selected.number === 13) {
+      this.players[playerIndex].hand_copy = this.players[playerIndex].hand;
+      this.players[playerIndex].hand = Card.Colors.map(
+        (color) => new Card(color, 15, true),
+      );
+    } else if (selected.number === 15) {
+      this.players[playerIndex].hand = this.players[playerIndex].hand_copy;
+      this.players[playerIndex].hand_copy = [];
+    }
+
     /* 13 = wildcard; 14 = draw card; 15 = solid color*/
     // handle direction changes
     if (selected.number <= 9 || selected.number >= 14) {
@@ -225,7 +236,6 @@ class Game {
     }
 
     while (this.players[currentPlayerIndex].hand.length > 0) {
-      // Calculate possible hand and send to specific client
       const current_player = this.players[currentPlayerIndex];
       const current_client = this.clients.get(current_player.player_socket);
 
@@ -235,11 +245,11 @@ class Game {
           current_client,
           this.gameState,
         );
-
         console.log("selected: %o for player %d", selected, currentPlayerIndex);
+
+        // Sends top_card to clients with playerIndex if the player didn't draw
         if (selected.number !== 14) {
           this.gameState.top_card = selected;
-          // Sends top_card to clients with playerIndex
           this.broadcast(
             "Card Played",
             currentPlayerIndex,
@@ -390,7 +400,6 @@ class GameState {
 
   constructor() {
     //build initial game state
-    const colour = ["red", "yellow", "green", "blue"];
     /* 10 = skip; 11 = +2; 12 = +4; 13 = wildcard; 14 = draw card; 15 = solid color*/
     for (let i = 0; i < 14; i++) {
       //build the number cards
@@ -401,7 +410,7 @@ class GameState {
       }
       for (let j = 0; j < 4; j++) {
         if (i < 12) {
-          this.deck.push(new Card(colour[j], i, joker_marker));
+          this.deck.push(new Card(Card.Colors[j], i, joker_marker));
         } else {
           this.deck.push(new Card("wild", i, joker_marker));
         }
@@ -411,6 +420,7 @@ class GameState {
 }
 
 class Card {
+  static Colors = ["red", "yellow", "green", "blue"];
   color: string = "";
   number: number = 0;
   joker: boolean = false;
@@ -426,16 +436,20 @@ class Card {
     if (this.number === 14) return true;
     // "normal" cards
     else if (card.number < 12) {
-      return this.number === 12 || this.number === 13 ||
-      (this.number === card.number || this.color === card.color);
-    } 
+      return (
+        this.number === 12 ||
+        this.number === 13 ||
+        this.number === card.number ||
+        this.color === card.color
+      );
+    }
     // "wild" cards - will only be the case if drawn as the first starting card
     else if (card.number === 12 || card.number === 13) {
       return true;
-    } 
+    }
     // "solid color" cards
     else if (card.number === 15) {
-      return this.color === card.color
+      return this.color === card.color;
     }
   }
 }
@@ -444,6 +458,7 @@ class Player {
   ready = false;
   player_socket: string = "";
   hand: Card[] = [];
+  hand_copy: Card[] = [];
   selected_card: number = 0;
 
   constructor(player_socket: string) {
@@ -516,7 +531,6 @@ class Player {
     return card.canBePlayedOn(topCard);
   }
 
-  // Returns Card if card played (new card placed onto played cards), undefined if no card played (draw card)
   public playCard() {
     const selected = this.hand[this.selected_card];
     if (selected.number !== 14) {
