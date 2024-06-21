@@ -11,11 +11,31 @@ from einops import rearrange, reduce
 from scipy.signal import filtfilt, iirnotch, butter
 import pickle
 import zmq
+from .pre_processing import csp_preprocess
+import os
+import torch
+from torch.nn import functional as F
+import sys
+print("\n\n\n")
+print(os.path.dirname(__file__))
+print("\n\n\n")
 
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../..'))
+
+from siggy_ml.models.diffusion.classification_heads import EEGNetHead
 # Edited from NTX McGill 2021 stream.py, lines 16-23
 # https://github.com/NTX-McGill/NeuroTechX-McGill-2021/blob/main/software/backend/dcp/bci/stream.py
 logger = logging.getLogger(__name__)
 
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+
+
+def apply_notch(x, y, fs, notch_freq=50):
+    """
+    Apply pre-processing before concatenating everything in a single array.
+    Easier to manage multiple splits
+    By default, it only applies a notch filter at 50 Hz
+    """
 
 def apply_notch(x, y, fs, notch_freq=50):
     """
@@ -279,6 +299,7 @@ class DataClassifier:
     def __init__(
         self,
         find_streams=True,
+        use_eegnet=True,
     ):
         self.eeg_inlet = find_bci_inlet() if find_streams else None
 
@@ -288,19 +309,20 @@ class DataClassifier:
         if self.ready:
             logger.info("Ready to start recording.")
 
-        self.window_length_sec = 2
-        self.bufsize = 1000 * self.window_length_sec
-        self.buffer = np.ndarray((self.bufsize, 8))
+        self.bufsize = 512
+        self.buffer = np.ndarray((8, self.bufsize))
         self.time_buffer = np.ndarray(self.bufsize)
         self.last_time_index = 0
         self.current_time_index = 0
 
-        self.prediction_buffer = np.ndarray((self.bufsize, 2))
-        self.pred_last_time_index = 0
-        self.pred_current_time_index = 0
+        self.model = EEGNetHead(18,256)
 
-        self.zmq_ctx = zmq.Context()
-        self.socket = self.zmq_ctx.socket(zmq.PUB)
+        eegnet_path = os.path.join(os.path.dirname(__file__), '../eegnet_bands_openbci.pt')
+
+        print("Loading EEGNet")
+        self.model.load_state_dict(torch.load(eegnet_path,map_location=DEVICE))
+
+        self.use_eegnet = use_eegnet
 
     def find_streams(self):
         """Find EEG and ZMQ socket endpoint. Updates the ready flag."""
@@ -345,8 +367,13 @@ class DataClassifier:
         # Flush the inlets to remove old data
         self.eeg_inlet.flush()
 
-        with open(filename, "rb") as f:
-            clf = pickle.load(f)
+        count = 0
+
+        model_path = os.path.join(os.path.dirname(__file__), '../model.p')
+
+        if not self.use_eegnet:
+            with open(model_path,"rb") as f:
+                clf = pickle.load(f)
 
         while self.recording:
             eeg_sample, eeg_timestamp = self.eeg_inlet.pull_sample()
@@ -366,27 +393,24 @@ class DataClassifier:
                 # print(f"available samples: {available_samples} > 10, skipping prediction")
                 continue
 
-            x = self.get_buffer_samples()
+            x = self.buffer
+            c,t = x.shape
+            if t >= 512:
+                x = rearrange(x[np.array([3,5]),:],"c t -> 1 t c")
+                x,_ = epoch_preprocess(x,None,256,60)
+                x = rearrange(x,"b t c ->b c t")
+                if self.use_eegnet:
+                    y = self.model.classify(torch.tensor(x).to(torch.float32))
+                    y = F.softmax(y,-1)
+                    # use argmax for categorical output
+                    y = torch.argmax(y,-1)
+                else:
+                    y = clf.predict(x)
+                print(f"predicted class {y}")
 
-            t, c = x.shape
-            if t > 256 * self.window_length_sec / 2:
-                p1 = rearrange(x[:, np.array([3, 5])], "t c -> 1 t c")
-                p1, _ = epoch_preprocess(p1, None, 256 * self.window_length_sec / 2, 60)
-                p1 = rearrange(p1, "b t c -> b c t")
-                y1 = clf.predict(p1)
-
-                pred_time = time.time()
-                action = int(y1)
-                print(f"predicted class {int(y1)}")
-
-                self.add_prediction(pred_time, action)
-                self.send_categorical_prediction(time=pred_time, action=action, player=0)
-
-            print(f"{t} timestamps")
-            print(
-                f"{len(self.get_last_predictions()) / self.window_length_sec} predictions/sec"
-            )
-
+            if count >= 1000:
+                raise(ValueError("early stop"))
+            
     def get_buffer_samples(self):
         if self.last_time_index > self.current_time_index:
             begin = self.buffer[self.last_time_index : self.bufsize]

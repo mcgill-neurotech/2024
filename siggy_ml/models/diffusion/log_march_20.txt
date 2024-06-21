@@ -1,0 +1,5371 @@
+cuda
+signal shape: (2381, 18, 500)
+500
+Starting trial 0
+Epoch 0 loss: 24636.756219161183
+diff: 0.0
+Epoch 1 loss: 9206.653705797697
+diff: 0.0
+Epoch 2 loss: 8954.378597861842
+diff: 0.0
+Epoch 3 loss: 8901.940095600328
+diff: 0.0
+Epoch 4 loss: 8696.681666324013
+diff: 0.0
+Epoch 5 loss: 7547.6347013774675
+diff: 0.0
+Epoch 6 loss: 5359.1226613898025
+diff: 0.0
+Epoch 7 loss: 3824.487503854852
+diff: 0.0
+Epoch 8 loss: 2943.909732216283
+diff: 0.0
+Epoch 9 loss: 2702.320132606908
+diff: 0.0
+Epoch 10 loss: 2518.3332134046054
+diff: 0.0
+Epoch 11 loss: 2297.0465601870887
+diff: 0.0
+Epoch 12 loss: 2150.3075561523438
+diff: 0.0
+Epoch 13 loss: 2124.892857601768
+diff: 0.0
+Epoch 14 loss: 2010.9672562448602
+diff: 0.0
+Epoch 15 loss: 1942.7999010587994
+diff: 0.0
+Epoch 16 loss: 1844.0749061986019
+diff: 0.0
+Epoch 17 loss: 1793.6273932206004
+diff: 0.0
+Epoch 18 loss: 1624.7765245939556
+diff: 0.0
+Epoch 19 loss: 1632.9333656712581
+diff: 8.156841077302488
+Epoch 20 loss: 1600.5429430509869
+diff: 0.0
+Epoch 21 loss: 1588.0399330540706
+diff: 0.0
+Epoch 22 loss: 1486.9760902806331
+diff: 0.0
+Epoch 23 loss: 1460.719084087171
+diff: 0.0
+Epoch 24 loss: 1446.7452649568256
+diff: 0.0
+Epoch 25 loss: 1412.7955033151727
+diff: 0.0
+Epoch 26 loss: 1380.7015541478206
+diff: 0.0
+Epoch 27 loss: 1300.4835172954358
+diff: 0.0
+Epoch 28 loss: 1276.867585834704
+diff: 0.0
+Epoch 29 loss: 1260.0437397203948
+diff: 0.0
+Epoch 30 loss: 1291.1592150236431
+diff: 31.11547530324833
+Epoch 31 loss: 1310.046810752467
+diff: 50.003071032072285
+Epoch 32 loss: 1190.2968878495067
+diff: 0.0
+Epoch 33 loss: 1194.4930580540706
+diff: 4.196170204563941
+Epoch 34 loss: 1141.6573438142475
+diff: 0.0
+Epoch 35 loss: 1130.9586647435237
+diff: 0.0
+Epoch 36 loss: 1115.9147065815173
+diff: 0.0
+Epoch 37 loss: 1117.4629243549548
+diff: 1.5482177734375
+Epoch 38 loss: 1104.3178775185033
+diff: 0.0
+Epoch 39 loss: 1120.7685578998767
+diff: 16.45068038137333
+Epoch 40 loss: 1072.781908537212
+diff: 0.0
+Epoch 41 loss: 1070.931949013158
+diff: 0.0
+Epoch 42 loss: 1047.7176593981292
+diff: 0.0
+Epoch 43 loss: 982.7497638903166
+diff: 0.0
+Epoch 44 loss: 979.7408334832443
+diff: 0.0
+Epoch 45 loss: 1040.8588353207238
+diff: 61.11800183747948
+Epoch 46 loss: 959.2034269634046
+diff: 0.0
+Epoch 47 loss: 912.4775326377467
+diff: 0.0
+Epoch 48 loss: 887.5617418791119
+diff: 0.0
+Epoch 49 loss: 886.0352702893709
+diff: 0.0
+Epoch 50 loss: 910.0869445800781
+diff: 24.051674290707183
+Epoch 51 loss: 1728.246911299856
+diff: 842.2116410104851
+Epoch 52 loss: 1321.6926076788652
+diff: 435.6573373894943
+Epoch 53 loss: 1045.378183465255
+diff: 159.34291317588406
+Epoch 54 loss: 994.4952215897409
+diff: 108.45995130037
+Epoch 55 loss: 986.7036871659128
+diff: 100.66841687654187
+Epoch 56 loss: 959.2380740517065
+diff: 73.20280376233552
+Epoch 57 loss: 924.3824928685239
+diff: 38.34722257915291
+Epoch 58 loss: 874.898636667352
+diff: 0.0
+Epoch 59 loss: 911.838533100329
+diff: 36.93989643297698
+Epoch 60 loss: 906.6359927528783
+diff: 31.737356085526358
+Epoch 61 loss: 860.3162873920642
+diff: 0.0
+Epoch 62 loss: 853.2317424573397
+diff: 0.0
+Epoch 63 loss: 870.3917075709293
+diff: 17.15996511358958
+Epoch 64 loss: 861.9497230931332
+diff: 8.717980635793538
+Epoch 65 loss: 859.3197471217105
+diff: 6.088004664370828
+Epoch 66 loss: 849.5630220112048
+diff: 0.0
+Epoch 67 loss: 830.0937243009869
+diff: 0.0
+Epoch 68 loss: 830.7589464689556
+diff: 0.66522216796875
+Epoch 69 loss: 804.9404762669614
+diff: 0.0
+Epoch 70 loss: 810.4397615131579
+diff: 5.499285246196564
+Epoch 71 loss: 1040.8368915758635
+diff: 235.8964153089022
+Epoch 72 loss: 872.458825362356
+diff: 67.51834909539468
+Epoch 73 loss: 824.3118719803659
+diff: 19.37139571340458
+Epoch 74 loss: 802.4247436523438
+diff: 0.0
+Epoch 75 loss: 827.4768146715666
+diff: 25.052071019222808
+Epoch 76 loss: 800.0117332056949
+diff: 0.0
+Epoch 77 loss: 807.7803987201892
+diff: 7.768665514494273
+Epoch 78 loss: 814.6329409950658
+diff: 14.621207789370942
+Epoch 79 loss: 798.4592991879111
+diff: 0.0
+Epoch 80 loss: 783.576954088713
+diff: 0.0
+Epoch 81 loss: 795.3696995785361
+diff: 11.792745489823119
+Epoch 82 loss: 772.1303726999383
+diff: 0.0
+Epoch 83 loss: 791.9649818821957
+diff: 19.834609182257395
+Epoch 84 loss: 746.0072374845806
+diff: 0.0
+Epoch 85 loss: 758.4088889674136
+diff: 12.401651482833017
+Epoch 86 loss: 742.2279213353207
+diff: 0.0
+Epoch 87 loss: 788.845987420333
+diff: 46.61806608501229
+Epoch 88 loss: 765.364791067023
+diff: 23.13686973170229
+Epoch 89 loss: 751.1047025981702
+diff: 8.876781262849477
+Epoch 90 loss: 728.799470600329
+diff: 0.0
+Epoch 91 loss: 726.4424647281045
+diff: 0.0
+Epoch 92 loss: 766.9589651007401
+diff: 40.51650037263562
+Epoch 93 loss: 889.5603364643298
+diff: 163.1178717362253
+Epoch 94 loss: 813.6429893092105
+diff: 87.20052458110604
+Epoch 95 loss: 748.75757317794
+diff: 22.31510844983552
+Epoch 96 loss: 735.5863551089639
+diff: 9.143890380859375
+Epoch 97 loss: 742.644132915296
+diff: 16.201668187191558
+Epoch 98 loss: 732.5517722681949
+diff: 6.109307540090413
+Epoch 99 loss: 734.3003620348478
+diff: 7.857897306743325
+Epoch 100 loss: 764.3041719135485
+diff: 37.86170718544406
+Epoch 101 loss: 741.7582799008018
+diff: 15.315815172697285
+Epoch 102 loss: 731.8576692280017
+diff: 5.415204499897186
+Epoch 103 loss: 739.6104511461759
+diff: 13.16798641807145
+Epoch 104 loss: 746.0504889237253
+diff: 19.60802419562083
+Epoch 105 loss: 723.0820489180716
+diff: 0.0
+Epoch 106 loss: 731.7666224429482
+diff: 8.684573524876669
+Epoch 107 loss: 738.1658694618627
+diff: 15.083820543791148
+Epoch 108 loss: 705.757369192023
+diff: 0.0
+Epoch 109 loss: 684.2746485659951
+diff: 0.0
+Epoch 110 loss: 681.6318712736431
+diff: 0.0
+Epoch 111 loss: 724.0884335166529
+diff: 42.456562243009785
+Epoch 112 loss: 693.9000581440173
+diff: 12.268186870374166
+Epoch 113 loss: 683.714888723273
+diff: 2.0830174496298923
+Epoch 114 loss: 691.0836631373355
+diff: 9.451791863692392
+Epoch 115 loss: 1224.9622288754113
+diff: 543.3303576017681
+Epoch 116 loss: 1059.5975936086554
+diff: 377.9657223350123
+Epoch 117 loss: 801.6034080103824
+diff: 119.97153673673927
+Epoch 118 loss: 871.2825012207031
+diff: 189.65062994706
+Epoch 119 loss: 803.7914733886719
+diff: 122.15960211502875
+Epoch 120 loss: 772.5205399362665
+diff: 90.88866866262333
+Generating samples: cue 0
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(630, 18, 500)
+Generating samples: cue 1
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(630, 18, 500)
+Computing rank from data with rank=None
+    Using tolerance 1.9 (2.2e-16 eps * 18 dim * 4.8e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.9 (2.2e-16 eps * 18 dim * 4.8e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.9 (2.2e-16 eps * 18 dim * 4.7e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.8 (2.2e-16 eps * 18 dim * 4.6e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.8 (2.2e-16 eps * 18 dim * 4.4e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.8 (2.2e-16 eps * 18 dim * 4.4e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.7 (2.2e-16 eps * 18 dim * 4.2e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.6 (2.2e-16 eps * 18 dim * 4.1e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.6 (2.2e-16 eps * 18 dim * 4e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.5 (2.2e-16 eps * 18 dim * 3.9e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.6 (2.2e-16 eps * 18 dim * 3.9e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.4 (2.2e-16 eps * 18 dim * 3.5e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.4 (2.2e-16 eps * 18 dim * 3.5e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.4 (2.2e-16 eps * 18 dim * 3.5e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.3 (2.2e-16 eps * 18 dim * 3.2e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.2 (2.2e-16 eps * 18 dim * 3.1e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Starting trial 1
+Epoch 0 loss: 16070.085552014803
+diff: 0.0
+Epoch 1 loss: 8989.139828330592
+diff: 0.0
+Epoch 2 loss: 8893.066149259868
+diff: 0.0
+Epoch 3 loss: 8339.766241776315
+diff: 0.0
+Epoch 4 loss: 6084.816316303454
+diff: 0.0
+Epoch 5 loss: 3762.0079859683387
+diff: 0.0
+Epoch 6 loss: 2809.5934287623354
+diff: 0.0
+Epoch 7 loss: 2421.0520437140212
+diff: 0.0
+Epoch 8 loss: 2051.9663664165296
+diff: 0.0
+Epoch 9 loss: 1914.871527420847
+diff: 0.0
+Epoch 10 loss: 1737.3387483295642
+diff: 0.0
+Epoch 11 loss: 1605.5342407226562
+diff: 0.0
+Epoch 12 loss: 1562.211361533717
+diff: 0.0
+Epoch 13 loss: 1413.952717028166
+diff: 0.0
+Epoch 14 loss: 1374.9570601613898
+diff: 0.0
+Epoch 15 loss: 1348.4701698704769
+diff: 0.0
+Epoch 16 loss: 1231.1127608449835
+diff: 0.0
+Epoch 17 loss: 1234.9738994397615
+diff: 3.8611385947779127
+Epoch 18 loss: 1147.3706986276727
+diff: 0.0
+Epoch 19 loss: 1112.5208949038856
+diff: 0.0
+Epoch 20 loss: 1096.9199925472863
+diff: 0.0
+Epoch 21 loss: 1047.6263315301192
+diff: 0.0
+Epoch 22 loss: 1050.3723449707031
+diff: 2.7460134405839653
+Epoch 23 loss: 1033.4297437165912
+diff: 0.0
+Epoch 24 loss: 1000.0714641370272
+diff: 0.0
+Epoch 25 loss: 1012.6427082262541
+diff: 12.571244089226866
+Epoch 26 loss: 1010.9774973016036
+diff: 10.906033164576456
+Epoch 27 loss: 1017.0162353515625
+diff: 16.944771214535308
+Epoch 28 loss: 949.7754661158511
+diff: 0.0
+Epoch 29 loss: 939.2294664884869
+diff: 0.0
+Epoch 30 loss: 924.6800103438528
+diff: 0.0
+Epoch 31 loss: 888.7674512361225
+diff: 0.0
+Epoch 32 loss: 909.0042098195929
+diff: 20.23675858347042
+Epoch 33 loss: 932.6145244397616
+diff: 43.84707320363907
+Epoch 34 loss: 881.8760504471628
+diff: 0.0
+Epoch 35 loss: 918.740637528269
+diff: 36.86458708110615
+Epoch 36 loss: 884.6766357421875
+diff: 2.800585295024689
+Epoch 37 loss: 898.8346123946341
+diff: 16.958561947471253
+Epoch 38 loss: 859.2517459267065
+diff: 0.0
+Epoch 39 loss: 869.7867817125822
+diff: 10.53503578587572
+Epoch 40 loss: 881.1983787135074
+diff: 21.946632786800933
+Epoch 41 loss: 860.0497243780839
+diff: 0.7979784513773893
+Epoch 42 loss: 828.8183738306949
+diff: 0.0
+Epoch 43 loss: 840.7364212839227
+diff: 11.918047453227814
+Epoch 44 loss: 842.8834324886924
+diff: 14.065058657997497
+Epoch 45 loss: 843.7131958007812
+diff: 14.894821970086355
+Epoch 46 loss: 821.1849525853207
+diff: 0.0
+Epoch 47 loss: 814.3317630165502
+diff: 0.0
+Epoch 48 loss: 817.1242820338199
+diff: 2.792519017269683
+Epoch 49 loss: 785.1288355777139
+diff: 0.0
+Epoch 50 loss: 794.2065847296464
+diff: 9.077749151932494
+Epoch 51 loss: 799.4920349121094
+diff: 14.363199334395517
+Epoch 52 loss: 768.9683372096011
+diff: 0.0
+Epoch 53 loss: 803.1654614900287
+diff: 34.1971242804276
+Epoch 54 loss: 759.4489521227384
+diff: 0.0
+Epoch 55 loss: 796.3836750231291
+diff: 36.934722900390625
+Epoch 56 loss: 773.9298063579358
+diff: 14.480854235197398
+Epoch 57 loss: 796.764404296875
+diff: 37.31545217413657
+Epoch 58 loss: 770.3013916015625
+diff: 10.852439478824067
+Epoch 59 loss: 744.3394293534128
+diff: 0.0
+Epoch 60 loss: 752.3284944233142
+diff: 7.989065069901358
+Epoch 61 loss: 766.8490375719572
+diff: 22.509608218544372
+Epoch 62 loss: 803.2979688142475
+diff: 58.958539460834686
+Epoch 63 loss: 783.4781060469778
+diff: 39.138676693565
+Epoch 64 loss: 779.2335333573191
+diff: 34.89410400390625
+Epoch 65 loss: 728.0678357576069
+diff: 0.0
+Epoch 66 loss: 748.5014022024054
+diff: 20.433566444798544
+Epoch 67 loss: 739.6530119243421
+diff: 11.58517616673521
+Epoch 68 loss: 717.3199527138158
+diff: 0.0
+Epoch 69 loss: 734.8752553839432
+diff: 17.55530267012739
+Epoch 70 loss: 742.2020456414474
+diff: 24.88209292763156
+Epoch 71 loss: 813.1455013877467
+diff: 95.82554867393083
+Epoch 72 loss: 719.0759759200247
+diff: 1.7560232062088517
+Epoch 73 loss: 707.163534064042
+diff: 0.0
+Epoch 74 loss: 726.2539480108964
+diff: 19.09041394685437
+Epoch 75 loss: 728.5119018554688
+diff: 21.348367791426767
+Epoch 76 loss: 732.355030260588
+diff: 25.19149619654604
+Epoch 77 loss: 718.7403757195724
+diff: 11.576841655530416
+Epoch 78 loss: 774.0053116647821
+diff: 66.8417776007401
+Epoch 79 loss: 704.3684820877878
+diff: 0.0
+Epoch 80 loss: 715.1251895302221
+diff: 10.756707442434276
+Epoch 81 loss: 707.1618909333881
+diff: 2.793408845600311
+Epoch 82 loss: 712.4861514442846
+diff: 8.117669356496776
+Epoch 83 loss: 700.0613949424342
+diff: 0.0
+Epoch 84 loss: 702.300203022204
+diff: 2.2388080797697967
+Epoch 85 loss: 694.5238936574835
+diff: 0.0
+Epoch 86 loss: 668.9913924367804
+diff: 0.0
+Epoch 87 loss: 668.9387881630346
+diff: 0.0
+Epoch 88 loss: 665.3873146458676
+diff: 0.0
+Epoch 89 loss: 677.5591912520559
+diff: 12.171876606188334
+Epoch 90 loss: 703.1309171977796
+diff: 37.74360255191198
+Epoch 91 loss: 706.7898511384662
+diff: 41.40253649259864
+Epoch 92 loss: 675.9626850328947
+diff: 10.575370387027078
+Epoch 93 loss: 672.4057408383018
+diff: 7.018426192434163
+Epoch 94 loss: 646.3161540784334
+diff: 0.0
+Epoch 95 loss: 640.9396153500205
+diff: 0.0
+Epoch 96 loss: 677.3699886924342
+diff: 36.430373342413645
+Epoch 97 loss: 698.6702736302426
+diff: 57.73065828022209
+Epoch 98 loss: 694.4267931486431
+diff: 53.48717779862261
+Epoch 99 loss: 696.5542971962377
+diff: 55.614681846217195
+Epoch 100 loss: 638.8921556974713
+diff: 0.0
+Epoch 101 loss: 705.69849114669
+diff: 66.80633544921875
+Epoch 102 loss: 690.7266395970395
+diff: 51.83448389956823
+Epoch 103 loss: 656.2055117958471
+diff: 17.313356098375834
+Epoch 104 loss: 657.8242332056949
+diff: 18.932077508223642
+Epoch 105 loss: 666.9595915141858
+diff: 28.06743581671458
+Epoch 106 loss: 660.7759447599713
+diff: 21.8837890625
+Epoch 107 loss: 629.1672788921155
+diff: 0.0
+Epoch 108 loss: 656.4444740696957
+diff: 27.27719517758021
+Epoch 109 loss: 633.2359731573807
+diff: 4.068694265265208
+Epoch 110 loss: 670.8883650930304
+diff: 41.7210862009149
+Epoch 111 loss: 649.829395494963
+diff: 20.662116602847505
+Epoch 112 loss: 641.7559059544614
+diff: 12.588627062345836
+Epoch 113 loss: 621.3494262695312
+diff: 0.0
+Epoch 114 loss: 638.9364929199219
+diff: 17.587066650390625
+Epoch 115 loss: 629.6472392835116
+diff: 8.297813013980317
+Epoch 116 loss: 611.8274455823397
+diff: 0.0
+Epoch 117 loss: 626.8122181139494
+diff: 14.984772531609678
+Epoch 118 loss: 656.5554006476151
+diff: 44.72795506527541
+Epoch 119 loss: 677.2515194541529
+diff: 65.42407387181322
+Epoch 120 loss: 638.6735213430304
+diff: 26.846075760690724
+Epoch 121 loss: 599.7513427734375
+diff: 0.0
+Epoch 122 loss: 633.5833981162623
+diff: 33.83205534282479
+Epoch 123 loss: 620.334626850329
+diff: 20.58328407689146
+Epoch 124 loss: 612.78637213456
+diff: 13.035029361122497
+Epoch 125 loss: 626.5933773643092
+diff: 26.842034590871663
+Epoch 126 loss: 598.2175148411801
+diff: 0.0
+Epoch 127 loss: 627.8489733244244
+diff: 29.631458483244273
+Epoch 128 loss: 634.7806781969572
+diff: 36.56316335577708
+Epoch 129 loss: 637.3561208624589
+diff: 39.13860602127875
+Epoch 130 loss: 616.9252303274054
+diff: 18.70771548622531
+Epoch 131 loss: 630.8702007092928
+diff: 32.65268586811271
+Epoch 132 loss: 596.6852657920435
+diff: 0.0
+Epoch 133 loss: 594.2560376619037
+diff: 0.0
+Epoch 134 loss: 611.6299968518709
+diff: 17.373959189967195
+Epoch 135 loss: 626.3535284745066
+diff: 32.097490812602814
+Epoch 136 loss: 589.9858197663959
+diff: 0.0
+Epoch 137 loss: 606.332350078382
+diff: 16.346530311986044
+Epoch 138 loss: 613.1334212453742
+diff: 23.14760147897823
+Epoch 139 loss: 597.653758801912
+diff: 7.667939035516042
+Epoch 140 loss: 615.1445432964124
+diff: 25.15872353001646
+Epoch 141 loss: 603.5422186600534
+diff: 13.556398893657502
+Epoch 142 loss: 593.1499963057669
+diff: 3.164176539370942
+Epoch 143 loss: 603.4197588468853
+diff: 13.433939080489381
+Epoch 144 loss: 629.840252524928
+diff: 39.854432758532084
+Generating samples: cue 0
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(630, 18, 500)
+Generating samples: cue 1
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(630, 18, 500)
+Computing rank from data with rank=None
+    Using tolerance 8e+02 (2.2e-16 eps * 18 dim * 2e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 7.7e+02 (2.2e-16 eps * 18 dim * 1.9e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.1e+03 (2.2e-16 eps * 18 dim * 2.8e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.1e+03 (2.2e-16 eps * 18 dim * 2.7e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.4e+03 (2.2e-16 eps * 18 dim * 3.4e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.3e+03 (2.2e-16 eps * 18 dim * 3.3e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.6e+03 (2.2e-16 eps * 18 dim * 4e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.5e+03 (2.2e-16 eps * 18 dim * 3.8e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.8e+03 (2.2e-16 eps * 18 dim * 4.4e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.7e+03 (2.2e-16 eps * 18 dim * 4.3e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.9e+03 (2.2e-16 eps * 18 dim * 4.9e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.9e+03 (2.2e-16 eps * 18 dim * 4.7e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.1e+03 (2.2e-16 eps * 18 dim * 5.3e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2e+03 (2.2e-16 eps * 18 dim * 5e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.2e+03 (2.2e-16 eps * 18 dim * 5.6e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.1e+03 (2.2e-16 eps * 18 dim * 5.4e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Starting trial 2
+Epoch 0 loss: 10753.943153782895
+diff: 0.0
+Epoch 1 loss: 8809.249280427632
+diff: 0.0
+Epoch 2 loss: 7979.998856393914
+diff: 0.0
+Epoch 3 loss: 6312.887849506579
+diff: 0.0
+Epoch 4 loss: 4720.084183542352
+diff: 0.0
+Epoch 5 loss: 3705.6672941509046
+diff: 0.0
+Epoch 6 loss: 3091.682700709293
+diff: 0.0
+Epoch 7 loss: 2764.5524966591283
+diff: 0.0
+Epoch 8 loss: 2483.924656918174
+diff: 0.0
+Epoch 9 loss: 2220.6887335526317
+diff: 0.0
+Epoch 10 loss: 2096.409722579153
+diff: 0.0
+Epoch 11 loss: 2009.9642430355675
+diff: 0.0
+Epoch 12 loss: 1895.5089143451892
+diff: 0.0
+Epoch 13 loss: 1799.5776945415296
+diff: 0.0
+Epoch 14 loss: 1753.4905491879113
+diff: 0.0
+Epoch 15 loss: 1696.866644608347
+diff: 0.0
+Epoch 16 loss: 1593.965078253495
+diff: 0.0
+Epoch 17 loss: 1642.2575330232319
+diff: 48.29245476973688
+Epoch 18 loss: 1533.5206202456825
+diff: 0.0
+Epoch 19 loss: 1492.3505377518504
+diff: 0.0
+Epoch 20 loss: 1410.25342760588
+diff: 0.0
+Epoch 21 loss: 1434.1152600740131
+diff: 23.861832468133116
+Epoch 22 loss: 1417.5462614360608
+diff: 7.292833830180825
+Epoch 23 loss: 1401.3435540450246
+diff: 0.0
+Epoch 24 loss: 1293.0846043636925
+diff: 0.0
+Epoch 25 loss: 1216.709292763158
+diff: 0.0
+Epoch 26 loss: 1256.7413137335527
+diff: 40.0320209703948
+Epoch 27 loss: 1242.007712916324
+diff: 25.298420153166035
+Epoch 28 loss: 1180.2341292531867
+diff: 0.0
+Epoch 29 loss: 1212.909259996916
+diff: 32.67513074372937
+Epoch 30 loss: 1149.2692951403167
+diff: 0.0
+Epoch 31 loss: 1121.5066624691613
+diff: 0.0
+Epoch 32 loss: 1106.6498621890419
+diff: 0.0
+Epoch 33 loss: 1087.4466649105675
+diff: 0.0
+Epoch 34 loss: 1020.3614566200658
+diff: 0.0
+Epoch 35 loss: 967.3179738898026
+diff: 0.0
+Epoch 36 loss: 978.3818921540912
+diff: 11.063918264288645
+Epoch 37 loss: 996.4987375359786
+diff: 29.180763646176047
+Epoch 38 loss: 951.7314276444284
+diff: 0.0
+Epoch 39 loss: 972.7658338044819
+diff: 21.034406160053436
+Epoch 40 loss: 945.4384412263569
+diff: 0.0
+Epoch 41 loss: 889.9317771510074
+diff: 0.0
+Epoch 42 loss: 885.1846715023643
+diff: 0.0
+Epoch 43 loss: 861.0830351177015
+diff: 0.0
+Epoch 44 loss: 869.4949597810444
+diff: 8.411924663342916
+Epoch 45 loss: 839.8921428479647
+diff: 0.0
+Epoch 46 loss: 828.9741500051398
+diff: 0.0
+Epoch 47 loss: 812.7501509817023
+diff: 0.0
+Epoch 48 loss: 796.5726559287623
+diff: 0.0
+Epoch 49 loss: 774.9200246710526
+diff: 0.0
+Epoch 50 loss: 746.3055066560444
+diff: 0.0
+Epoch 51 loss: 775.2480757863898
+diff: 28.94256913034542
+Epoch 52 loss: 751.7518599660773
+diff: 5.446353310032919
+Epoch 53 loss: 725.0042660361842
+diff: 0.0
+Epoch 54 loss: 688.4628970497533
+diff: 0.0
+Epoch 55 loss: 705.6964031018709
+diff: 17.233506052117605
+Epoch 56 loss: 691.9860855905633
+diff: 3.523188540809997
+Epoch 57 loss: 707.3314642655222
+diff: 18.86856721576885
+Epoch 58 loss: 679.5778840717517
+diff: 0.0
+Epoch 59 loss: 662.9447567588404
+diff: 0.0
+Epoch 60 loss: 682.8556855854235
+diff: 19.91092882658313
+Epoch 61 loss: 667.0873059724506
+diff: 4.142549213610209
+Epoch 62 loss: 644.8648537083676
+diff: 0.0
+Epoch 63 loss: 622.1213892886514
+diff: 0.0
+Epoch 64 loss: 642.8857486122533
+diff: 20.76435932360198
+Epoch 65 loss: 650.0657782303659
+diff: 27.94438894171458
+Epoch 66 loss: 627.7661036441201
+diff: 5.64471435546875
+Epoch 67 loss: 607.2339413291529
+diff: 0.0
+Epoch 68 loss: 613.0708152369449
+diff: 5.836873907791983
+Epoch 69 loss: 662.0508816367701
+diff: 54.81694030761719
+Epoch 70 loss: 654.6008332905017
+diff: 47.366891961348756
+Epoch 71 loss: 619.9443375436883
+diff: 12.710396214535422
+Epoch 72 loss: 598.3242838006271
+diff: 0.0
+Epoch 73 loss: 594.0419094688014
+diff: 0.0
+Epoch 74 loss: 597.4190754137541
+diff: 3.377165944952708
+Epoch 75 loss: 623.3518805252878
+diff: 29.30997105648646
+Epoch 76 loss: 615.8006856817948
+diff: 21.75877621299344
+Epoch 77 loss: 582.6796618009869
+diff: 0.0
+Epoch 78 loss: 573.4561221474096
+diff: 0.0
+Epoch 79 loss: 607.8076187936883
+diff: 34.35149664627875
+Epoch 80 loss: 574.6122637296978
+diff: 1.1561415822882282
+Epoch 81 loss: 567.0159847861842
+diff: 0.0
+Epoch 82 loss: 576.5545855070416
+diff: 9.538600720857403
+Epoch 83 loss: 560.5176263106497
+diff: 0.0
+Epoch 84 loss: 553.4334620425576
+diff: 0.0
+Epoch 85 loss: 552.3095968146073
+diff: 0.0
+Epoch 86 loss: 555.3612012361225
+diff: 3.051604421515208
+Epoch 87 loss: 576.7836552670127
+diff: 24.474058452405416
+Epoch 88 loss: 605.1681269595498
+diff: 52.858530144942506
+Epoch 89 loss: 572.372244583933
+diff: 20.062647769325736
+Epoch 90 loss: 567.1790209318463
+diff: 14.869424117238964
+Epoch 91 loss: 543.6614155016447
+diff: 0.0
+Epoch 92 loss: 557.7505613628186
+diff: 14.08914586117396
+Epoch 93 loss: 559.172119140625
+diff: 15.510703638980317
+Epoch 94 loss: 559.3013434159128
+diff: 15.639927914268128
+Epoch 95 loss: 563.3089551423725
+diff: 19.647539640727814
+Epoch 96 loss: 573.939543071546
+diff: 30.278127569901358
+Epoch 97 loss: 535.7203288831209
+diff: 0.0
+Epoch 98 loss: 528.630420885588
+diff: 0.0
+Epoch 99 loss: 539.6453520122327
+diff: 11.014931126644683
+Epoch 100 loss: 555.8763475920025
+diff: 27.24592670641448
+Epoch 101 loss: 553.8125610351562
+diff: 25.182140149568227
+Epoch 102 loss: 530.1803436279297
+diff: 1.5499227423416642
+Epoch 103 loss: 548.3254033138877
+diff: 19.69498242829968
+Epoch 104 loss: 541.3646657843339
+diff: 12.734244898745828
+Epoch 105 loss: 516.4395976819491
+diff: 0.0
+Epoch 106 loss: 514.3096040424548
+diff: 0.0
+Epoch 107 loss: 522.4744222540604
+diff: 8.16481821160562
+Epoch 108 loss: 549.6819562410053
+diff: 35.372352198550516
+Epoch 109 loss: 531.7311987625925
+diff: 17.421594720137705
+Epoch 110 loss: 515.8129810534025
+diff: 1.5033770109477018
+Epoch 111 loss: 515.5367423609683
+diff: 1.2271383185135392
+Epoch 112 loss: 512.6633686266447
+diff: 0.0
+Epoch 113 loss: 533.8915437397204
+diff: 21.228175113075736
+Epoch 114 loss: 525.5988673159951
+diff: 12.935498689350425
+Epoch 115 loss: 522.5450431422183
+diff: 9.88167451557365
+Epoch 116 loss: 510.43467391164677
+diff: 0.0
+Epoch 117 loss: 507.53410740902547
+diff: 0.0
+Epoch 118 loss: 507.9754470022101
+diff: 0.44133959318463667
+Epoch 119 loss: 514.753268593236
+diff: 7.219161184210577
+Epoch 120 loss: 492.70176054302016
+diff: 0.0
+Epoch 121 loss: 522.4552307128906
+diff: 29.753470169870468
+Epoch 122 loss: 511.64492717542146
+diff: 18.9431666324013
+Epoch 123 loss: 517.3190050627056
+diff: 24.61724451968547
+Epoch 124 loss: 517.5075771934107
+diff: 24.805816650390568
+Epoch 125 loss: 535.8682194759971
+diff: 43.16645893297692
+Epoch 126 loss: 530.7046942459909
+diff: 38.00293370297078
+Epoch 127 loss: 498.8942043906764
+diff: 6.19244384765625
+Epoch 128 loss: 508.4310182270251
+diff: 15.72925768400495
+Epoch 129 loss: 494.73717298005755
+diff: 2.035412437037394
+Epoch 130 loss: 510.12604321931536
+diff: 17.424282676295206
+Epoch 131 loss: 501.93738515753495
+diff: 9.23562461451479
+Epoch 132 loss: 505.9361234966077
+diff: 13.23436295358755
+Epoch 133 loss: 496.2220876593339
+diff: 3.5203271163137515
+Epoch 134 loss: 513.2379029926501
+diff: 20.53614244962995
+Epoch 135 loss: 512.1836861058285
+diff: 19.481925562808385
+Epoch 136 loss: 516.9918012117084
+diff: 24.290040668688277
+Epoch 137 loss: 511.77390409770766
+diff: 19.0721435546875
+Epoch 138 loss: 499.23337113229854
+diff: 6.531610589278387
+Epoch 139 loss: 510.5337516383121
+diff: 17.831991095291926
+Epoch 140 loss: 488.90944551166734
+diff: 0.0
+Epoch 141 loss: 494.45726254111844
+diff: 5.547817029451096
+Epoch 142 loss: 506.6095934416118
+diff: 17.700147929944478
+Epoch 143 loss: 506.2639642012747
+diff: 17.354518689607346
+Epoch 144 loss: 522.605383622019
+diff: 33.69593811035162
+Epoch 145 loss: 504.0691287392064
+diff: 15.159683227539062
+Epoch 146 loss: 484.7482018721731
+diff: 0.0
+Epoch 147 loss: 504.9639073422081
+diff: 20.215705470034948
+Epoch 148 loss: 497.7881028024774
+diff: 13.03990093030427
+Epoch 149 loss: 507.6550268875925
+diff: 22.906825015419372
+Generating samples: cue 0
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(630, 18, 500)
+Generating samples: cue 1
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(630, 18, 500)
+Computing rank from data with rank=None
+    Using tolerance 2 (2.2e-16 eps * 18 dim * 5.1e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2 (2.2e-16 eps * 18 dim * 4.9e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2 (2.2e-16 eps * 18 dim * 5.1e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2 (2.2e-16 eps * 18 dim * 5.1e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2 (2.2e-16 eps * 18 dim * 5.1e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.1 (2.2e-16 eps * 18 dim * 5.2e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.1 (2.2e-16 eps * 18 dim * 5.3e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.1 (2.2e-16 eps * 18 dim * 5.3e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.2 (2.2e-16 eps * 18 dim * 5.5e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.1 (2.2e-16 eps * 18 dim * 5.3e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.2 (2.2e-16 eps * 18 dim * 5.5e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.2 (2.2e-16 eps * 18 dim * 5.5e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.3 (2.2e-16 eps * 18 dim * 5.7e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.2 (2.2e-16 eps * 18 dim * 5.6e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.3 (2.2e-16 eps * 18 dim * 5.7e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.3 (2.2e-16 eps * 18 dim * 5.7e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Starting trial 3
+Epoch 0 loss: 9961.187551398027
+diff: 0.0
+Epoch 1 loss: 8745.4326171875
+diff: 0.0
+Epoch 2 loss: 7921.6041452508225
+diff: 0.0
+Epoch 3 loss: 6815.536711040296
+diff: 0.0
+Epoch 4 loss: 5814.780067845395
+diff: 0.0
+Epoch 5 loss: 4998.145790501645
+diff: 0.0
+Epoch 6 loss: 4378.103856136924
+diff: 0.0
+Epoch 7 loss: 4008.1283794202304
+diff: 0.0
+Epoch 8 loss: 3735.1124074835525
+diff: 0.0
+Epoch 9 loss: 3509.3021240234375
+diff: 0.0
+Epoch 10 loss: 3292.671187551398
+diff: 0.0
+Epoch 11 loss: 3205.801385176809
+diff: 0.0
+Epoch 12 loss: 2973.9273231907896
+diff: 0.0
+Epoch 13 loss: 2909.9227487664475
+diff: 0.0
+Epoch 14 loss: 2846.6127158717104
+diff: 0.0
+Epoch 15 loss: 2779.8243857935854
+diff: 0.0
+Epoch 16 loss: 2582.198145816201
+diff: 0.0
+Epoch 17 loss: 2554.851029245477
+diff: 0.0
+Epoch 18 loss: 2542.3703227796054
+diff: 0.0
+Epoch 19 loss: 2467.515753495066
+diff: 0.0
+Epoch 20 loss: 2361.517632735403
+diff: 0.0
+Epoch 21 loss: 2367.6180002312913
+diff: 6.100367495888349
+Epoch 22 loss: 2297.4038053813733
+diff: 0.0
+Epoch 23 loss: 2266.1191020764804
+diff: 0.0
+Epoch 24 loss: 2235.5350149054275
+diff: 0.0
+Epoch 25 loss: 2129.328041478207
+diff: 0.0
+Epoch 26 loss: 2113.563572933799
+diff: 0.0
+Epoch 27 loss: 2003.7393798828125
+diff: 0.0
+Epoch 28 loss: 2015.4398353978206
+diff: 11.700455515008116
+Epoch 29 loss: 2104.146285207648
+diff: 100.4069053248354
+Epoch 30 loss: 2053.5026341488488
+diff: 49.763254266036256
+Epoch 31 loss: 1974.9362311112254
+diff: 0.0
+Epoch 32 loss: 1923.6429250616777
+diff: 0.0
+Epoch 33 loss: 1897.4212100380346
+diff: 0.0
+Epoch 34 loss: 1777.1967548571135
+diff: 0.0
+Epoch 35 loss: 1797.9478920384456
+diff: 20.75113718133207
+Epoch 36 loss: 1755.4061343544408
+diff: 0.0
+Epoch 37 loss: 1748.607675652755
+diff: 0.0
+Epoch 38 loss: 1769.6929899516858
+diff: 21.085314298930825
+Epoch 39 loss: 1755.4618626644738
+diff: 6.85418701171875
+Epoch 40 loss: 1604.5788702713817
+diff: 0.0
+Epoch 41 loss: 1684.7561645507812
+diff: 80.17729427939958
+Epoch 42 loss: 1732.3144467002467
+diff: 127.73557642886499
+Epoch 43 loss: 1687.3925941868831
+diff: 82.81372391550144
+Epoch 44 loss: 1665.0484651264392
+diff: 60.469594855057494
+Epoch 45 loss: 1623.676613255551
+diff: 19.097742984169372
+Epoch 46 loss: 1590.8718197471217
+diff: 0.0
+Epoch 47 loss: 1628.2366300884046
+diff: 37.36481034128292
+Epoch 48 loss: 1573.8331941303454
+diff: 0.0
+Epoch 49 loss: 1546.4451101202715
+diff: 0.0
+Epoch 50 loss: 1534.8538978978206
+diff: 0.0
+Epoch 51 loss: 1558.7166683799342
+diff: 23.862770482113547
+Epoch 52 loss: 1480.2658177425988
+diff: 0.0
+Epoch 53 loss: 1496.8449128803454
+diff: 16.579095137746663
+Epoch 54 loss: 1381.59032239412
+diff: 0.0
+Epoch 55 loss: 1523.9927978515625
+diff: 142.4024754574425
+Epoch 56 loss: 1509.1438213147615
+diff: 127.55349892064146
+Epoch 57 loss: 1449.6608019377056
+diff: 68.07047954358563
+Epoch 58 loss: 1424.223722759046
+diff: 42.63340036492605
+Epoch 59 loss: 1514.5093544407894
+diff: 132.91903204666937
+Epoch 60 loss: 1445.841074090255
+diff: 64.25075169613501
+Epoch 61 loss: 1458.8229273745887
+diff: 77.23260498046875
+Epoch 62 loss: 1375.201830412212
+diff: 0.0
+Epoch 63 loss: 1360.8572259200246
+diff: 0.0
+Epoch 64 loss: 1435.4870155736019
+diff: 74.62978965357729
+Epoch 65 loss: 1434.7161672491777
+diff: 73.85894132915314
+Epoch 66 loss: 1346.518246299342
+diff: 0.0
+Epoch 67 loss: 1411.5025506270558
+diff: 64.98430432771374
+Epoch 68 loss: 1354.0045712119654
+diff: 7.486324912623331
+Epoch 69 loss: 1331.00196276213
+diff: 0.0
+Epoch 70 loss: 1281.9704381039269
+diff: 0.0
+Epoch 71 loss: 1411.3540328176398
+diff: 129.3835947137129
+Epoch 72 loss: 1326.2829814710115
+diff: 44.31254336708457
+Epoch 73 loss: 1300.7301234195106
+diff: 18.759685315583738
+Epoch 74 loss: 1340.5517963610198
+diff: 58.581358257092916
+Epoch 75 loss: 1355.2786158511512
+diff: 73.30817774722436
+Epoch 76 loss: 1261.348692241468
+diff: 0.0
+Epoch 77 loss: 1330.9778442382812
+diff: 69.62915199681333
+Epoch 78 loss: 1292.769450940584
+diff: 31.42075869911605
+Epoch 79 loss: 1344.7191065738075
+diff: 83.37041433233958
+Epoch 80 loss: 1238.827582108347
+diff: 0.0
+Epoch 81 loss: 1275.9132594058387
+diff: 37.08567729749166
+Epoch 82 loss: 1204.9755489951685
+diff: 0.0
+Epoch 83 loss: 1245.0858555843956
+diff: 40.11030658922709
+Epoch 84 loss: 1205.8515641061883
+diff: 0.8760151110197967
+Epoch 85 loss: 1205.811039974815
+diff: 0.8354909796464653
+Epoch 86 loss: 1238.3675392552425
+diff: 33.39199026007395
+Epoch 87 loss: 1154.8459199604235
+diff: 0.0
+Epoch 88 loss: 1340.6674868935033
+diff: 185.8215669330798
+Epoch 89 loss: 1243.2796630859375
+diff: 88.43374312551396
+Epoch 90 loss: 1207.7429488332648
+diff: 52.89702887284125
+Epoch 91 loss: 1221.7654868678044
+diff: 66.91956690738084
+Epoch 92 loss: 1172.1831970214844
+diff: 17.33727706106083
+Epoch 93 loss: 1190.3887537906044
+diff: 35.542833830180825
+Epoch 94 loss: 1183.6551449424342
+diff: 28.80922498201062
+Epoch 95 loss: 1168.290228592722
+diff: 13.444308632298544
+Epoch 96 loss: 1106.9518657483552
+diff: 0.0
+Epoch 97 loss: 1116.087980571546
+diff: 9.136114823190837
+Epoch 98 loss: 1158.6261243318256
+diff: 51.67425858347042
+Epoch 99 loss: 1166.7464792351973
+diff: 59.79461348684208
+Epoch 100 loss: 1083.3649838096217
+diff: 0.0
+Epoch 101 loss: 1112.5029489617598
+diff: 29.137965152138122
+Epoch 102 loss: 1155.5134518271998
+diff: 72.14846801757812
+Epoch 103 loss: 1079.1195726896588
+diff: 0.0
+Epoch 104 loss: 1081.7754966334294
+diff: 2.655923943770631
+Epoch 105 loss: 1102.9715142501027
+diff: 23.851941560443947
+Epoch 106 loss: 1084.1346419484992
+diff: 5.015069258840413
+Epoch 107 loss: 1057.6889455694902
+diff: 0.0
+Epoch 108 loss: 1110.2808902138158
+diff: 52.59194464432562
+Epoch 109 loss: 1077.5433735094573
+diff: 19.85442793996708
+Epoch 110 loss: 1078.87571796618
+diff: 21.186772396689776
+Epoch 111 loss: 1023.6789036800986
+diff: 0.0
+Epoch 112 loss: 1035.4709295975535
+diff: 11.792025917454907
+Epoch 113 loss: 1026.6401784796465
+diff: 2.961274799547823
+Epoch 114 loss: 1024.2345099198192
+diff: 0.5556062397205324
+Epoch 115 loss: 1002.8554350200452
+diff: 0.0
+Epoch 116 loss: 977.2819519042969
+diff: 0.0
+Epoch 117 loss: 975.7531706157483
+diff: 0.0
+Epoch 118 loss: 1041.880276328639
+diff: 66.12710571289062
+Epoch 119 loss: 987.6251670435855
+diff: 11.871996427837189
+Epoch 120 loss: 1003.2038606342517
+diff: 27.450690018503337
+Epoch 121 loss: 991.8294436806127
+diff: 16.07627306486438
+Epoch 122 loss: 994.9435601485403
+diff: 19.190389532791983
+Epoch 123 loss: 955.0033794202303
+diff: 0.0
+Epoch 124 loss: 1017.699856406764
+diff: 62.69647698653364
+Epoch 125 loss: 971.9062644556949
+diff: 16.90288503546458
+Epoch 126 loss: 943.741654245477
+diff: 0.0
+Epoch 127 loss: 926.2931968287418
+diff: 0.0
+Epoch 128 loss: 928.0347466719778
+diff: 1.7415498432360437
+Epoch 129 loss: 974.1204882170025
+diff: 47.82729138826073
+Generating samples: cue 0
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(630, 18, 500)
+Generating samples: cue 1
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(630, 18, 500)
+Computing rank from data with rank=None
+    Using tolerance 2.4 (2.2e-16 eps * 18 dim * 6.1e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.5 (2.2e-16 eps * 18 dim * 6.1e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.8 (2.2e-16 eps * 18 dim * 6.9e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.9 (2.2e-16 eps * 18 dim * 7.2e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 3.1 (2.2e-16 eps * 18 dim * 7.8e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 3.3 (2.2e-16 eps * 18 dim * 8.2e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 3.5 (2.2e-16 eps * 18 dim * 8.8e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 3.6 (2.2e-16 eps * 18 dim * 9e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 3.7 (2.2e-16 eps * 18 dim * 9.2e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 4 (2.2e-16 eps * 18 dim * 1e+15  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 4 (2.2e-16 eps * 18 dim * 1e+15  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 4.3 (2.2e-16 eps * 18 dim * 1.1e+15  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 4.2 (2.2e-16 eps * 18 dim * 1e+15  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 4.6 (2.2e-16 eps * 18 dim * 1.2e+15  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 4.4 (2.2e-16 eps * 18 dim * 1.1e+15  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 4.8 (2.2e-16 eps * 18 dim * 1.2e+15  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Starting trial 4
+Epoch 0 loss: 9875.745862458882
+diff: 0.0
+Epoch 1 loss: 9244.070569490132
+diff: 0.0
+Epoch 2 loss: 8956.845574629935
+diff: 0.0
+Epoch 3 loss: 8748.129780016447
+diff: 0.0
+Epoch 4 loss: 8497.635305304277
+diff: 0.0
+Epoch 5 loss: 8114.85640676398
+diff: 0.0
+Epoch 6 loss: 7683.7769197162825
+diff: 0.0
+Epoch 7 loss: 7132.655774568257
+diff: 0.0
+Epoch 8 loss: 6586.4300729851975
+diff: 0.0
+Epoch 9 loss: 5981.813489412007
+diff: 0.0
+Epoch 10 loss: 5449.961143092105
+diff: 0.0
+Epoch 11 loss: 4989.796296772204
+diff: 0.0
+Epoch 12 loss: 4649.369873046875
+diff: 0.0
+Epoch 13 loss: 4274.082930715461
+diff: 0.0
+Epoch 14 loss: 3886.826840049342
+diff: 0.0
+Epoch 15 loss: 3655.621273643092
+diff: 0.0
+Epoch 16 loss: 3513.2342208059213
+diff: 0.0
+Epoch 17 loss: 3186.688315943668
+diff: 0.0
+Epoch 18 loss: 3038.0576878597863
+diff: 0.0
+Epoch 19 loss: 2967.9337864925988
+diff: 0.0
+Epoch 20 loss: 2809.0855905633225
+diff: 0.0
+Epoch 21 loss: 2696.3077585320725
+diff: 0.0
+Epoch 22 loss: 2621.671714381168
+diff: 0.0
+Epoch 23 loss: 2478.408138877467
+diff: 0.0
+Epoch 24 loss: 2412.4268284847863
+diff: 0.0
+Epoch 25 loss: 2363.119519685444
+diff: 0.0
+Epoch 26 loss: 2289.6427901418588
+diff: 0.0
+Epoch 27 loss: 2196.2658530787417
+diff: 0.0
+Epoch 28 loss: 2182.4996434261925
+diff: 0.0
+Epoch 29 loss: 2063.4163304379113
+diff: 0.0
+Epoch 30 loss: 2043.9968647203948
+diff: 0.0
+Epoch 31 loss: 1974.1129054019325
+diff: 0.0
+Epoch 32 loss: 1907.370923494038
+diff: 0.0
+Epoch 33 loss: 1847.962591873972
+diff: 0.0
+Epoch 34 loss: 1796.6520963969983
+diff: 0.0
+Epoch 35 loss: 1786.8742547286183
+diff: 0.0
+Epoch 36 loss: 1731.5729370117188
+diff: 0.0
+Epoch 37 loss: 1711.3889224403783
+diff: 0.0
+Epoch 38 loss: 1643.9157971833881
+diff: 0.0
+Epoch 39 loss: 1580.0184197676808
+diff: 0.0
+Epoch 40 loss: 1574.6012123509456
+diff: 0.0
+Epoch 41 loss: 1554.5779772306744
+diff: 0.0
+Epoch 42 loss: 1533.460863615337
+diff: 0.0
+Epoch 43 loss: 1524.3245207134046
+diff: 0.0
+Epoch 44 loss: 1478.1322374845806
+diff: 0.0
+Epoch 45 loss: 1449.4874267578125
+diff: 0.0
+Epoch 46 loss: 1434.2850855777137
+diff: 0.0
+Epoch 47 loss: 1425.0279412520558
+diff: 0.0
+Epoch 48 loss: 1407.2124441046465
+diff: 0.0
+Epoch 49 loss: 1400.9630126953125
+diff: 0.0
+Epoch 50 loss: 1389.471271715666
+diff: 0.0
+Epoch 51 loss: 1337.527417634663
+diff: 0.0
+Epoch 52 loss: 1347.3490439967106
+diff: 9.82162636204771
+Epoch 53 loss: 1349.6691476922285
+diff: 12.14173005756561
+Epoch 54 loss: 1325.8313341642681
+diff: 0.0
+Epoch 55 loss: 1283.9986058285363
+diff: 0.0
+Epoch 56 loss: 1281.4426012541119
+diff: 0.0
+Epoch 57 loss: 1301.8192652652137
+diff: 20.376664011101866
+Epoch 58 loss: 1253.7021484375
+diff: 0.0
+Epoch 59 loss: 1265.7767141241777
+diff: 12.074565686677715
+Epoch 60 loss: 1222.9959427682977
+diff: 0.0
+Epoch 61 loss: 1214.2160997892681
+diff: 0.0
+Epoch 62 loss: 1178.6640657123767
+diff: 0.0
+Epoch 63 loss: 1197.6436767578125
+diff: 18.97961104543583
+Epoch 64 loss: 1184.4044574938323
+diff: 5.740391781455628
+Epoch 65 loss: 1196.7703407689144
+diff: 18.106275056537697
+Epoch 66 loss: 1172.8431235865544
+diff: 0.0
+Epoch 67 loss: 1153.833197342722
+diff: 0.0
+Epoch 68 loss: 1159.3881900185033
+diff: 5.55499267578125
+Epoch 69 loss: 1140.0089946546052
+diff: 0.0
+Epoch 70 loss: 1112.8492624383223
+diff: 0.0
+Epoch 71 loss: 1102.2806412546258
+diff: 0.0
+Epoch 72 loss: 1139.850820440995
+diff: 37.57017918636916
+Epoch 73 loss: 1089.06520000257
+diff: 0.0
+Epoch 74 loss: 1061.9141155042146
+diff: 0.0
+Epoch 75 loss: 1085.2752974660773
+diff: 23.361181961862712
+Epoch 76 loss: 1090.1958329050165
+diff: 28.28171740080188
+Epoch 77 loss: 1093.3811854312294
+diff: 31.46706992701479
+Epoch 78 loss: 1065.7114579050165
+diff: 3.797342400801881
+Epoch 79 loss: 1064.362124794408
+diff: 2.4480092901933403
+Epoch 80 loss: 1049.4014651649877
+diff: 0.0
+Epoch 81 loss: 1029.9213610197369
+diff: 0.0
+Epoch 82 loss: 1028.156314247533
+diff: 0.0
+Epoch 83 loss: 1002.8462685032895
+diff: 0.0
+Epoch 84 loss: 1012.4951396741366
+diff: 9.648871170847087
+Epoch 85 loss: 995.9026296515214
+diff: 0.0
+Epoch 86 loss: 987.7201056229441
+diff: 0.0
+Epoch 87 loss: 997.4162661903783
+diff: 9.696160567434276
+Epoch 88 loss: 993.9423137464022
+diff: 6.222208123458131
+Epoch 89 loss: 981.389608282792
+diff: 0.0
+Epoch 90 loss: 975.2350945723684
+diff: 0.0
+Epoch 91 loss: 966.5383911132812
+diff: 0.0
+Epoch 92 loss: 953.4886089124178
+diff: 0.0
+Epoch 93 loss: 938.7963272897821
+diff: 0.0
+Epoch 94 loss: 936.4332066586143
+diff: 0.0
+Epoch 95 loss: 953.313561690481
+diff: 16.88035503186677
+Epoch 96 loss: 930.1329313579358
+diff: 0.0
+Epoch 97 loss: 940.0950365568463
+diff: 9.962105198910422
+Epoch 98 loss: 931.8031969572369
+diff: 1.6702655993010467
+Epoch 99 loss: 917.5294141267475
+diff: 0.0
+Epoch 100 loss: 910.2615934673108
+diff: 0.0
+Epoch 101 loss: 917.7248438784951
+diff: 7.463250411184276
+Epoch 102 loss: 922.5670406943873
+diff: 12.305447227076456
+Epoch 103 loss: 902.9550941868832
+diff: 0.0
+Epoch 104 loss: 910.0568413985403
+diff: 7.101747211657084
+Epoch 105 loss: 895.8303399336966
+diff: 0.0
+Epoch 106 loss: 907.8808674059416
+diff: 12.050527472244994
+Epoch 107 loss: 887.7762531481291
+diff: 0.0
+Epoch 108 loss: 877.3582233629728
+diff: 0.0
+Epoch 109 loss: 866.6663978978207
+diff: 0.0
+Epoch 110 loss: 881.0351434004934
+diff: 14.36874550267271
+Epoch 111 loss: 871.490319502981
+diff: 4.823921605160308
+Epoch 112 loss: 844.5926690352591
+diff: 0.0
+Epoch 113 loss: 880.7457452071341
+diff: 36.153076171875
+Epoch 114 loss: 864.5811510587994
+diff: 19.988482023540314
+Epoch 115 loss: 868.0431068821957
+diff: 23.450437846936666
+Epoch 116 loss: 845.2109358938117
+diff: 0.6182668585526017
+Epoch 117 loss: 854.5760690789474
+diff: 9.983400043688334
+Epoch 118 loss: 867.6707056949014
+diff: 23.078036659642294
+Epoch 119 loss: 833.7903137207031
+diff: 0.0
+Epoch 120 loss: 847.5321430407072
+diff: 13.741829320004058
+Epoch 121 loss: 836.0416918302838
+diff: 2.251378109580628
+Epoch 122 loss: 846.6876252826892
+diff: 12.897311561986044
+Epoch 123 loss: 820.3785785875822
+diff: 0.0
+Epoch 124 loss: 837.3135568719161
+diff: 16.934978284333965
+Epoch 125 loss: 814.1487458881579
+diff: 0.0
+Epoch 126 loss: 817.3575648257607
+diff: 3.208818937602814
+Epoch 127 loss: 813.0030469392475
+diff: 0.0
+Epoch 128 loss: 803.8630242598684
+diff: 0.0
+Epoch 129 loss: 810.8228149414062
+diff: 6.959790681537811
+Epoch 130 loss: 797.1614331697162
+diff: 0.0
+Epoch 131 loss: 790.1573598761307
+diff: 0.0
+Epoch 132 loss: 784.2527417634662
+diff: 0.0
+Epoch 133 loss: 786.5808715820312
+diff: 2.328129818565003
+Epoch 134 loss: 775.8254828202097
+diff: 0.0
+Epoch 135 loss: 805.0701615182977
+diff: 29.244678698088023
+Epoch 136 loss: 779.9508683054071
+diff: 4.125385485197398
+Epoch 137 loss: 792.9313499049136
+diff: 17.10586708470396
+Epoch 138 loss: 787.1909051192434
+diff: 11.365422299033753
+Epoch 139 loss: 784.7395196211966
+diff: 8.914036800986878
+Epoch 140 loss: 778.1812358655428
+diff: 2.355753045333131
+Epoch 141 loss: 782.5815461811267
+diff: 6.756063360916983
+Epoch 142 loss: 768.6133117675781
+diff: 0.0
+Epoch 143 loss: 762.2045721756784
+diff: 0.0
+Epoch 144 loss: 777.6145485325864
+diff: 15.409976356907919
+Epoch 145 loss: 767.0784928171258
+diff: 4.873920641447398
+Epoch 146 loss: 761.720120078639
+diff: 0.0
+Epoch 147 loss: 741.5257311369244
+diff: 0.0
+Epoch 148 loss: 745.1860174881784
+diff: 3.660286351254058
+Epoch 149 loss: 750.7172931871916
+diff: 9.19156205026718
+Generating samples: cue 0
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(630, 18, 500)
+Generating samples: cue 1
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(630, 18, 500)
+Computing rank from data with rank=None
+    Using tolerance 2.1 (2.2e-16 eps * 18 dim * 5.3e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.1 (2.2e-16 eps * 18 dim * 5.3e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.2 (2.2e-16 eps * 18 dim * 5.5e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.2 (2.2e-16 eps * 18 dim * 5.5e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.4 (2.2e-16 eps * 18 dim * 6e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.3 (2.2e-16 eps * 18 dim * 5.7e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.5 (2.2e-16 eps * 18 dim * 6.2e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.4 (2.2e-16 eps * 18 dim * 5.9e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.5 (2.2e-16 eps * 18 dim * 6.3e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.5 (2.2e-16 eps * 18 dim * 6.2e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.5 (2.2e-16 eps * 18 dim * 6.3e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.6 (2.2e-16 eps * 18 dim * 6.5e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.6 (2.2e-16 eps * 18 dim * 6.6e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.7 (2.2e-16 eps * 18 dim * 6.8e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.7 (2.2e-16 eps * 18 dim * 6.8e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.8 (2.2e-16 eps * 18 dim * 7.1e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Starting trial 5
+Epoch 0 loss: 9728.062628495065
+diff: 0.0
+Epoch 1 loss: 9102.579075863487
+diff: 0.0
+Epoch 2 loss: 8548.671065481085
+diff: 0.0
+Epoch 3 loss: 7977.896959806743
+diff: 0.0
+Epoch 4 loss: 7436.103322882402
+diff: 0.0
+Epoch 5 loss: 6880.271857010691
+diff: 0.0
+Epoch 6 loss: 6397.113306949013
+diff: 0.0
+Epoch 7 loss: 5963.457185444079
+diff: 0.0
+Epoch 8 loss: 5520.7567716899675
+diff: 0.0
+Epoch 9 loss: 5101.412764699836
+diff: 0.0
+Epoch 10 loss: 4801.292750308388
+diff: 0.0
+Epoch 11 loss: 4487.242997018914
+diff: 0.0
+Epoch 12 loss: 4130.157824064556
+diff: 0.0
+Epoch 13 loss: 3969.5926706414475
+diff: 0.0
+Epoch 14 loss: 3692.3480417351975
+diff: 0.0
+Epoch 15 loss: 3499.149998715049
+diff: 0.0
+Epoch 16 loss: 3331.4575773540296
+diff: 0.0
+Epoch 17 loss: 3161.616782740543
+diff: 0.0
+Epoch 18 loss: 3011.483706825658
+diff: 0.0
+Epoch 19 loss: 2892.1404836554275
+diff: 0.0
+Epoch 20 loss: 2800.5256026418588
+diff: 0.0
+Epoch 21 loss: 2698.3811163651317
+diff: 0.0
+Epoch 22 loss: 2649.680400647615
+diff: 0.0
+Epoch 23 loss: 2628.1843390213817
+diff: 0.0
+Epoch 24 loss: 2536.729537160773
+diff: 0.0
+Epoch 25 loss: 2476.7377544202304
+diff: 0.0
+Epoch 26 loss: 2440.0284616570725
+diff: 0.0
+Epoch 27 loss: 2363.3320055509867
+diff: 0.0
+Epoch 28 loss: 2332.0707429584704
+diff: 0.0
+Epoch 29 loss: 2288.9148848684213
+diff: 0.0
+Epoch 30 loss: 2238.6011513157896
+diff: 0.0
+Epoch 31 loss: 2236.1638119346217
+diff: 0.0
+Epoch 32 loss: 2203.9696848016038
+diff: 0.0
+Epoch 33 loss: 2216.384871633429
+diff: 12.415186831825395
+Epoch 34 loss: 2151.555824681332
+diff: 0.0
+Epoch 35 loss: 2117.2126689710117
+diff: 0.0
+Epoch 36 loss: 2094.7429970189146
+diff: 0.0
+Epoch 37 loss: 2082.548988743832
+diff: 0.0
+Epoch 38 loss: 2071.827222322163
+diff: 0.0
+Epoch 39 loss: 2028.4127743369654
+diff: 0.0
+Epoch 40 loss: 1999.0408228824012
+diff: 0.0
+Epoch 41 loss: 1977.831687525699
+diff: 0.0
+Epoch 42 loss: 1965.5119500411183
+diff: 0.0
+Epoch 43 loss: 1956.541821931538
+diff: 0.0
+Epoch 44 loss: 1959.9816766036183
+diff: 3.4398546720804006
+Epoch 45 loss: 1929.3397088301808
+diff: 0.0
+Epoch 46 loss: 1961.519855700041
+diff: 32.18014686986021
+Epoch 47 loss: 1940.9174644068669
+diff: 11.577755576686059
+Epoch 48 loss: 1889.0691110711348
+diff: 0.0
+Epoch 49 loss: 1862.7574976870887
+diff: 0.0
+Epoch 50 loss: 1896.698168302837
+diff: 33.94067061574833
+Epoch 51 loss: 1854.854148463199
+diff: 0.0
+Epoch 52 loss: 1853.0933034796465
+diff: 0.0
+Epoch 53 loss: 1850.7038959703948
+diff: 0.0
+Epoch 54 loss: 1853.3708560341283
+diff: 2.6669600637335407
+Epoch 55 loss: 1795.4062467876233
+diff: 0.0
+Epoch 56 loss: 1801.6862182617188
+diff: 6.279971474095419
+Epoch 57 loss: 1769.8765258789062
+diff: 0.0
+Epoch 58 loss: 1731.6262881630346
+diff: 0.0
+Epoch 59 loss: 1758.3270231548108
+diff: 26.700734991776244
+Epoch 60 loss: 1727.7602474814967
+diff: 0.0
+Epoch 61 loss: 1770.870036878084
+diff: 43.1097893965873
+Epoch 62 loss: 1728.5138324938323
+diff: 0.753585012335634
+Epoch 63 loss: 1729.2639128032483
+diff: 1.5036653217516687
+Epoch 64 loss: 1688.7436908922698
+diff: 0.0
+Epoch 65 loss: 1686.7567781147204
+diff: 0.0
+Epoch 66 loss: 1689.996671977796
+diff: 3.239893863075622
+Epoch 67 loss: 1704.5403924239308
+diff: 17.783614309210407
+Epoch 68 loss: 1692.2201634457238
+diff: 5.463385331003337
+Epoch 69 loss: 1666.4298706054688
+diff: 0.0
+Epoch 70 loss: 1690.1583701685856
+diff: 23.728499563116884
+Epoch 71 loss: 1674.0419343647204
+diff: 7.612063759251669
+Epoch 72 loss: 1648.2335654810856
+diff: 0.0
+Epoch 73 loss: 1652.728750128495
+diff: 4.49518464740936
+Epoch 74 loss: 1613.3511962890625
+diff: 0.0
+Epoch 75 loss: 1649.690240157278
+diff: 36.33904386821541
+Epoch 76 loss: 1625.5465023643092
+diff: 12.195306075246663
+Epoch 77 loss: 1614.5707782946135
+diff: 1.2195820055510467
+Epoch 78 loss: 1616.3988422594573
+diff: 3.0476459703947967
+Epoch 79 loss: 1592.0319342362254
+diff: 0.0
+Epoch 80 loss: 1578.2631064967106
+diff: 0.0
+Epoch 81 loss: 1561.472347861842
+diff: 0.0
+Epoch 82 loss: 1579.9978284333881
+diff: 18.52548057154604
+Epoch 83 loss: 1581.278021561472
+diff: 19.805673699630006
+Epoch 84 loss: 1562.3492399516858
+diff: 0.87689208984375
+Epoch 85 loss: 1545.5583206979852
+diff: 0.0
+Epoch 86 loss: 1549.5289435135692
+diff: 3.9706228155839653
+Epoch 87 loss: 1538.099953099301
+diff: 0.0
+Epoch 88 loss: 1531.7494699578535
+diff: 0.0
+Epoch 89 loss: 1517.623933490954
+diff: 0.0
+Epoch 90 loss: 1500.7944111071135
+diff: 0.0
+Epoch 91 loss: 1550.6208014237254
+diff: 49.82639031661188
+Epoch 92 loss: 1514.3287963867188
+diff: 13.534385279605203
+Epoch 93 loss: 1532.5370162160773
+diff: 31.742605108963744
+Epoch 94 loss: 1479.402173494038
+diff: 0.0
+Epoch 95 loss: 1510.5208547491777
+diff: 31.11868125513979
+Epoch 96 loss: 1494.5610929790296
+diff: 15.158919484991657
+Epoch 97 loss: 1478.0217670641448
+diff: 0.0
+Epoch 98 loss: 1493.387531481291
+diff: 15.365764417146238
+Epoch 99 loss: 1466.8076621607731
+diff: 0.0
+Epoch 100 loss: 1470.118960731908
+diff: 3.3112985711347847
+Epoch 101 loss: 1436.313158537212
+diff: 0.0
+Epoch 102 loss: 1458.8824655633223
+diff: 22.56930702611021
+Epoch 103 loss: 1446.094048751028
+diff: 9.780890213815837
+Epoch 104 loss: 1459.5619956568669
+diff: 23.24883711965481
+Epoch 105 loss: 1472.6802817896794
+diff: 36.36712325246731
+Epoch 106 loss: 1437.286322342722
+diff: 0.973163805510012
+Epoch 107 loss: 1457.7217503597863
+diff: 21.40859182257418
+Epoch 108 loss: 1433.1535708778783
+diff: 0.0
+Epoch 109 loss: 1441.4893830951892
+diff: 8.335812217310831
+Epoch 110 loss: 1414.861003674959
+diff: 0.0
+Epoch 111 loss: 1432.0630204050165
+diff: 17.202016730057494
+Epoch 112 loss: 1406.7368774414062
+diff: 0.0
+Epoch 113 loss: 1408.8601523951481
+diff: 2.123274953741884
+Epoch 114 loss: 1416.580376876028
+diff: 9.843499434621663
+Epoch 115 loss: 1397.708560341283
+diff: 0.0
+Epoch 116 loss: 1407.5348061009456
+diff: 9.826245759662697
+Epoch 117 loss: 1395.9785316868831
+diff: 0.0
+Epoch 118 loss: 1413.3655877364308
+diff: 17.38705604954771
+Epoch 119 loss: 1374.8301841334294
+diff: 0.0
+Epoch 120 loss: 1390.7697272049754
+diff: 15.93954307154604
+Epoch 121 loss: 1368.4143580386512
+diff: 0.0
+Epoch 122 loss: 1392.2459973787006
+diff: 23.831639340049378
+Epoch 123 loss: 1385.9065102025081
+diff: 17.492152163856872
+Epoch 124 loss: 1368.4715479800575
+diff: 0.05718994140625
+Epoch 125 loss: 1366.182193153783
+diff: 0.0
+Epoch 126 loss: 1370.1941335577715
+diff: 4.011940403988547
+Epoch 127 loss: 1371.8890926963404
+diff: 5.706899542557494
+Epoch 128 loss: 1353.9458296926398
+diff: 0.0
+Epoch 129 loss: 1366.4941213507402
+diff: 12.548291658100425
+Epoch 130 loss: 1374.4422800164473
+diff: 20.496450323807494
+Epoch 131 loss: 1355.6317845394738
+diff: 1.6859548468339653
+Epoch 132 loss: 1346.522615131579
+diff: 0.0
+Epoch 133 loss: 1373.1634778474506
+diff: 26.640862715871663
+Epoch 134 loss: 1351.5734702662419
+diff: 5.050855134662925
+Epoch 135 loss: 1333.935800652755
+diff: 0.0
+Epoch 136 loss: 1322.8204088712994
+diff: 0.0
+Epoch 137 loss: 1316.1286653217517
+diff: 0.0
+Epoch 138 loss: 1342.8613859477796
+diff: 26.732720626027913
+Epoch 139 loss: 1330.2088462428044
+diff: 14.080180921052715
+Epoch 140 loss: 1338.6299245733965
+diff: 22.501259251644797
+Epoch 141 loss: 1306.9037796823602
+diff: 0.0
+Epoch 142 loss: 1352.0340865285773
+diff: 45.13030684621708
+Epoch 143 loss: 1323.398501747533
+diff: 16.49472206517271
+Epoch 144 loss: 1310.2907682719983
+diff: 3.386988589638122
+Epoch 145 loss: 1282.1709369860198
+diff: 0.0
+Epoch 146 loss: 1311.1711811266448
+diff: 29.000244140625
+Epoch 147 loss: 1322.8188926295231
+diff: 40.64795564350334
+Epoch 148 loss: 1294.620949193051
+diff: 12.45001220703125
+Epoch 149 loss: 1304.3851414730675
+diff: 22.21420448704771
+Generating samples: cue 0
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(630, 18, 500)
+Generating samples: cue 1
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(630, 18, 500)
+Computing rank from data with rank=None
+    Using tolerance 2 (2.2e-16 eps * 18 dim * 4.9e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.9 (2.2e-16 eps * 18 dim * 4.7e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.8 (2.2e-16 eps * 18 dim * 4.6e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.9 (2.2e-16 eps * 18 dim * 4.7e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.8 (2.2e-16 eps * 18 dim * 4.5e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.8 (2.2e-16 eps * 18 dim * 4.5e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.7 (2.2e-16 eps * 18 dim * 4.3e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.7 (2.2e-16 eps * 18 dim * 4.2e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.7 (2.2e-16 eps * 18 dim * 4.3e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.6 (2.2e-16 eps * 18 dim * 4e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.6 (2.2e-16 eps * 18 dim * 3.9e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.6 (2.2e-16 eps * 18 dim * 3.9e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.4 (2.2e-16 eps * 18 dim * 3.6e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.5 (2.2e-16 eps * 18 dim * 3.8e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.4 (2.2e-16 eps * 18 dim * 3.5e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.4 (2.2e-16 eps * 18 dim * 3.5e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Starting trial 6
+Epoch 0 loss: 6402.661017166941
+diff: 0.0
+Epoch 1 loss: 2213.3472161543996
+diff: 0.0
+Epoch 2 loss: 1670.472974275288
+diff: 0.0
+Epoch 3 loss: 1493.7172401829769
+diff: 0.0
+Epoch 4 loss: 1337.0414621453535
+diff: 0.0
+Epoch 5 loss: 1231.7241724917762
+diff: 0.0
+Epoch 6 loss: 1138.200095728824
+diff: 0.0
+Epoch 7 loss: 1047.1466128700658
+diff: 0.0
+Epoch 8 loss: 1013.4557752107319
+diff: 0.0
+Epoch 9 loss: 940.9352593672903
+diff: 0.0
+Epoch 10 loss: 885.6280870939556
+diff: 0.0
+Epoch 11 loss: 845.0846284565173
+diff: 0.0
+Epoch 12 loss: 795.0185932360197
+diff: 0.0
+Epoch 13 loss: 799.1070717259457
+diff: 4.088478489926047
+Epoch 14 loss: 761.4369201660156
+diff: 0.0
+Epoch 15 loss: 754.3499402497944
+diff: 0.0
+Epoch 16 loss: 721.5478049830386
+diff: 0.0
+Epoch 17 loss: 711.5898405376233
+diff: 0.0
+Epoch 18 loss: 695.8466604132401
+diff: 0.0
+Epoch 19 loss: 669.3388318513569
+diff: 0.0
+Epoch 20 loss: 668.1327787700452
+diff: 0.0
+Epoch 21 loss: 655.3612494217722
+diff: 0.0
+Epoch 22 loss: 627.033207943565
+diff: 0.0
+Epoch 23 loss: 618.2518069618627
+diff: 0.0
+Epoch 24 loss: 599.7223896227384
+diff: 0.0
+Epoch 25 loss: 586.2687618857935
+diff: 0.0
+Epoch 26 loss: 568.5841698897513
+diff: 0.0
+Epoch 27 loss: 587.4381818269428
+diff: 18.854011937191558
+Epoch 28 loss: 564.2783476177015
+diff: 0.0
+Epoch 29 loss: 558.8027399966592
+diff: 0.0
+Epoch 30 loss: 546.3999481201172
+diff: 0.0
+Epoch 31 loss: 546.3123530337685
+diff: 0.0
+Epoch 32 loss: 535.0951433683697
+diff: 0.0
+Epoch 33 loss: 518.9500772576583
+diff: 0.0
+Epoch 34 loss: 527.7962839226974
+diff: 8.846206665039062
+Epoch 35 loss: 530.6725303248355
+diff: 11.722453067177184
+Epoch 36 loss: 504.3746402138158
+diff: 0.0
+Epoch 37 loss: 500.4230338648746
+diff: 0.0
+Epoch 38 loss: 501.9215296695107
+diff: 1.498495804636093
+Epoch 39 loss: 493.5192646227385
+diff: 0.0
+Epoch 40 loss: 496.6784378854852
+diff: 3.1591732627467195
+Epoch 41 loss: 474.37959209241365
+diff: 0.0
+Epoch 42 loss: 485.2633964137027
+diff: 10.883804321289062
+Epoch 43 loss: 481.72742422003495
+diff: 7.347832127621302
+Epoch 44 loss: 477.8401770340769
+diff: 3.460584941663228
+Epoch 45 loss: 479.03921187551396
+diff: 4.659619783100311
+Epoch 46 loss: 464.36270703767474
+diff: 0.0
+Epoch 47 loss: 451.50419456080385
+diff: 0.0
+Epoch 48 loss: 435.685158177426
+diff: 0.0
+Epoch 49 loss: 437.0331862600226
+diff: 1.3480280825966133
+Epoch 50 loss: 431.5520276521382
+diff: 0.0
+Epoch 51 loss: 441.5895144813939
+diff: 10.037486829255727
+Epoch 52 loss: 455.82215961657073
+diff: 24.27013196443255
+Epoch 53 loss: 427.76772187885484
+diff: 0.0
+Epoch 54 loss: 413.9346297414679
+diff: 0.0
+Epoch 55 loss: 448.52917721397
+diff: 34.594547472502086
+Epoch 56 loss: 408.5372932835629
+diff: 0.0
+Epoch 57 loss: 425.40218554045026
+diff: 16.864892256887345
+Epoch 58 loss: 408.24920092130964
+diff: 0.0
+Epoch 59 loss: 408.26089638157896
+diff: 0.011695460269322666
+Epoch 60 loss: 407.6595627634149
+diff: 0.0
+Epoch 61 loss: 407.10810530813114
+diff: 0.0
+Epoch 62 loss: 408.50360990825453
+diff: 1.3955046001233882
+Epoch 63 loss: 406.93368369654604
+diff: 0.0
+Epoch 64 loss: 383.8374786376953
+diff: 0.0
+Epoch 65 loss: 403.8528474506579
+diff: 20.015368812962606
+Epoch 66 loss: 400.8409560354132
+diff: 17.003477397717916
+Epoch 67 loss: 392.9961049933183
+diff: 9.158626355622971
+Epoch 68 loss: 388.0433349609375
+diff: 4.2058563232421875
+Epoch 69 loss: 388.62923712479443
+diff: 4.791758487099116
+Epoch 70 loss: 369.86136426423724
+diff: 0.0
+Epoch 71 loss: 374.9339230186061
+diff: 5.072558754368856
+Epoch 72 loss: 379.1190129330284
+diff: 9.257648668791148
+Epoch 73 loss: 372.3500832005551
+diff: 2.4887189363178663
+Epoch 74 loss: 374.2096180162932
+diff: 4.348253752055939
+Epoch 75 loss: 347.0035320081209
+diff: 0.0
+Epoch 76 loss: 378.3529791581003
+diff: 31.349447149979426
+Epoch 77 loss: 361.36104543585526
+diff: 14.357513427734375
+Epoch 78 loss: 358.7719300922595
+diff: 11.768398084138596
+Epoch 79 loss: 342.3033053749486
+diff: 0.0
+Epoch 80 loss: 367.5462991814864
+diff: 25.24299380653781
+Epoch 81 loss: 354.0225292005037
+diff: 11.719223825555105
+Epoch 82 loss: 361.07461467542146
+diff: 18.771309300472865
+Epoch 83 loss: 349.73706777472245
+diff: 7.433762399773855
+Epoch 84 loss: 360.0723732396176
+diff: 17.76906786466901
+Epoch 85 loss: 359.40848822342724
+diff: 17.10518284847865
+Epoch 86 loss: 363.30558294998974
+diff: 21.00227757504115
+Epoch 87 loss: 335.0290246260794
+diff: 0.0
+Epoch 88 loss: 371.65951859323604
+diff: 36.63049396715667
+Epoch 89 loss: 372.0577593351665
+diff: 37.02873470908713
+Epoch 90 loss: 354.7995661685341
+diff: 19.770541542454737
+Epoch 91 loss: 339.2611393175627
+diff: 4.232114691483332
+Epoch 92 loss: 344.892867238898
+diff: 9.863842612818644
+Epoch 93 loss: 339.7520318282278
+diff: 4.7230072021484375
+Epoch 94 loss: 335.50727121453536
+diff: 0.47824658845598833
+Epoch 95 loss: 321.4677220394737
+diff: 0.0
+Epoch 96 loss: 317.8015731008429
+diff: 0.0
+Epoch 97 loss: 321.6340075041118
+diff: 3.8324344032689055
+Epoch 98 loss: 327.7344721743935
+diff: 9.932899073550573
+Epoch 99 loss: 335.1045500102796
+diff: 17.302976909436666
+Epoch 100 loss: 360.72167005037005
+diff: 42.920096949527135
+Epoch 101 loss: 334.5675586901213
+diff: 16.765985589278387
+Epoch 102 loss: 330.2344175639905
+diff: 12.432844463147603
+Epoch 103 loss: 311.5735774793123
+diff: 0.0
+Epoch 104 loss: 313.50827106676604
+diff: 1.9346935874537508
+Epoch 105 loss: 329.42065590306333
+diff: 17.847078423751043
+Epoch 106 loss: 342.63061603746917
+diff: 31.057038558156876
+Epoch 107 loss: 314.77285365054485
+diff: 3.1992761712325546
+Epoch 108 loss: 318.8960948743318
+diff: 7.322517395019531
+Epoch 109 loss: 320.798668710809
+diff: 9.22509123149672
+Epoch 110 loss: 315.9226949591386
+diff: 4.349117479826305
+Epoch 111 loss: 312.97844655890214
+diff: 1.4048690795898438
+Epoch 112 loss: 298.4378152144583
+diff: 0.0
+Epoch 113 loss: 312.6223088314659
+diff: 14.184493617007604
+Epoch 114 loss: 336.0572393316972
+diff: 37.61942411723891
+Epoch 115 loss: 314.6942901611328
+diff: 16.25647494667453
+Epoch 116 loss: 312.45099077726667
+diff: 14.013175562808385
+Epoch 117 loss: 301.40194782457854
+diff: 2.9641326101202594
+Epoch 118 loss: 304.97611798738177
+diff: 6.538302772923487
+Epoch 119 loss: 298.11771192048724
+diff: 0.0
+Epoch 120 loss: 304.040726511102
+diff: 5.923014590614741
+Epoch 121 loss: 315.1206219321803
+diff: 17.002910011693075
+Epoch 122 loss: 302.4795813309519
+diff: 4.361869410464635
+Epoch 123 loss: 300.9997442145097
+diff: 2.8820322940224514
+Epoch 124 loss: 294.51184604042453
+diff: 0.0
+Epoch 125 loss: 298.50032404849406
+diff: 3.988478008069535
+Epoch 126 loss: 307.9219601279811
+diff: 13.410114087556565
+Epoch 127 loss: 292.0604814228259
+diff: 0.0
+Epoch 128 loss: 333.6104981271844
+diff: 41.55001670435854
+Epoch 129 loss: 316.5909026296515
+diff: 24.530421206825622
+Generating samples: cue 0
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(630, 18, 500)
+Generating samples: cue 1
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(630, 18, 500)
+Computing rank from data with rank=None
+    Using tolerance 2 (2.2e-16 eps * 18 dim * 5.1e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2 (2.2e-16 eps * 18 dim * 4.9e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.1 (2.2e-16 eps * 18 dim * 5.1e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2 (2.2e-16 eps * 18 dim * 5e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.1 (2.2e-16 eps * 18 dim * 5.1e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2 (2.2e-16 eps * 18 dim * 5e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2 (2.2e-16 eps * 18 dim * 5.1e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2 (2.2e-16 eps * 18 dim * 5.1e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2 (2.2e-16 eps * 18 dim * 5.1e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.1 (2.2e-16 eps * 18 dim * 5.3e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.1 (2.2e-16 eps * 18 dim * 5.3e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2 (2.2e-16 eps * 18 dim * 5.1e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.1 (2.2e-16 eps * 18 dim * 5.2e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.1 (2.2e-16 eps * 18 dim * 5.3e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.1 (2.2e-16 eps * 18 dim * 5.3e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.1 (2.2e-16 eps * 18 dim * 5.3e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Starting trial 7
+Epoch 0 loss: 8860.265881990132
+diff: 0.0
+Epoch 1 loss: 6340.628752055921
+diff: 0.0
+Epoch 2 loss: 4522.674978155839
+diff: 0.0
+Epoch 3 loss: 3383.3501490542762
+diff: 0.0
+Epoch 4 loss: 2701.678437885485
+diff: 0.0
+Epoch 5 loss: 2275.751898514597
+diff: 0.0
+Epoch 6 loss: 2013.1618363229852
+diff: 0.0
+Epoch 7 loss: 1831.5721788908306
+diff: 0.0
+Epoch 8 loss: 1726.6611071134869
+diff: 0.0
+Epoch 9 loss: 1634.6238499691613
+diff: 0.0
+Epoch 10 loss: 1561.9486951326069
+diff: 0.0
+Epoch 11 loss: 1482.8829602693256
+diff: 0.0
+Epoch 12 loss: 1484.700747841283
+diff: 1.8177875719572967
+Epoch 13 loss: 1416.8244050678454
+diff: 0.0
+Epoch 14 loss: 1383.9069792094983
+diff: 0.0
+Epoch 15 loss: 1341.5709485505756
+diff: 0.0
+Epoch 16 loss: 1354.3246106599506
+diff: 12.753662109375
+Epoch 17 loss: 1316.6471332750823
+diff: 0.0
+Epoch 18 loss: 1256.882404528166
+diff: 0.0
+Epoch 19 loss: 1235.0317093698602
+diff: 0.0
+Epoch 20 loss: 1208.5128719932154
+diff: 0.0
+Epoch 21 loss: 1205.9596943102385
+diff: 0.0
+Epoch 22 loss: 1190.255281147204
+diff: 0.0
+Epoch 23 loss: 1183.5243433902137
+diff: 0.0
+Epoch 24 loss: 1165.9197644685444
+diff: 0.0
+Epoch 25 loss: 1149.6414023951481
+diff: 0.0
+Epoch 26 loss: 1142.8807019685444
+diff: 0.0
+Epoch 27 loss: 1109.6248747173108
+diff: 0.0
+Epoch 28 loss: 1106.154116981908
+diff: 0.0
+Epoch 29 loss: 1104.7762194181744
+diff: 0.0
+Epoch 30 loss: 1111.6042898077715
+diff: 6.828070389597087
+Epoch 31 loss: 1089.6629253186677
+diff: 0.0
+Epoch 32 loss: 1084.6550260844983
+diff: 0.0
+Epoch 33 loss: 1050.1843036852385
+diff: 0.0
+Epoch 34 loss: 1035.4676610043175
+diff: 0.0
+Epoch 35 loss: 1037.1669472142269
+diff: 1.69928620990936
+Epoch 36 loss: 990.7363875539679
+diff: 0.0
+Epoch 37 loss: 1042.9057247764185
+diff: 52.16933722245062
+Epoch 38 loss: 1002.9199299059416
+diff: 12.183542351973642
+Epoch 39 loss: 1023.7662192896793
+diff: 33.029831735711355
+Epoch 40 loss: 985.0233716462787
+diff: 0.0
+Epoch 41 loss: 977.1582320363898
+diff: 0.0
+Epoch 42 loss: 991.4374004163241
+diff: 14.279168379934276
+Epoch 43 loss: 971.5634829872533
+diff: 0.0
+Epoch 44 loss: 978.7251522666529
+diff: 7.161669279399575
+Epoch 45 loss: 960.7402970163446
+diff: 0.0
+Epoch 46 loss: 963.4041844418174
+diff: 2.663887425472808
+Epoch 47 loss: 940.7459026135897
+diff: 0.0
+Epoch 48 loss: 943.557946456106
+diff: 2.8120438425163456
+Epoch 49 loss: 934.0041022049753
+diff: 0.0
+Epoch 50 loss: 919.4534060829565
+diff: 0.0
+Epoch 51 loss: 915.837158203125
+diff: 0.0
+Epoch 52 loss: 925.5886069849918
+diff: 9.75144878186677
+Epoch 53 loss: 928.5078895970395
+diff: 12.67073139391448
+Epoch 54 loss: 884.7527883429276
+diff: 0.0
+Epoch 55 loss: 898.656788073088
+diff: 13.903999730160422
+Epoch 56 loss: 879.8415800395765
+diff: 0.0
+Epoch 57 loss: 882.6483764648438
+diff: 2.8067964252672937
+Epoch 58 loss: 877.7739771792764
+diff: 0.0
+Epoch 59 loss: 864.0909022281045
+diff: 0.0
+Epoch 60 loss: 869.1948161878084
+diff: 5.103913959703959
+Epoch 61 loss: 860.2550546746505
+diff: 0.0
+Epoch 62 loss: 838.4676593981291
+diff: 0.0
+Epoch 63 loss: 834.8812962582236
+diff: 0.0
+Epoch 64 loss: 856.507762708162
+diff: 21.626466449938334
+Epoch 65 loss: 829.6398861533717
+diff: 0.0
+Epoch 66 loss: 846.7106853284334
+diff: 17.07079917506178
+Epoch 67 loss: 831.5349506578947
+diff: 1.8950645045230203
+Epoch 68 loss: 842.4965354517886
+diff: 12.856649298416983
+Epoch 69 loss: 854.417236328125
+diff: 24.777350174753337
+Epoch 70 loss: 818.1969170821341
+diff: 0.0
+Epoch 71 loss: 821.9316695363898
+diff: 3.7347524542557267
+Epoch 72 loss: 810.3226735968339
+diff: 0.0
+Epoch 73 loss: 826.7677162571957
+diff: 16.445042660361878
+Epoch 74 loss: 808.294473748458
+diff: 0.0
+Epoch 75 loss: 813.3936944258841
+diff: 5.099220677426047
+Epoch 76 loss: 783.2813190660978
+diff: 0.0
+Epoch 77 loss: 789.8953166760897
+diff: 6.613997609991884
+Epoch 78 loss: 773.3548102127878
+diff: 0.0
+Epoch 79 loss: 800.4927175421464
+diff: 27.13790732935854
+Epoch 80 loss: 781.5992014031661
+diff: 8.244391190378337
+Epoch 81 loss: 774.23412604081
+diff: 0.879315828022186
+Epoch 82 loss: 771.1927249306127
+diff: 0.0
+Epoch 83 loss: 768.3848619962994
+diff: 0.0
+Epoch 84 loss: 788.6243350380346
+diff: 20.23947304173521
+Epoch 85 loss: 779.9246312191611
+diff: 11.539769222861764
+Epoch 86 loss: 764.5698450991982
+diff: 0.0
+Epoch 87 loss: 782.1531356008429
+diff: 17.583290501644683
+Epoch 88 loss: 766.2548410516036
+diff: 1.6849959524054157
+Epoch 89 loss: 762.8719739412006
+diff: 0.0
+Epoch 90 loss: 757.1206793534128
+diff: 0.0
+Epoch 91 loss: 749.0232527883429
+diff: 0.0
+Epoch 92 loss: 737.6601434004934
+diff: 0.0
+Epoch 93 loss: 742.1618957519531
+diff: 4.501752351459686
+Epoch 94 loss: 741.7307498329565
+diff: 4.070606432463023
+Epoch 95 loss: 736.7278924239309
+diff: 0.0
+Epoch 96 loss: 748.3507047954358
+diff: 11.622812371504892
+Epoch 97 loss: 721.1951245759662
+diff: 0.0
+Epoch 98 loss: 715.6318712736431
+diff: 0.0
+Epoch 99 loss: 735.4151804070724
+diff: 19.78330913342927
+Epoch 100 loss: 729.5656802528783
+diff: 13.93380897923521
+Epoch 101 loss: 719.6596776058799
+diff: 4.027806332236764
+Epoch 102 loss: 719.7784215023643
+diff: 4.146550228721139
+Epoch 103 loss: 715.0236896715666
+diff: 0.0
+Epoch 104 loss: 729.9321192691201
+diff: 14.90842959755355
+Epoch 105 loss: 725.035206041838
+diff: 10.011516370271465
+Epoch 106 loss: 707.3789335552015
+diff: 0.0
+Epoch 107 loss: 705.4090238872327
+diff: 0.0
+Epoch 108 loss: 710.5148636667352
+diff: 5.105839779502503
+Epoch 109 loss: 688.9707256116366
+diff: 0.0
+Epoch 110 loss: 696.0435598273026
+diff: 7.072834215666035
+Epoch 111 loss: 693.270796926398
+diff: 4.300071314761453
+Epoch 112 loss: 707.4001079358553
+diff: 18.42938232421875
+Epoch 113 loss: 687.2937702379728
+diff: 0.0
+Epoch 114 loss: 670.0543678685239
+diff: 0.0
+Epoch 115 loss: 678.3205887643915
+diff: 8.266220895867605
+Epoch 116 loss: 667.2375809518915
+diff: 0.0
+Epoch 117 loss: 669.3983748586554
+diff: 2.1607939067639563
+Epoch 118 loss: 675.1512997275904
+diff: 7.913718775698953
+Epoch 119 loss: 685.7868186549136
+diff: 18.549237703022186
+Epoch 120 loss: 689.4300055252878
+diff: 22.19242457339635
+Epoch 121 loss: 678.2792824193051
+diff: 11.041701467413645
+Epoch 122 loss: 663.3848636024877
+diff: 0.0
+Epoch 123 loss: 670.7309746993216
+diff: 7.346111096833852
+Epoch 124 loss: 652.5690146998355
+diff: 0.0
+Epoch 125 loss: 650.4635314941406
+diff: 0.0
+Epoch 126 loss: 666.2356567382812
+diff: 15.772125244140625
+Epoch 127 loss: 663.4555680124383
+diff: 12.99203651829771
+Epoch 128 loss: 644.1746167634662
+diff: 0.0
+Epoch 129 loss: 642.0809020996094
+diff: 0.0
+Epoch 130 loss: 658.5577569258841
+diff: 16.47685482627469
+Epoch 131 loss: 641.199422735917
+diff: 0.0
+Epoch 132 loss: 642.7782030607525
+diff: 1.5787803248355203
+Epoch 133 loss: 639.0845449347245
+diff: 0.0
+Epoch 134 loss: 636.90869140625
+diff: 0.0
+Epoch 135 loss: 644.1134707802221
+diff: 7.204779373972087
+Epoch 136 loss: 654.6493305407072
+diff: 17.740639134457183
+Epoch 137 loss: 655.2901306152344
+diff: 18.381439208984375
+Epoch 138 loss: 635.774409243935
+diff: 0.0
+Epoch 139 loss: 637.0315021715666
+diff: 1.257092927631561
+Epoch 140 loss: 644.3649308054071
+diff: 8.590521561472087
+Epoch 141 loss: 632.9366631758841
+diff: 0.0
+Epoch 142 loss: 624.3546656558389
+diff: 0.0
+Epoch 143 loss: 628.759426719264
+diff: 4.404761063425099
+Epoch 144 loss: 665.4505599172492
+diff: 41.09589426141031
+Epoch 145 loss: 642.8472836143092
+diff: 18.492617958470305
+Epoch 146 loss: 622.8148096988076
+diff: 0.0
+Epoch 147 loss: 650.9937455026727
+diff: 28.1789358038651
+Epoch 148 loss: 633.4574038856908
+diff: 10.64259418688323
+Epoch 149 loss: 620.8579021253084
+diff: 0.0
+Generating samples: cue 0
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(630, 18, 500)
+Generating samples: cue 1
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(630, 18, 500)
+Computing rank from data with rank=None
+    Using tolerance 1.9 (2.2e-16 eps * 18 dim * 4.8e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.9 (2.2e-16 eps * 18 dim * 4.9e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.9 (2.2e-16 eps * 18 dim * 4.8e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.9 (2.2e-16 eps * 18 dim * 4.7e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.8 (2.2e-16 eps * 18 dim * 4.5e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.8 (2.2e-16 eps * 18 dim * 4.6e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.8 (2.2e-16 eps * 18 dim * 4.5e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.8 (2.2e-16 eps * 18 dim * 4.4e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.7 (2.2e-16 eps * 18 dim * 4.2e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.7 (2.2e-16 eps * 18 dim * 4.3e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.7 (2.2e-16 eps * 18 dim * 4.2e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.6 (2.2e-16 eps * 18 dim * 4.1e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.6 (2.2e-16 eps * 18 dim * 4e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.6 (2.2e-16 eps * 18 dim * 3.9e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.5 (2.2e-16 eps * 18 dim * 3.8e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.5 (2.2e-16 eps * 18 dim * 3.7e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Starting trial 8
+Epoch 0 loss: 9616.379111842105
+diff: 0.0
+Epoch 1 loss: 8931.518271998355
+diff: 0.0
+Epoch 2 loss: 8487.51408305921
+diff: 0.0
+Epoch 3 loss: 7762.25142629523
+diff: 0.0
+Epoch 4 loss: 6694.0690275493425
+diff: 0.0
+Epoch 5 loss: 5566.8805124383225
+diff: 0.0
+Epoch 6 loss: 4733.846281352796
+diff: 0.0
+Epoch 7 loss: 4072.4214445415296
+diff: 0.0
+Epoch 8 loss: 3669.899722450658
+diff: 0.0
+Epoch 9 loss: 3307.1130435341283
+diff: 0.0
+Epoch 10 loss: 3029.020154451069
+diff: 0.0
+Epoch 11 loss: 2809.079506321957
+diff: 0.0
+Epoch 12 loss: 2720.450323807566
+diff: 0.0
+Epoch 13 loss: 2547.445049085115
+diff: 0.0
+Epoch 14 loss: 2378.8987330386512
+diff: 0.0
+Epoch 15 loss: 2312.8249190481088
+diff: 0.0
+Epoch 16 loss: 2169.854607833059
+diff: 0.0
+Epoch 17 loss: 2100.1508082339637
+diff: 0.0
+Epoch 18 loss: 2079.3492078279196
+diff: 0.0
+Epoch 19 loss: 1951.8182726408306
+diff: 0.0
+Epoch 20 loss: 1943.5116962633635
+diff: 0.0
+Epoch 21 loss: 1870.596753572163
+diff: 0.0
+Epoch 22 loss: 1876.1527549342106
+diff: 5.556001362047709
+Epoch 23 loss: 1804.2115189401727
+diff: 0.0
+Epoch 24 loss: 1799.853595934416
+diff: 0.0
+Epoch 25 loss: 1786.0988737407483
+diff: 0.0
+Epoch 26 loss: 1680.1106374640215
+diff: 0.0
+Epoch 27 loss: 1739.2614135742188
+diff: 59.150776110197285
+Epoch 28 loss: 1704.6292114257812
+diff: 24.518573961759785
+Epoch 29 loss: 1619.362548828125
+diff: 0.0
+Epoch 30 loss: 1590.1786145662006
+diff: 0.0
+Epoch 31 loss: 1560.906584087171
+diff: 0.0
+Epoch 32 loss: 1525.8392976459704
+diff: 0.0
+Epoch 33 loss: 1597.9500603926808
+diff: 72.1107627467104
+Epoch 34 loss: 1461.6824694181744
+diff: 0.0
+Epoch 35 loss: 1488.0057437294408
+diff: 26.32327431126646
+Epoch 36 loss: 1426.6995014391448
+diff: 0.0
+Epoch 37 loss: 1400.432283100329
+diff: 0.0
+Epoch 38 loss: 1393.4038953279194
+diff: 0.0
+Epoch 39 loss: 1410.051603618421
+diff: 16.64770829050167
+Epoch 40 loss: 1365.8679648951481
+diff: 0.0
+Epoch 41 loss: 1343.795988384046
+diff: 0.0
+Epoch 42 loss: 1328.9103811163652
+diff: 0.0
+Epoch 43 loss: 1280.8395482113488
+diff: 0.0
+Epoch 44 loss: 1266.050717002467
+diff: 0.0
+Epoch 45 loss: 1230.520209061472
+diff: 0.0
+Epoch 46 loss: 1249.4748053299754
+diff: 18.954596268503337
+Epoch 47 loss: 1252.2995862458881
+diff: 21.779377184416035
+Epoch 48 loss: 1216.1958409359581
+diff: 0.0
+Epoch 49 loss: 1202.2882626182154
+diff: 0.0
+Epoch 50 loss: 1174.0970812345806
+diff: 0.0
+Epoch 51 loss: 1209.25926770662
+diff: 35.162186472039366
+Epoch 52 loss: 1167.083178068462
+diff: 0.0
+Epoch 53 loss: 1140.7852879574425
+diff: 0.0
+Epoch 54 loss: 1150.5591735839844
+diff: 9.773885626541869
+Epoch 55 loss: 1119.0580942254317
+diff: 0.0
+Epoch 56 loss: 1098.8164303428248
+diff: 0.0
+Epoch 57 loss: 1086.7094533819902
+diff: 0.0
+Epoch 58 loss: 1085.8432697496917
+diff: 0.0
+Epoch 59 loss: 1080.849659166838
+diff: 0.0
+Epoch 60 loss: 1045.11302265368
+diff: 0.0
+Epoch 61 loss: 1044.9981721576892
+diff: 0.0
+Epoch 62 loss: 1032.1979257684004
+diff: 0.0
+Epoch 63 loss: 1050.216946250514
+diff: 18.019020482113547
+Epoch 64 loss: 1007.9313033254523
+diff: 0.0
+Epoch 65 loss: 994.8280816329153
+diff: 0.0
+Epoch 66 loss: 1001.570556640625
+diff: 6.742475007709686
+Epoch 67 loss: 986.7607148822985
+diff: 0.0
+Epoch 68 loss: 986.0449909410978
+diff: 0.0
+Epoch 69 loss: 934.8212505139803
+diff: 0.0
+Epoch 70 loss: 978.0504407380756
+diff: 43.229190224095305
+Epoch 71 loss: 949.7223896227384
+diff: 14.901139108758116
+Epoch 72 loss: 979.3152176706415
+diff: 44.49396715666114
+Epoch 73 loss: 947.1044729132401
+diff: 12.283222399259785
+Epoch 74 loss: 898.4952890496505
+diff: 0.0
+Epoch 75 loss: 927.5909953870272
+diff: 29.09570633737667
+Epoch 76 loss: 920.5372169896176
+diff: 22.04192793996708
+Epoch 77 loss: 885.0101575349506
+diff: 0.0
+Epoch 78 loss: 892.6216735839844
+diff: 7.611516049033753
+Epoch 79 loss: 882.5959777832031
+diff: 0.0
+Epoch 80 loss: 870.9121302554482
+diff: 0.0
+Epoch 81 loss: 869.729890522204
+diff: 0.0
+Epoch 82 loss: 850.2947355571546
+diff: 0.0
+Epoch 83 loss: 845.155074270148
+diff: 0.0
+Epoch 84 loss: 855.956538150185
+diff: 10.801463880036977
+Epoch 85 loss: 848.9763376336349
+diff: 3.821263363486878
+Epoch 86 loss: 826.4479097065173
+diff: 0.0
+Epoch 87 loss: 854.8007635819284
+diff: 28.352853875411142
+Epoch 88 loss: 848.0382610120272
+diff: 21.5903513055099
+Epoch 89 loss: 813.6561134739926
+diff: 0.0
+Epoch 90 loss: 809.7441438373767
+diff: 0.0
+Epoch 91 loss: 794.5941097861842
+diff: 0.0
+Epoch 92 loss: 801.9854784513775
+diff: 7.39136866519334
+Epoch 93 loss: 791.8514741596423
+diff: 0.0
+Epoch 94 loss: 797.185641640111
+diff: 5.33416748046875
+Epoch 95 loss: 758.0375414396588
+diff: 0.0
+Epoch 96 loss: 772.5920538651316
+diff: 14.554512425472808
+Epoch 97 loss: 759.1215049342105
+diff: 1.0839634945517673
+Epoch 98 loss: 750.0660416452508
+diff: 0.0
+Epoch 99 loss: 770.1501352410568
+diff: 20.08409359580594
+Epoch 100 loss: 778.0201576634457
+diff: 27.954116018194895
+Epoch 101 loss: 749.8895552785773
+diff: 0.0
+Epoch 102 loss: 736.3124373586554
+diff: 0.0
+Epoch 103 loss: 742.1027896278783
+diff: 5.790352269222922
+Epoch 104 loss: 733.3050103438528
+diff: 0.0
+Epoch 105 loss: 751.8977789627878
+diff: 18.592768618934997
+Epoch 106 loss: 749.5381983706826
+diff: 16.233188026829794
+Epoch 107 loss: 706.3028018349096
+diff: 0.0
+Epoch 108 loss: 737.6739694695724
+diff: 31.37116763466281
+Epoch 109 loss: 719.471639532792
+diff: 13.168837697882395
+Epoch 110 loss: 708.054293983861
+diff: 1.7514921489514563
+Epoch 111 loss: 729.4471885279605
+diff: 23.144386693050933
+Epoch 112 loss: 700.1994034616571
+diff: 0.0
+Epoch 113 loss: 692.2820900364926
+diff: 0.0
+Epoch 114 loss: 718.1468602230674
+diff: 25.864770186574788
+Epoch 115 loss: 701.6837286698191
+diff: 9.401638633326456
+Epoch 116 loss: 697.2761648077714
+diff: 4.994074771278747
+Epoch 117 loss: 710.6696343672903
+diff: 18.38754433079771
+Epoch 118 loss: 697.883938438014
+diff: 5.601848401521352
+Epoch 119 loss: 701.0213623046875
+diff: 8.739272268194895
+Epoch 120 loss: 684.5042596114309
+diff: 0.0
+Epoch 121 loss: 666.7517443205181
+diff: 0.0
+Epoch 122 loss: 669.6400564093339
+diff: 2.8883120888157237
+Epoch 123 loss: 662.5925389340049
+diff: 0.0
+Epoch 124 loss: 683.9779100920025
+diff: 21.38537115799761
+Epoch 125 loss: 652.7491326583059
+diff: 0.0
+Epoch 126 loss: 657.7796936035156
+diff: 5.030560945209686
+Epoch 127 loss: 649.230274401213
+diff: 0.0
+Epoch 128 loss: 642.2981214021381
+diff: 0.0
+Epoch 129 loss: 665.3795069644326
+diff: 23.081385562294486
+Epoch 130 loss: 665.8975075169614
+diff: 23.599386114823233
+Epoch 131 loss: 634.2553245142886
+diff: 0.0
+Epoch 132 loss: 632.6138530530428
+diff: 0.0
+Epoch 133 loss: 649.8868263646176
+diff: 17.272973311574788
+Epoch 134 loss: 632.2767719469572
+diff: 0.0
+Epoch 135 loss: 651.6968608655428
+diff: 19.420088918585634
+Epoch 136 loss: 637.1051314504523
+diff: 4.828359503495108
+Epoch 137 loss: 643.3072798879523
+diff: 11.030507940995108
+Epoch 138 loss: 638.7876008686267
+diff: 6.510828921669486
+Epoch 139 loss: 634.0986231753701
+diff: 1.8218512284129247
+Epoch 140 loss: 645.4060476202714
+diff: 13.129275673314169
+Epoch 141 loss: 641.0089593184622
+diff: 8.732187371505006
+Epoch 142 loss: 612.5421536094264
+diff: 0.0
+Epoch 143 loss: 594.6774677477384
+diff: 0.0
+Epoch 144 loss: 640.5933870014392
+diff: 45.915919253700736
+Epoch 145 loss: 616.417191354852
+diff: 21.739723607113547
+Epoch 146 loss: 624.6772139699835
+diff: 29.999746222245108
+Epoch 147 loss: 610.3699405067846
+diff: 15.692472759046154
+Epoch 148 loss: 626.1440686677631
+diff: 31.46660092002469
+Epoch 149 loss: 606.7836713288959
+diff: 12.106203581157502
+Generating samples: cue 0
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(630, 18, 500)
+Generating samples: cue 1
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(630, 18, 500)
+Computing rank from data with rank=None
+    Using tolerance 2.1 (2.2e-16 eps * 18 dim * 5.1e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2 (2.2e-16 eps * 18 dim * 5e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.1 (2.2e-16 eps * 18 dim * 5.2e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.1 (2.2e-16 eps * 18 dim * 5.2e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.1 (2.2e-16 eps * 18 dim * 5.4e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.1 (2.2e-16 eps * 18 dim * 5.2e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.2 (2.2e-16 eps * 18 dim * 5.5e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.1 (2.2e-16 eps * 18 dim * 5.3e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.2 (2.2e-16 eps * 18 dim * 5.5e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.2 (2.2e-16 eps * 18 dim * 5.5e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.3 (2.2e-16 eps * 18 dim * 5.6e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.2 (2.2e-16 eps * 18 dim * 5.5e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.2 (2.2e-16 eps * 18 dim * 5.6e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.3 (2.2e-16 eps * 18 dim * 5.7e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.3 (2.2e-16 eps * 18 dim * 5.7e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.3 (2.2e-16 eps * 18 dim * 5.7e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Starting trial 9
+Epoch 0 loss: 9632.967028166118
+diff: 0.0
+Epoch 1 loss: 8863.640599300987
+diff: 0.0
+Epoch 2 loss: 8120.41019479852
+diff: 0.0
+Epoch 3 loss: 7418.9205129523025
+diff: 0.0
+Epoch 4 loss: 6785.3714021381575
+diff: 0.0
+Epoch 5 loss: 6194.0533254523025
+diff: 0.0
+Epoch 6 loss: 5719.443821957237
+diff: 0.0
+Epoch 7 loss: 5267.098876953125
+diff: 0.0
+Epoch 8 loss: 4956.680201480263
+diff: 0.0
+Epoch 9 loss: 4575.8017578125
+diff: 0.0
+Epoch 10 loss: 4269.239489103618
+diff: 0.0
+Epoch 11 loss: 3998.2376259251646
+diff: 0.0
+Epoch 12 loss: 3751.2194952713817
+diff: 0.0
+Epoch 13 loss: 3520.0240028782896
+diff: 0.0
+Epoch 14 loss: 3352.642006321957
+diff: 0.0
+Epoch 15 loss: 3210.4594148334704
+diff: 0.0
+Epoch 16 loss: 2998.288214432566
+diff: 0.0
+Epoch 17 loss: 2863.1430150082238
+diff: 0.0
+Epoch 18 loss: 2769.249800832648
+diff: 0.0
+Epoch 19 loss: 2637.89841822574
+diff: 0.0
+Epoch 20 loss: 2518.201987818668
+diff: 0.0
+Epoch 21 loss: 2474.005975020559
+diff: 0.0
+Epoch 22 loss: 2365.3141575863488
+diff: 0.0
+Epoch 23 loss: 2315.672318307977
+diff: 0.0
+Epoch 24 loss: 2282.0895385742188
+diff: 0.0
+Epoch 25 loss: 2214.3271966231496
+diff: 0.0
+Epoch 26 loss: 2213.4314671566613
+diff: 0.0
+Epoch 27 loss: 2116.102683619449
+diff: 0.0
+Epoch 28 loss: 2068.848748458059
+diff: 0.0
+Epoch 29 loss: 2046.9705007452715
+diff: 0.0
+Epoch 30 loss: 2002.9300440738075
+diff: 0.0
+Epoch 31 loss: 2003.4775326377467
+diff: 0.5474885639391687
+Epoch 32 loss: 1967.3174406352796
+diff: 0.0
+Epoch 33 loss: 1929.3603901110198
+diff: 0.0
+Epoch 34 loss: 1924.6027221679688
+diff: 0.0
+Epoch 35 loss: 1893.4716411389802
+diff: 0.0
+Epoch 36 loss: 1858.0368941457648
+diff: 0.0
+Epoch 37 loss: 1855.8840139288652
+diff: 0.0
+Epoch 38 loss: 1821.4471885279606
+diff: 0.0
+Epoch 39 loss: 1788.0576011256169
+diff: 0.0
+Epoch 40 loss: 1802.3987330386512
+diff: 14.34113191303436
+Epoch 41 loss: 1760.8480995579769
+diff: 0.0
+Epoch 42 loss: 1729.1773521021794
+diff: 0.0
+Epoch 43 loss: 1719.174750077097
+diff: 0.0
+Epoch 44 loss: 1726.9018683182567
+diff: 7.727118241159587
+Epoch 45 loss: 1706.0026020250823
+diff: 0.0
+Epoch 46 loss: 1693.9921168277137
+diff: 0.0
+Epoch 47 loss: 1686.0325221011512
+diff: 0.0
+Epoch 48 loss: 1663.6258384303044
+diff: 0.0
+Epoch 49 loss: 1639.6410683079769
+diff: 0.0
+Epoch 50 loss: 1663.1473645662006
+diff: 23.506296258223756
+Epoch 51 loss: 1617.6894113641035
+diff: 0.0
+Epoch 52 loss: 1613.6647531609785
+diff: 0.0
+Epoch 53 loss: 1617.881167763158
+diff: 4.216414602179384
+Epoch 54 loss: 1605.681052760074
+diff: 0.0
+Epoch 55 loss: 1594.0297723067433
+diff: 0.0
+Epoch 56 loss: 1570.3135022615131
+diff: 0.0
+Epoch 57 loss: 1602.923185649671
+diff: 32.60968338815792
+Epoch 58 loss: 1561.837646484375
+diff: 0.0
+Epoch 59 loss: 1539.6781455592106
+diff: 0.0
+Epoch 60 loss: 1561.1367444490131
+diff: 21.458598889802488
+Epoch 61 loss: 1547.8017064144738
+diff: 8.123560855263122
+Epoch 62 loss: 1522.3688193873356
+diff: 0.0
+Epoch 63 loss: 1511.839165938528
+diff: 0.0
+Epoch 64 loss: 1502.0242759303044
+diff: 0.0
+Epoch 65 loss: 1505.5172311883223
+diff: 3.4929552580179006
+Epoch 66 loss: 1510.8827964381169
+diff: 8.8585205078125
+Epoch 67 loss: 1499.7639449270148
+diff: 0.0
+Epoch 68 loss: 1481.0881058542352
+diff: 0.0
+Epoch 69 loss: 1460.4221352025081
+diff: 0.0
+Epoch 70 loss: 1464.1241969058387
+diff: 3.702061703330628
+Epoch 71 loss: 1441.012859143709
+diff: 0.0
+Epoch 72 loss: 1445.0220144171465
+diff: 4.0091552734375
+Epoch 73 loss: 1444.7502152292352
+diff: 3.737356085526244
+Epoch 74 loss: 1437.365288985403
+diff: 0.0
+Epoch 75 loss: 1425.7763800370067
+diff: 0.0
+Epoch 76 loss: 1427.1905774568256
+diff: 1.4141974198189473
+Epoch 77 loss: 1425.6561343544408
+diff: 0.0
+Epoch 78 loss: 1412.8662109375
+diff: 0.0
+Epoch 79 loss: 1409.7127685546875
+diff: 0.0
+Epoch 80 loss: 1397.9071558902137
+diff: 0.0
+Epoch 81 loss: 1393.6218679327715
+diff: 0.0
+Epoch 82 loss: 1384.7849378083881
+diff: 0.0
+Epoch 83 loss: 1375.611581902755
+diff: 0.0
+Epoch 84 loss: 1367.8154457493831
+diff: 0.0
+Epoch 85 loss: 1371.1701210423519
+diff: 3.35467529296875
+Epoch 86 loss: 1376.4101305509869
+diff: 8.594684801603762
+Epoch 87 loss: 1355.3913124486019
+diff: 0.0
+Epoch 88 loss: 1354.760064376028
+diff: 0.0
+Epoch 89 loss: 1352.5847617701481
+diff: 0.0
+Epoch 90 loss: 1342.5562583521794
+diff: 0.0
+Epoch 91 loss: 1345.4963892886512
+diff: 2.94013093647186
+Epoch 92 loss: 1324.3052271792762
+diff: 0.0
+Epoch 93 loss: 1325.723218415913
+diff: 1.4179912366366807
+Epoch 94 loss: 1309.311947471217
+diff: 0.0
+Epoch 95 loss: 1326.0387155633223
+diff: 16.726768092105203
+Epoch 96 loss: 1315.3100361071135
+diff: 5.998088635896465
+Epoch 97 loss: 1309.3358796772204
+diff: 0.023932206003337342
+Epoch 98 loss: 1300.4010041889392
+diff: 0.0
+Epoch 99 loss: 1302.4449109529194
+diff: 2.0439067639802033
+Epoch 100 loss: 1296.0892623098273
+diff: 0.0
+Epoch 101 loss: 1280.2567042300575
+diff: 0.0
+Epoch 102 loss: 1284.7008345754523
+diff: 4.444130345394797
+Epoch 103 loss: 1269.3023970754523
+diff: 0.0
+Epoch 104 loss: 1281.1523469623767
+diff: 11.849949886924378
+Epoch 105 loss: 1274.1508756938733
+diff: 4.848478618421041
+Epoch 106 loss: 1267.0013042249177
+diff: 0.0
+Epoch 107 loss: 1258.640705309416
+diff: 0.0
+Epoch 108 loss: 1258.0082397460938
+diff: 0.0
+Epoch 109 loss: 1253.4126747532894
+diff: 0.0
+Epoch 110 loss: 1249.4817408511512
+diff: 0.0
+Epoch 111 loss: 1267.418636924342
+diff: 17.936896073190837
+Epoch 112 loss: 1246.9192312140215
+diff: 0.0
+Epoch 113 loss: 1232.0015612150494
+diff: 0.0
+Epoch 114 loss: 1241.877287212171
+diff: 9.875725997121663
+Epoch 115 loss: 1235.8757356342517
+diff: 3.8741744192022907
+Epoch 116 loss: 1239.0736919202302
+diff: 7.072130705180825
+Epoch 117 loss: 1232.9695049085115
+diff: 0.9679436934620753
+Epoch 118 loss: 1229.083740234375
+diff: 0.0
+Epoch 119 loss: 1241.9414544356496
+diff: 12.857714201274575
+Epoch 120 loss: 1230.5497886256169
+diff: 1.466048391241884
+Epoch 121 loss: 1229.267170153166
+diff: 0.18342991879103465
+Epoch 122 loss: 1208.000163831209
+diff: 0.0
+Epoch 123 loss: 1212.4140785618831
+diff: 4.413914730674151
+Epoch 124 loss: 1194.706616853413
+diff: 0.0
+Epoch 125 loss: 1195.1731471011512
+diff: 0.4665302477383193
+Epoch 126 loss: 1199.8633679841694
+diff: 5.156751130756447
+Epoch 127 loss: 1180.2573467053865
+diff: 0.0
+Epoch 128 loss: 1179.8796868575246
+diff: 0.0
+Epoch 129 loss: 1182.6471011513158
+diff: 2.767414293791262
+Epoch 130 loss: 1182.4633756938733
+diff: 2.583688836348756
+Epoch 131 loss: 1169.4038856907894
+diff: 0.0
+Epoch 132 loss: 1187.490478515625
+diff: 18.086592824835634
+Epoch 133 loss: 1187.9557334498356
+diff: 18.551847759046268
+Epoch 134 loss: 1183.533746016653
+diff: 14.129860325863547
+Epoch 135 loss: 1166.7060546875
+diff: 0.0
+Epoch 136 loss: 1159.3334607576069
+diff: 0.0
+Epoch 137 loss: 1150.3727577611019
+diff: 0.0
+Epoch 138 loss: 1163.7285509611431
+diff: 13.355793200041262
+Epoch 139 loss: 1151.4927464535363
+diff: 1.11998869243439
+Epoch 140 loss: 1164.712322034334
+diff: 14.3395642732321
+Epoch 141 loss: 1156.1750070672285
+diff: 5.802249306126669
+Epoch 142 loss: 1152.559146278783
+diff: 2.1863885176810527
+Epoch 143 loss: 1141.1084915964227
+diff: 0.0
+Epoch 144 loss: 1138.5629754317433
+diff: 0.0
+Epoch 145 loss: 1145.703558670847
+diff: 7.140583239103762
+Epoch 146 loss: 1134.4571790193256
+diff: 0.0
+Epoch 147 loss: 1137.3986430921052
+diff: 2.9414640727795813
+Epoch 148 loss: 1125.001538728413
+diff: 0.0
+Epoch 149 loss: 1138.0998342413652
+diff: 13.09829551295229
+Generating samples: cue 0
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(630, 18, 500)
+Generating samples: cue 1
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(630, 18, 500)
+Computing rank from data with rank=None
+    Using tolerance 1e+03 (2.2e-16 eps * 18 dim * 2.5e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1e+03 (2.2e-16 eps * 18 dim * 2.5e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.4e+03 (2.2e-16 eps * 18 dim * 3.5e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.4e+03 (2.2e-16 eps * 18 dim * 3.5e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.7e+03 (2.2e-16 eps * 18 dim * 4.3e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.7e+03 (2.2e-16 eps * 18 dim * 4.2e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2e+03 (2.2e-16 eps * 18 dim * 4.9e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2e+03 (2.2e-16 eps * 18 dim * 4.9e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.2e+03 (2.2e-16 eps * 18 dim * 5.5e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.2e+03 (2.2e-16 eps * 18 dim * 5.5e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.4e+03 (2.2e-16 eps * 18 dim * 6e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.4e+03 (2.2e-16 eps * 18 dim * 6e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.6e+03 (2.2e-16 eps * 18 dim * 6.5e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.6e+03 (2.2e-16 eps * 18 dim * 6.5e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.8e+03 (2.2e-16 eps * 18 dim * 7e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.8e+03 (2.2e-16 eps * 18 dim * 7e+17  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Starting trial 10
+Epoch 0 loss: 9222.623149671053
+diff: 0.0
+Epoch 1 loss: 6427.960950349507
+diff: 0.0
+Epoch 2 loss: 3753.2152613589637
+diff: 0.0
+Epoch 3 loss: 2730.777478669819
+diff: 0.0
+Epoch 4 loss: 2336.6100463867188
+diff: 0.0
+Epoch 5 loss: 2076.960821854441
+diff: 0.0
+Epoch 6 loss: 1906.7774915193256
+diff: 0.0
+Epoch 7 loss: 1764.390714946546
+diff: 0.0
+Epoch 8 loss: 1697.1039011101973
+diff: 0.0
+Epoch 9 loss: 1609.1867450914885
+diff: 0.0
+Epoch 10 loss: 1560.885099712171
+diff: 0.0
+Epoch 11 loss: 1464.707439221834
+diff: 0.0
+Epoch 12 loss: 1422.4521612870067
+diff: 0.0
+Epoch 13 loss: 1375.8603033768504
+diff: 0.0
+Epoch 14 loss: 1341.9114251387746
+diff: 0.0
+Epoch 15 loss: 1269.1707699424342
+diff: 0.0
+Epoch 16 loss: 1238.1587331671465
+diff: 0.0
+Epoch 17 loss: 1248.0801487972863
+diff: 9.92141563013979
+Epoch 18 loss: 1168.985097784745
+diff: 0.0
+Epoch 19 loss: 1158.8043309261925
+diff: 0.0
+Epoch 20 loss: 1143.6102037931744
+diff: 0.0
+Epoch 21 loss: 1100.4895051655017
+diff: 0.0
+Epoch 22 loss: 1083.629060444079
+diff: 0.0
+Epoch 23 loss: 1090.7088928222656
+diff: 7.079832378186666
+Epoch 24 loss: 1059.5711509303044
+diff: 0.0
+Epoch 25 loss: 1016.8021240234375
+diff: 0.0
+Epoch 26 loss: 1020.932577032792
+diff: 4.130453009354483
+Epoch 27 loss: 1050.718256900185
+diff: 33.9161328767475
+Epoch 28 loss: 1009.1623776084498
+diff: 0.0
+Epoch 29 loss: 995.6331915604441
+diff: 0.0
+Epoch 30 loss: 1004.9882250334088
+diff: 9.355033472964692
+Epoch 31 loss: 945.4328195672286
+diff: 0.0
+Epoch 32 loss: 938.497115285773
+diff: 0.0
+Epoch 33 loss: 931.3537902832031
+diff: 0.0
+Epoch 34 loss: 937.2318468595806
+diff: 5.878056576377503
+Epoch 35 loss: 878.7096380936472
+diff: 0.0
+Epoch 36 loss: 902.8952299419202
+diff: 24.18559184827302
+Epoch 37 loss: 876.2199530350534
+diff: 0.0
+Epoch 38 loss: 897.6427660490338
+diff: 21.422813013980317
+Epoch 39 loss: 875.2246447111431
+diff: 0.0
+Epoch 40 loss: 892.8266248201069
+diff: 17.601980108963744
+Epoch 41 loss: 873.3599162854647
+diff: 0.0
+Epoch 42 loss: 884.7265865928248
+diff: 11.366670307360096
+Epoch 43 loss: 865.5547292608964
+diff: 0.0
+Epoch 44 loss: 838.3799069053248
+diff: 0.0
+Epoch 45 loss: 839.7020825837787
+diff: 1.3221756784539593
+Epoch 46 loss: 809.3612413908306
+diff: 0.0
+Epoch 47 loss: 831.1400098298725
+diff: 21.77876843904187
+Epoch 48 loss: 848.3422658819901
+diff: 38.981024491159474
+Epoch 49 loss: 831.7298391241776
+diff: 22.368597733346974
+Epoch 50 loss: 855.6551353053043
+diff: 46.29389391447364
+Epoch 51 loss: 804.0876480905633
+diff: 0.0
+Epoch 52 loss: 805.1747902318051
+diff: 1.0871421412417703
+Epoch 53 loss: 837.7938216359992
+diff: 33.70617354543583
+Epoch 54 loss: 812.6202328330592
+diff: 8.532584742495828
+Epoch 55 loss: 766.0528114720395
+diff: 0.0
+Epoch 56 loss: 751.3559409693668
+diff: 0.0
+Epoch 57 loss: 760.315583881579
+diff: 8.959642912212189
+Epoch 58 loss: 782.2912886770148
+diff: 30.93534770764802
+Epoch 59 loss: 759.6653972424959
+diff: 8.309456273129172
+Epoch 60 loss: 758.6889423571134
+diff: 7.333001387746663
+Epoch 61 loss: 764.6224284924959
+diff: 13.266487523129172
+Epoch 62 loss: 749.9784385279605
+diff: 0.0
+Epoch 63 loss: 786.4615317896793
+diff: 36.48309326171875
+Epoch 64 loss: 755.6410972193668
+diff: 5.66265869140625
+Epoch 65 loss: 746.9070563065378
+diff: 0.0
+Epoch 66 loss: 761.7534003006784
+diff: 14.846343994140625
+Epoch 67 loss: 762.4289020739103
+diff: 15.521845767372497
+Epoch 68 loss: 745.558055676912
+diff: 0.0
+Epoch 69 loss: 741.9143259148849
+diff: 0.0
+Epoch 70 loss: 736.2028631913034
+diff: 0.0
+Epoch 71 loss: 713.5221107884457
+diff: 0.0
+Epoch 72 loss: 738.9886827970806
+diff: 25.4665720086349
+Epoch 73 loss: 707.1095324064556
+diff: 0.0
+Epoch 74 loss: 707.3760986328125
+diff: 0.266566226356872
+Epoch 75 loss: 720.906254818565
+diff: 13.796722412109375
+Epoch 76 loss: 714.8632828561883
+diff: 7.753750449732706
+Epoch 77 loss: 707.5149857370477
+diff: 0.40545333059208133
+Epoch 78 loss: 689.0026951840049
+diff: 0.0
+Epoch 79 loss: 721.2544475354647
+diff: 32.2517523514598
+Epoch 80 loss: 759.6576265033923
+diff: 70.6549313193874
+Epoch 81 loss: 699.7005390368009
+diff: 10.69784385279604
+Epoch 82 loss: 688.5303071674548
+diff: 0.0
+Epoch 83 loss: 685.8561465614721
+diff: 0.0
+Epoch 84 loss: 687.1012621427838
+diff: 1.2451155813116657
+Epoch 85 loss: 681.6080659565173
+diff: 0.0
+Epoch 86 loss: 704.5112128006784
+diff: 22.903146844161142
+Epoch 87 loss: 674.6031927811472
+diff: 0.0
+Epoch 88 loss: 683.5506463301809
+diff: 8.947453549033753
+Epoch 89 loss: 693.664356432463
+diff: 19.061163651315837
+Epoch 90 loss: 660.2070151881168
+diff: 0.0
+Epoch 91 loss: 664.1890708521793
+diff: 3.9820556640625
+Epoch 92 loss: 690.6404145893298
+diff: 30.433399401213023
+Epoch 93 loss: 654.4962607935855
+diff: 0.0
+Epoch 94 loss: 672.2442112972861
+diff: 17.747950503700622
+Epoch 95 loss: 682.9070386384662
+diff: 28.410777844880727
+Epoch 96 loss: 667.6520305432772
+diff: 13.155769749691672
+Epoch 97 loss: 664.1258753726357
+diff: 9.629614579050212
+Epoch 98 loss: 677.0281356008429
+diff: 22.531874807257395
+Epoch 99 loss: 691.8443073473478
+diff: 37.34804655376229
+Epoch 100 loss: 670.6505721242804
+diff: 16.154311330694895
+Epoch 101 loss: 660.1262929815995
+diff: 5.630032188013956
+Epoch 102 loss: 648.0949064555921
+diff: 0.0
+Epoch 103 loss: 651.8673143888775
+diff: 3.7724079332854217
+Epoch 104 loss: 667.2984040912829
+diff: 19.203497635690837
+Epoch 105 loss: 652.8657804790296
+diff: 4.7708740234375
+Epoch 106 loss: 675.3989016884252
+diff: 27.30399523283313
+Epoch 107 loss: 664.3456147846423
+diff: 16.250708329050212
+Epoch 108 loss: 665.0614238538241
+diff: 16.966517398231986
+Epoch 109 loss: 665.831213700144
+diff: 17.73630724455188
+Epoch 110 loss: 639.6706189607319
+diff: 0.0
+Epoch 111 loss: 651.1398090563322
+diff: 11.469190095600311
+Epoch 112 loss: 647.664640727796
+diff: 7.994021767064169
+Epoch 113 loss: 619.4216886821546
+diff: 0.0
+Epoch 114 loss: 640.6702752364309
+diff: 21.248586554276358
+Epoch 115 loss: 658.1601787366366
+diff: 38.738490054481986
+Epoch 116 loss: 630.8357238769531
+diff: 11.414035194798544
+Epoch 117 loss: 641.3147149336966
+diff: 21.893026251541983
+Epoch 118 loss: 651.5481294330798
+diff: 32.12644075092521
+Epoch 119 loss: 622.7270796926398
+diff: 3.3053910104852093
+Epoch 120 loss: 632.1479813425165
+diff: 12.726292660361878
+Epoch 121 loss: 638.7633506373355
+diff: 19.34166195518094
+Epoch 122 loss: 615.8703259919819
+diff: 0.0
+Epoch 123 loss: 647.5022599069696
+diff: 31.631933914987712
+Epoch 124 loss: 646.4231744063528
+diff: 30.552848414370942
+Epoch 125 loss: 640.9158582185444
+diff: 25.0455322265625
+Epoch 126 loss: 630.0684220163446
+diff: 14.198096024362712
+Epoch 127 loss: 610.4971811394943
+diff: 0.0
+Epoch 128 loss: 632.2060546875
+diff: 21.708873548005727
+Epoch 129 loss: 632.4453831722861
+diff: 21.94820203279187
+Epoch 130 loss: 633.6727519788241
+diff: 23.175570839329794
+Epoch 131 loss: 614.8622725637335
+diff: 4.365091424239267
+Epoch 132 loss: 625.0357264468545
+diff: 14.53854530736021
+Epoch 133 loss: 656.0317977102179
+diff: 45.53461657072364
+Epoch 134 loss: 632.1363862690173
+diff: 21.63920512952302
+Epoch 135 loss: 641.615428723787
+diff: 31.118247584292703
+Epoch 136 loss: 607.4113464355469
+diff: 0.0
+Epoch 137 loss: 638.3379275673315
+diff: 30.926581131784587
+Epoch 138 loss: 624.2065156635485
+diff: 16.79516922800167
+Epoch 139 loss: 631.618014686986
+diff: 24.20666825143917
+Epoch 140 loss: 666.6129551937705
+diff: 59.20160875822364
+Epoch 141 loss: 663.3853791889392
+diff: 55.974032753392294
+Epoch 142 loss: 643.8270777652139
+diff: 36.41573132966698
+Epoch 143 loss: 626.688670911287
+diff: 19.2773244757401
+Epoch 144 loss: 599.8699196263364
+diff: 0.0
+Epoch 145 loss: 606.405472604852
+diff: 6.535552978515625
+Epoch 146 loss: 590.612996954667
+diff: 0.0
+Epoch 147 loss: 600.5847890753495
+diff: 9.971792120682494
+Epoch 148 loss: 611.9307154605264
+diff: 21.317718505859375
+Epoch 149 loss: 606.3903198242188
+diff: 15.777322869551767
+Generating samples: cue 0
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(630, 18, 500)
+Generating samples: cue 1
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(630, 18, 500)
+Computing rank from data with rank=None
+    Using tolerance 2 (2.2e-16 eps * 18 dim * 5e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.9 (2.2e-16 eps * 18 dim * 4.8e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2 (2.2e-16 eps * 18 dim * 5e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.9 (2.2e-16 eps * 18 dim * 4.8e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2 (2.2e-16 eps * 18 dim * 4.9e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.9 (2.2e-16 eps * 18 dim * 4.9e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.9 (2.2e-16 eps * 18 dim * 4.8e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.9 (2.2e-16 eps * 18 dim * 4.8e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2 (2.2e-16 eps * 18 dim * 4.9e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.9 (2.2e-16 eps * 18 dim * 4.7e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.9 (2.2e-16 eps * 18 dim * 4.8e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.9 (2.2e-16 eps * 18 dim * 4.6e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.9 (2.2e-16 eps * 18 dim * 4.7e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.9 (2.2e-16 eps * 18 dim * 4.7e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.9 (2.2e-16 eps * 18 dim * 4.6e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 1.8 (2.2e-16 eps * 18 dim * 4.6e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Starting trial 11
+Epoch 0 loss: 61477.97856702303
+diff: 0.0
+Epoch 1 loss: 9396.574964021382
+diff: 0.0
+Epoch 2 loss: 9010.636564555922
+diff: 0.0
+Epoch 3 loss: 8993.975560238487
+diff: 0.0
+Epoch 4 loss: 8988.768528988487
+diff: 0.0
+Epoch 5 loss: 8981.306049547697
+diff: 0.0
+Epoch 6 loss: 8967.907689144737
+diff: 0.0
+Epoch 7 loss: 8945.785181949013
+diff: 0.0
+Epoch 8 loss: 8917.02099609375
+diff: 0.0
+Epoch 9 loss: 8837.012515419408
+diff: 0.0
+Epoch 10 loss: 8649.565301192435
+diff: 0.0
+Epoch 11 loss: 8076.870361328125
+diff: 0.0
+Epoch 12 loss: 6839.646111739309
+diff: 0.0
+Epoch 13 loss: 5456.046669407895
+diff: 0.0
+Epoch 14 loss: 4109.857640316612
+diff: 0.0
+Epoch 15 loss: 3139.998907791941
+diff: 0.0
+Epoch 16 loss: 2579.350939298931
+diff: 0.0
+Epoch 17 loss: 2193.8088057668588
+diff: 0.0
+Epoch 18 loss: 2044.6363557514392
+diff: 0.0
+Epoch 19 loss: 1845.2526919716283
+diff: 0.0
+Epoch 20 loss: 1724.5056923314144
+diff: 0.0
+Epoch 21 loss: 1630.7847450657894
+diff: 0.0
+Epoch 22 loss: 1552.356210809005
+diff: 0.0
+Epoch 23 loss: 1471.1948049444902
+diff: 0.0
+Epoch 24 loss: 1414.502052708676
+diff: 0.0
+Epoch 25 loss: 1357.618806537829
+diff: 0.0
+Epoch 26 loss: 1355.7720658151727
+diff: 0.0
+Epoch 27 loss: 1298.9489778217517
+diff: 0.0
+Epoch 28 loss: 1268.1725463867188
+diff: 0.0
+Epoch 29 loss: 1228.76319323088
+diff: 0.0
+Epoch 30 loss: 1209.7697786030017
+diff: 0.0
+Epoch 31 loss: 1196.4509116724919
+diff: 0.0
+Epoch 32 loss: 1102.3250684236225
+diff: 0.0
+Epoch 33 loss: 1127.047437165913
+diff: 24.722368742290428
+Epoch 34 loss: 1090.299864116468
+diff: 0.0
+Epoch 35 loss: 1141.8873483758223
+diff: 51.58748425935437
+Epoch 36 loss: 1026.3106400339227
+diff: 0.0
+Epoch 37 loss: 1020.704983359889
+diff: 0.0
+Epoch 38 loss: 1039.618249190481
+diff: 18.91326583059208
+Epoch 39 loss: 1027.6752110531456
+diff: 6.970227693256675
+Epoch 40 loss: 977.117670962685
+diff: 0.0
+Epoch 41 loss: 918.6456218518709
+diff: 0.0
+Epoch 42 loss: 944.1564828973068
+diff: 25.51086104543583
+Epoch 43 loss: 918.910002055921
+diff: 0.26438020405009865
+Epoch 44 loss: 885.4877094469572
+diff: 0.0
+Epoch 45 loss: 916.4924187911184
+diff: 31.004709344161256
+Epoch 46 loss: 882.4097273977179
+diff: 0.0
+Epoch 47 loss: 882.3023906506991
+diff: 0.0
+Epoch 48 loss: 877.3817829332853
+diff: 0.0
+Epoch 49 loss: 878.6233649002878
+diff: 1.241581967002503
+Epoch 50 loss: 892.738082082648
+diff: 15.356299149362712
+Epoch 51 loss: 867.4178884405839
+diff: 0.0
+Epoch 52 loss: 861.4795885587994
+diff: 0.0
+Epoch 53 loss: 832.948441354852
+diff: 0.0
+Epoch 54 loss: 804.5158868086966
+diff: 0.0
+Epoch 55 loss: 796.4840939170435
+diff: 0.0
+Epoch 56 loss: 818.9747732062089
+diff: 22.490679289165314
+Epoch 57 loss: 807.2463346782483
+diff: 10.762240761204794
+Epoch 58 loss: 814.2856605931332
+diff: 17.801566676089692
+Epoch 59 loss: 832.9533450478002
+diff: 36.469251130756675
+Epoch 60 loss: 769.1808166503906
+diff: 0.0
+Epoch 61 loss: 770.1775127210116
+diff: 0.996696070620942
+Epoch 62 loss: 785.6299390290912
+diff: 16.449122378700622
+Epoch 63 loss: 784.4669976485403
+diff: 15.286180998149689
+Epoch 64 loss: 752.72900390625
+diff: 0.0
+Epoch 65 loss: 807.7237420333059
+diff: 54.99473812705594
+Epoch 66 loss: 760.1729896946957
+diff: 7.44398578844573
+Epoch 67 loss: 764.2708001387747
+diff: 11.541796232524689
+Epoch 68 loss: 754.752834922389
+diff: 2.0238310161389563
+Epoch 69 loss: 755.2753392269736
+diff: 2.5463353207236423
+Epoch 70 loss: 777.5332641601562
+diff: 24.80426025390625
+Epoch 71 loss: 705.8342269094367
+diff: 0.0
+Epoch 72 loss: 739.8658527575041
+diff: 34.03162584806739
+Epoch 73 loss: 704.8600849352384
+diff: 0.0
+Epoch 74 loss: 700.7321215177838
+diff: 0.0
+Epoch 75 loss: 722.433394582648
+diff: 21.701273064864267
+Epoch 76 loss: 723.5047093441611
+diff: 22.77258782637739
+Epoch 77 loss: 728.4097707648026
+diff: 27.67764924701885
+Epoch 78 loss: 680.6481837222451
+diff: 0.0
+Epoch 79 loss: 704.4031902112459
+diff: 23.755006489000834
+Epoch 80 loss: 673.1721882067228
+diff: 0.0
+Epoch 81 loss: 698.689294112356
+diff: 25.51710590563323
+Epoch 82 loss: 709.3569111071134
+diff: 36.184722900390625
+Epoch 83 loss: 700.2184400056537
+diff: 27.04625179893094
+Epoch 84 loss: 658.7193956877056
+diff: 0.0
+Epoch 85 loss: 698.899707994963
+diff: 40.180312307257395
+Epoch 86 loss: 661.7112282200864
+diff: 2.9918325323807267
+Epoch 87 loss: 651.5522669741982
+diff: 0.0
+Epoch 88 loss: 687.4405935187089
+diff: 35.88832654451062
+Epoch 89 loss: 705.3790299265008
+diff: 53.8267629523026
+Epoch 90 loss: 671.505864193565
+diff: 19.95359721936677
+Epoch 91 loss: 661.1265957480982
+diff: 9.574328773899992
+Epoch 92 loss: 796.412069220292
+diff: 144.85980224609375
+Epoch 93 loss: 717.7275133634869
+diff: 66.17524638928865
+Epoch 94 loss: 676.9968550832648
+diff: 25.444588109066558
+Epoch 95 loss: 664.66979257684
+diff: 13.117525602641763
+Epoch 96 loss: 653.8516331722861
+diff: 2.2993661980879097
+Epoch 97 loss: 709.5889201917147
+diff: 58.03665321751646
+Epoch 98 loss: 756.9908383018092
+diff: 105.43857132761093
+Epoch 99 loss: 643.1176549008018
+diff: 0.0
+Epoch 100 loss: 621.1323659796464
+diff: 0.0
+Epoch 101 loss: 673.7149216501336
+diff: 52.582555670487295
+Epoch 102 loss: 639.2751802143298
+diff: 18.142814234683442
+Epoch 103 loss: 629.670943410773
+diff: 8.538577431126669
+Epoch 104 loss: 598.3276640239515
+diff: 0.0
+Epoch 105 loss: 597.2816965203536
+diff: 0.0
+Epoch 106 loss: 630.8891191984478
+diff: 33.60742267809417
+Epoch 107 loss: 625.064482839484
+diff: 27.78278631913031
+Epoch 108 loss: 661.7928233899569
+diff: 64.51112686960323
+Epoch 109 loss: 654.6163876182154
+diff: 57.334691097861764
+Epoch 110 loss: 1495.037671540913
+diff: 897.7559750205593
+Epoch 111 loss: 728.1589467901932
+diff: 130.87725026983958
+Epoch 112 loss: 642.4782473915502
+diff: 45.196550871196564
+Epoch 113 loss: 826.9808767218339
+diff: 229.6991802014802
+Epoch 114 loss: 597.9021028217517
+diff: 0.6204063013980203
+Epoch 115 loss: 622.5349586888364
+diff: 25.253262168482706
+Epoch 116 loss: 619.1201846474096
+diff: 21.83848812705594
+Epoch 117 loss: 612.2868756745991
+diff: 15.005179154245411
+Epoch 118 loss: 589.5074816252056
+diff: 0.0
+Epoch 119 loss: 579.8479060122842
+diff: 0.0
+Epoch 120 loss: 606.6801035027755
+diff: 26.832197490491353
+Epoch 121 loss: 578.7212805497019
+diff: 0.0
+Epoch 122 loss: 581.0981999447471
+diff: 2.3769193950452063
+Epoch 123 loss: 556.1063473350123
+diff: 0.0
+Epoch 124 loss: 784.6065770199424
+diff: 228.5002296849301
+Epoch 125 loss: 663.1183752762644
+diff: 107.01202794125209
+Epoch 126 loss: 696.7729725084806
+diff: 140.66662517346833
+Epoch 127 loss: 597.1248955977591
+diff: 41.018548262746776
+Generating samples: cue 0
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(630, 18, 500)
+Generating samples: cue 1
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(630, 18, 500)
+Computing rank from data with rank=None
+    Using tolerance 9.2 (2.2e-16 eps * 18 dim * 2.3e+15  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 9.2 (2.2e-16 eps * 18 dim * 2.3e+15  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 13 (2.2e-16 eps * 18 dim * 3.3e+15  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 12 (2.2e-16 eps * 18 dim * 3.1e+15  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 16 (2.2e-16 eps * 18 dim * 3.9e+15  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 15 (2.2e-16 eps * 18 dim * 3.8e+15  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 18 (2.2e-16 eps * 18 dim * 4.5e+15  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 17 (2.2e-16 eps * 18 dim * 4.3e+15  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 20 (2.2e-16 eps * 18 dim * 5.1e+15  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 19 (2.2e-16 eps * 18 dim * 4.9e+15  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 22 (2.2e-16 eps * 18 dim * 5.5e+15  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 21 (2.2e-16 eps * 18 dim * 5.3e+15  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 24 (2.2e-16 eps * 18 dim * 5.9e+15  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 23 (2.2e-16 eps * 18 dim * 5.7e+15  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 25 (2.2e-16 eps * 18 dim * 6.4e+15  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 25 (2.2e-16 eps * 18 dim * 6.2e+15  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Starting trial 12
+Epoch 0 loss: 48263.15427117599
+diff: 0.0
+Epoch 1 loss: 9186.797106291118
+diff: 0.0
+Epoch 2 loss: 9002.961245888158
+diff: 0.0
+Epoch 3 loss: 8996.973838404605
+diff: 0.0
+Epoch 4 loss: 8997.284950657895
+diff: 0.3111122532900481
+Epoch 5 loss: 8986.538240131578
+diff: 0.0
+Epoch 6 loss: 8976.87605365954
+diff: 0.0
+Epoch 7 loss: 8961.444798519737
+diff: 0.0
+Epoch 8 loss: 8926.578356291118
+diff: 0.0
+Epoch 9 loss: 8808.288471422697
+diff: 0.0
+Epoch 10 loss: 8381.520816200658
+diff: 0.0
+Epoch 11 loss: 7258.098131681743
+diff: 0.0
+Epoch 12 loss: 5706.445184004934
+diff: 0.0
+Epoch 13 loss: 4271.817684775905
+diff: 0.0
+Epoch 14 loss: 3282.744256270559
+diff: 0.0
+Epoch 15 loss: 2537.8866416529604
+diff: 0.0
+Epoch 16 loss: 2214.7908196700246
+diff: 0.0
+Epoch 17 loss: 1951.943205180921
+diff: 0.0
+Epoch 18 loss: 1768.3242412366365
+diff: 0.0
+Epoch 19 loss: 1684.707908228824
+diff: 0.0
+Epoch 20 loss: 1556.3815757349919
+diff: 0.0
+Epoch 21 loss: 1488.5693937602796
+diff: 0.0
+Epoch 22 loss: 1427.5154515316613
+diff: 0.0
+Epoch 23 loss: 1330.992097553454
+diff: 0.0
+Epoch 24 loss: 1304.7726633172285
+diff: 0.0
+Epoch 25 loss: 1250.576117264597
+diff: 0.0
+Epoch 26 loss: 1241.279460706209
+diff: 0.0
+Epoch 27 loss: 1206.2603631270558
+diff: 0.0
+Epoch 28 loss: 1158.5883467824835
+diff: 0.0
+Epoch 29 loss: 1139.2599985223067
+diff: 0.0
+Epoch 30 loss: 1133.9560852050781
+diff: 0.0
+Epoch 31 loss: 1083.6339159513775
+diff: 0.0
+Epoch 32 loss: 1037.791847630551
+diff: 0.0
+Epoch 33 loss: 1051.03931145919
+diff: 13.247463828638956
+Epoch 34 loss: 1026.240817421361
+diff: 0.0
+Epoch 35 loss: 994.690624036287
+diff: 0.0
+Epoch 36 loss: 1003.3550672029194
+diff: 8.664443166632395
+Epoch 37 loss: 987.68017578125
+diff: 0.0
+Epoch 38 loss: 975.108244243421
+diff: 0.0
+Epoch 39 loss: 956.9024690326892
+diff: 0.0
+Epoch 40 loss: 929.2381463301809
+diff: 0.0
+Epoch 41 loss: 949.3574845163446
+diff: 20.119338186163645
+Epoch 42 loss: 916.6977330258018
+diff: 0.0
+Epoch 43 loss: 891.9962383069491
+diff: 0.0
+Epoch 44 loss: 894.4020674856085
+diff: 2.4058291786594737
+Epoch 45 loss: 892.3815130936472
+diff: 0.385274786698119
+Epoch 46 loss: 858.1194634688528
+diff: 0.0
+Epoch 47 loss: 865.4669928299753
+diff: 7.347529361122497
+Epoch 48 loss: 894.3875298751028
+diff: 36.26806640625
+Epoch 49 loss: 859.3651733398438
+diff: 1.245709870990936
+Epoch 50 loss: 838.0943089535361
+diff: 0.0
+Epoch 51 loss: 850.89966302169
+diff: 12.80535406815386
+Epoch 52 loss: 834.865518670333
+diff: 0.0
+Epoch 53 loss: 829.9530768143503
+diff: 0.0
+Epoch 54 loss: 818.9350601999383
+diff: 0.0
+Epoch 55 loss: 812.6270735891242
+diff: 0.0
+Epoch 56 loss: 809.2427095112048
+diff: 0.0
+Epoch 57 loss: 797.2156886050576
+diff: 0.0
+Epoch 58 loss: 796.4408087479441
+diff: 0.0
+Epoch 59 loss: 803.9275319952714
+diff: 7.486723247327291
+Epoch 60 loss: 812.3990703381991
+diff: 15.958261590255006
+Epoch 61 loss: 796.3005049856085
+diff: 0.0
+Epoch 62 loss: 789.2074151290091
+diff: 0.0
+Epoch 63 loss: 806.8720173082853
+diff: 17.664602179276244
+Epoch 64 loss: 790.8373348838404
+diff: 1.6299197548313487
+Epoch 65 loss: 776.3059772692228
+diff: 0.0
+Epoch 66 loss: 829.7724545127467
+diff: 53.466477243523855
+Epoch 67 loss: 746.58568854081
+diff: 0.0
+Epoch 68 loss: 766.7303081311678
+diff: 20.14461959035782
+Epoch 69 loss: 741.6023270456415
+diff: 0.0
+Epoch 70 loss: 756.0881219161184
+diff: 14.48579487047698
+Epoch 71 loss: 773.6346323113693
+diff: 32.032305265727814
+Epoch 72 loss: 746.4172299033717
+diff: 4.814902857730203
+Epoch 73 loss: 721.3502261513158
+diff: 0.0
+Epoch 74 loss: 736.6021857010691
+diff: 15.251959549753224
+Epoch 75 loss: 722.1680747584293
+diff: 0.817848607113433
+Epoch 76 loss: 752.4455727025082
+diff: 31.095346551192392
+Epoch 77 loss: 734.9362423545435
+diff: 13.5860162032277
+Epoch 78 loss: 735.3569464432566
+diff: 14.006720291940724
+Epoch 79 loss: 717.9717053865131
+diff: 0.0
+Epoch 80 loss: 730.7342930843955
+diff: 12.762587697882395
+Epoch 81 loss: 700.829345703125
+diff: 0.0
+Epoch 82 loss: 712.1385803222656
+diff: 11.309234619140625
+Epoch 83 loss: 675.7742438065378
+diff: 0.0
+Epoch 84 loss: 690.798010575144
+diff: 15.023766768606151
+Epoch 85 loss: 727.2317601254111
+diff: 51.45751631887333
+Epoch 86 loss: 739.2697737844367
+diff: 63.495529977898855
+Epoch 87 loss: 656.6962553325452
+diff: 0.0
+Epoch 88 loss: 715.4047530324835
+diff: 58.708497699938334
+Epoch 89 loss: 685.4204487047697
+diff: 28.724193372224477
+Epoch 90 loss: 691.5125652112459
+diff: 34.816309878700736
+Epoch 91 loss: 674.5362597013775
+diff: 17.840004368832297
+Epoch 92 loss: 736.3012775621916
+diff: 79.60502222964635
+Epoch 93 loss: 679.5930256090666
+diff: 22.89677027652135
+Epoch 94 loss: 667.5873107910156
+diff: 10.891055458470419
+Epoch 95 loss: 666.1222598427221
+diff: 9.426004510176881
+Epoch 96 loss: 649.6410153037623
+diff: 0.0
+Epoch 97 loss: 718.9359436035156
+diff: 69.29492829975334
+Epoch 98 loss: 650.2371312191611
+diff: 0.5961159153988547
+Epoch 99 loss: 648.8796820389597
+diff: 0.0
+Epoch 100 loss: 699.4903998123972
+diff: 50.6107177734375
+Epoch 101 loss: 690.6384148848684
+diff: 41.75873284590875
+Epoch 102 loss: 636.627481560958
+diff: 0.0
+Epoch 103 loss: 629.9871794048108
+diff: 0.0
+Epoch 104 loss: 629.5813325580798
+diff: 0.0
+Epoch 105 loss: 645.3677978515625
+diff: 15.786465293482706
+Epoch 106 loss: 642.9699369731702
+diff: 13.388604415090413
+Epoch 107 loss: 616.4318735223068
+diff: 0.0
+Epoch 108 loss: 622.3985579641242
+diff: 5.966684441817392
+Epoch 109 loss: 614.2064674778989
+diff: 0.0
+Epoch 110 loss: 616.3894107216283
+diff: 2.1829432437294827
+Epoch 111 loss: 681.9524086400082
+diff: 67.74594116210938
+Epoch 112 loss: 676.9854431152344
+diff: 62.77897563733552
+Epoch 113 loss: 619.2226755242599
+diff: 5.016208046361044
+Epoch 114 loss: 595.2470574629934
+diff: 0.0
+Epoch 115 loss: 604.846973619963
+diff: 9.599916156969584
+Epoch 116 loss: 638.9092503597861
+diff: 43.6621928967927
+Epoch 117 loss: 630.2200590434827
+diff: 34.97300158048927
+Epoch 118 loss: 582.0174295525802
+diff: 0.0
+Epoch 119 loss: 586.3097357498972
+diff: 4.292306197316975
+Epoch 120 loss: 600.7300294574939
+diff: 18.712599904913645
+Epoch 121 loss: 642.1331224943463
+diff: 60.11569294176604
+Epoch 122 loss: 637.2181051153885
+diff: 55.20067556280833
+Epoch 123 loss: 584.6810053775185
+diff: 2.6635758249383343
+Epoch 124 loss: 633.5426732113486
+diff: 51.52524365876843
+Epoch 125 loss: 606.1862150493421
+diff: 24.16878549676187
+Epoch 126 loss: 607.3888341000205
+diff: 25.371404547440306
+Epoch 127 loss: 611.5138581928454
+diff: 29.496428640265208
+Epoch 128 loss: 599.7261529219778
+diff: 17.708723369397603
+Epoch 129 loss: 580.1362931100946
+diff: 0.0
+Epoch 130 loss: 593.5096033999795
+diff: 13.373310289884898
+Epoch 131 loss: 585.78064205772
+diff: 5.644348947625417
+Epoch 132 loss: 580.0716882002981
+diff: 0.0
+Epoch 133 loss: 565.3357969585218
+diff: 0.0
+Epoch 134 loss: 573.2618576852899
+diff: 7.926060726768128
+Epoch 135 loss: 595.4410689504523
+diff: 30.105271991930522
+Epoch 136 loss: 575.7210042853104
+diff: 10.385207326788645
+Epoch 137 loss: 582.4767423930921
+diff: 17.140945434570312
+Epoch 138 loss: 767.835892526727
+diff: 202.5000955682052
+Epoch 139 loss: 612.6545305754009
+diff: 47.31873361687917
+Epoch 140 loss: 612.3946830347965
+diff: 47.05888607627469
+Generating samples: cue 0
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(630, 18, 500)
+Generating samples: cue 1
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(105, 18, 500)
+(630, 18, 500)
+Computing rank from data with rank=None
+    Using tolerance 2 (2.2e-16 eps * 18 dim * 5e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2 (2.2e-16 eps * 18 dim * 5e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2 (2.2e-16 eps * 18 dim * 5.1e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2 (2.2e-16 eps * 18 dim * 5e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.1 (2.2e-16 eps * 18 dim * 5.2e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2 (2.2e-16 eps * 18 dim * 5.1e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.1 (2.2e-16 eps * 18 dim * 5.2e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.1 (2.2e-16 eps * 18 dim * 5.2e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.1 (2.2e-16 eps * 18 dim * 5.3e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.1 (2.2e-16 eps * 18 dim * 5.2e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.1 (2.2e-16 eps * 18 dim * 5.3e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.1 (2.2e-16 eps * 18 dim * 5.3e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.1 (2.2e-16 eps * 18 dim * 5.3e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.2 (2.2e-16 eps * 18 dim * 5.4e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.1 (2.2e-16 eps * 18 dim * 5.3e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Computing rank from data with rank=None
+    Using tolerance 2.2 (2.2e-16 eps * 18 dim * 5.5e+14  max singular value)
+    Estimated rank (mag): 18
+    MAG: rank 18 computed from 18 data channels with 0 projectors
+Reducing data rank from 18 -> 18
+Estimating covariance using EMPIRICAL
+Done.
+Starting trial 13
