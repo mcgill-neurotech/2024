@@ -14,7 +14,7 @@ import zmq
 from .pre_processing import csp_preprocess
 import os
 import torch
-
+from torch.nn import functional as F
 import sys
 print("\n\n\n")
 print(os.path.dirname(__file__))
@@ -401,6 +401,8 @@ class DataClassifier:
                 x = rearrange(x,"b t c ->b c t")
                 if self.use_eegnet:
                     y = self.model.classify(torch.tensor(x).to(torch.float32))
+                    y = F.softmax(y,-1)
+                    # use argmax for categorical output
                     y = torch.argmax(y,-1)
                 else:
                     y = clf.predict(x)
