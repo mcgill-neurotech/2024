@@ -20,11 +20,8 @@ interface ConnectionInfo {
 }
 
 interface IUseSocketParams {
-  // data = array of current player's possible hand
-  onPossibleCards: (data: GameCard[]) => void;
-
-  // data = array of current player's impossible hand
-  onImpossibleCards: (data: GameCard[]) => void;
+  // data = array of current player's hand
+  onCards: (data: GameCard[]) => void;
 
   // data = index
   onPosition: (position: number) => void;
@@ -63,8 +60,7 @@ const useSocket = ({
   onJoined,
   onPlayerReadyStateUpdate,
   onPlayerConnectionStateUpdate,
-  onPossibleCards,
-  onImpossibleCards,
+  onCards,
   onPosition,
   onCardPlayed,
   onGameStarted,
@@ -90,8 +86,7 @@ const useSocket = ({
     socket.on('Player ready state update', onPlayerReadyStateUpdate);
     socket.on('Player connection state update', onPlayerConnectionStateUpdate);
     socket.on('disconnect', onDisconnect);
-    socket.on('Possible Cards', onPossibleCards);
-    socket.on('Impossible Cards', onImpossibleCards);
+    socket.on('Cards', onCards);
     socket.on('position', onPosition);
     socket.on('Card Played', onCardPlayed);
     socket.on('Game Started', onGameStarted);
@@ -107,8 +102,7 @@ const useSocket = ({
         onPlayerConnectionStateUpdate,
       );
       socket.off('disconnect', onDisconnect);
-      socket.off('Possible Cards', onPossibleCards);
-      socket.off('Impossible Cards', onImpossibleCards);
+      socket.off('Cards', onCards);
       socket.off('position', onPosition);
       socket.off('Card Played', onCardPlayed);
       socket.off('Game Started', onGameStarted);
@@ -124,10 +118,8 @@ interface GameInfo {
   players: Player[];
   playerIndex: number;
   playedCards: GameCard[];
-  playableCards: GameCard[];
-  unplayableCards: GameCard[];
-  selectedPlayableCardIndex: number;
-  selectedUnplayableCardIndex: number;
+  cards: GameCard[];
+  selectedCardIndex: number;
 }
 
 export interface useGameSocketReturn {
@@ -145,12 +137,10 @@ const useGameSocket = (): useGameSocketReturn => {
   let __players: Player[] = [];
   const [players, setPlayers] = useState<Player[]>([]);
   const [playerIndex, setPlayerIndex] = useState(-1);
-  let __playableCards: GameCard[] = [];
-  const [playableCards, setPlayableCards] = useState<GameCard[]>([]);
-  const [unplayableCards, setUnplayableCards] = useState<GameCard[]>([]);
-  const [selectedPlayableCardIndex, setSelectedPlayableCardIndex] = useState(0);
-  const [selectedUnplayableCardIndex, setSelectedUnplayableCardIndex] =
-    useState(0);
+
+  let __cards: GameCard[] = [];
+  const [cards, setCards] = useState<GameCard[]>([]);
+  const [selectedCardIndex, setSelectedCardIndex] = useState(0);
 
   let __playedCards: GameCard[] = [];
   const [playedCards, setPlayedCards] = useState<GameCard[]>([]);
@@ -183,20 +173,15 @@ const useGameSocket = (): useGameSocketReturn => {
       __playedCards = [...__playedCards, card];
       setPlayedCards(__playedCards);
     },
-    onImpossibleCards: (data) => {
-      console.log('on impossible cards', data);
-      setUnplayableCards(data); // maybe sort by color then number for better experience?
-      setSelectedUnplayableCardIndex(Math.floor(data.length / 2)); // prevent out of bounds errors
-    },
-    onPossibleCards: (data) => {
-      console.log('on possible cards', data);
-      __playableCards = data;
-      setPlayableCards([...__playableCards]);
-      setSelectedPlayableCardIndex(Math.floor(__playableCards.length / 2)); // prevent out of bounds errors
+    onCards: (data) => {
+      console.log('on cards', data);
+      __cards = data;
+      setCards([...__cards]);
+      setSelectedCardIndex(Math.floor(__cards.length / 2)); // prevent out of bounds errors
     },
     onPosition: (position) => {
       console.log('on position', position);
-      setSelectedPlayableCardIndex(position);
+      setSelectedCardIndex(position);
     },
 
     onGameStarted: () => {
@@ -213,10 +198,6 @@ const useGameSocket = (): useGameSocketReturn => {
     },
   });
 
-  useEffect(() => {
-    console.log('update');
-  }, [players, playerIndex, playableCards, unplayableCards, playedCards]);
-
   return {
     connectionInfo: {
       isConnected,
@@ -226,10 +207,8 @@ const useGameSocket = (): useGameSocketReturn => {
       players,
       playerIndex,
       playedCards,
-      playableCards,
-      unplayableCards,
-      selectedPlayableCardIndex,
-      selectedUnplayableCardIndex,
+      cards,
+      selectedCardIndex,
     },
   };
 };

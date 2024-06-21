@@ -133,22 +133,12 @@ class Game {
     }
   }
 
-  // Sets initial game state -- 7 cards initially in each player's hands, draw from deck option, first top card
+  // Sets initial game state -- draw from deck option, 7 cards initially in each player's hands, first top card
   private setGame() {
     this.shuffleDeck();
     const starthand = 7;
     let deck = this.gameState.deck;
-    for (let i = 0; i < this.numPlayers; i++) {
-      /* Add draw from deck card to both player's possible hand -- OR hand */
-      this.players[i].possible_hand.push(new Card("wild", 14, true));
 
-      for (let j = 0; j < starthand; j++) {
-        const drawn_card = deck.pop();
-        if (drawn_card) {
-          this.players[i].hand.push(drawn_card);
-        }
-      }
-    }
     // Draws first card on playing deck
     const first_card = deck.pop();
     if (first_card) {
@@ -157,21 +147,20 @@ class Game {
       this.broadcast("Card Played", -1, first_card);
     }
 
-    for (const player of this.players) {
+    this.players.forEach((player, playerIndex) => {
+      player.hand.push(new Card("wild", 14, true));
       for (let j = 0; j < starthand; j++) {
-        const drawn_card = deck.pop();
-        if (drawn_card) {
-          player.hand.push(drawn_card);
-        }
+        this.addCard(playerIndex);
       }
-
       const client = this.clients.get(player.player_socket);
       if (client) {
-        player.sortPossibleHand(this.gameState.top_card!, client);
+        player.selected_card = Math.floor(player.hand.length / 2);
+        client.socket.emit("Cards", player.hand);
+        client.socket.emit("position", player.selected_card);
       } else {
         console.log("socket id does not correspond to player");
       }
-    }
+    });
   }
 
   /* 
@@ -190,28 +179,33 @@ class Game {
 
   // After playing a card, checks if special power is used and changes turn accordingly
   public readSpecial(playerIndex: number, selected: Card) {
-    const number = selected.number;
-    const opp = (playerIndex + 1) % 2;
+    /* 10 = skip; 11 = +2; 12 = +4; 13 = wildcard; 14 = draw card; 15 = solid color*/
 
-    if (number == 11) {
-      //add 2 cards
-      this.addCard(opp);
-      this.addCard(opp);
-    } else if (number == 12) {
-      //add 4 cards
-      for (let i = 0; i < 4; i++) {
-        this.addCard(opp);
-      }
+    // handle all + cards
+    if (selected.number === 12) {
+      const victim = (playerIndex + 1) % this.numPlayers;
+      for (let i = 0; i < 4; i++) this.addCard(victim);
+    } else if (selected.number === 11) {
+      const victim = (playerIndex + 1) % this.numPlayers;
+      for (let i = 0; i < 2; i++) this.addCard(victim);
+    } else if (selected.number === 14) {
+      this.addCard(playerIndex);
     }
 
-    // Returns player index for the next round
-    // Same player's turn if skip or +2 or allow player to choose wild card
-    if (number) {
-      if (number > 9 && number < 14) {
-        return playerIndex;
-      } else {
-        return opp;
-      }
+    /* 13 = wildcard; 14 = draw card; 15 = solid color*/
+    // handle direction changes
+    if (selected.number <= 9 || selected.number >= 14) {
+      // normal card
+      return (playerIndex + 1) % this.numPlayers;
+    } else if (selected.number === 10 || selected.number === 11) {
+      // skip or +2, respectively
+      return (playerIndex + 2) % this.numPlayers;
+    } else if (selected.number === 12 || selected.number === 13) {
+      // +4 or wild, same player (needs to choose the next color)
+      return playerIndex;
+    } else {
+      this.error(`Unexpected number for readSpecial: ${selected.number}`);
+      return (playerIndex + 1) % this.numPlayers;
     }
   }
 
@@ -231,29 +225,31 @@ class Game {
     }
 
     while (this.players[currentPlayerIndex].hand.length > 0) {
-      console.log("while loop", currentPlayerIndex, this.players);
-
       // Calculate possible hand and send to specific client
       const current_player = this.players[currentPlayerIndex];
       const current_client = this.clients.get(current_player.player_socket);
 
       if (current_client) {
-        current_player.sortPossibleHand(
-          this.gameState.top_card!,
-          current_client,
-        );
-
         // Listening for move
         const selected = await this.players[currentPlayerIndex].moveCard(
           current_client,
           this.gameState,
         );
-        console.log("selected: %o for player %d", selected, currentPlayerIndex);
 
-        // Special functions can be performed
-        currentPlayerIndex = Number(
-          this.readSpecial(currentPlayerIndex, selected),
-        ); // Performs special functions and changes turn if applicable
+        console.log("selected: %o for player %d", selected, currentPlayerIndex);
+        if (selected.number !== 14) {
+          this.gameState.top_card = selected;
+          // Sends top_card to clients with playerIndex
+          this.broadcast(
+            "Card Played",
+            currentPlayerIndex,
+            this.gameState.top_card,
+          );
+        }
+
+        // Performs special functions and changes turn if applicable
+        let prevCurrentPlayerIndex = currentPlayerIndex;
+        currentPlayerIndex = this.readSpecial(currentPlayerIndex, selected);
 
         // Ensure currentPlayerIndex is valid after update
         if (!this.players[currentPlayerIndex]) {
@@ -263,11 +259,15 @@ class Game {
           return;
         }
 
-        // Sends top_card to clients with playerIndex
-        this.broadcast(
-          "Card Played",
+        this.emitToPlayer(
+          prevCurrentPlayerIndex,
+          "Cards",
+          this.players[prevCurrentPlayerIndex].hand,
+        );
+        this.emitToPlayer(
           currentPlayerIndex,
-          this.gameState.top_card,
+          "Cards",
+          this.players[currentPlayerIndex].hand,
         );
       } else {
         this.error("socket.id does not correspond to client");
@@ -276,6 +276,22 @@ class Game {
     }
 
     this.endGame(currentPlayerIndex);
+  }
+
+  public emitToPlayer(playerIndex: number, topic: string, ...msg: any[]) {
+    const player = this.players.at(playerIndex);
+    if (!player) {
+      this.error(`player at index ${playerIndex} does not exist`);
+      return;
+    }
+    const client = this.clients.get(player.player_socket);
+    if (!client) {
+      this.error(
+        `socket.id ${player.player_socket} does not correspond to client`,
+      );
+      return;
+    }
+    client.socket.emit(topic, ...msg);
   }
 
   public async startGame() {
@@ -375,7 +391,7 @@ class GameState {
   constructor() {
     //build initial game state
     const colour = ["red", "yellow", "green", "blue"];
-    /* 10 = skip; 11 = +2; 12 = +4; 13 = wildcard 14 = draw card 15 = solid color*/
+    /* 10 = skip; 11 = +2; 12 = +4; 13 = wildcard; 14 = draw card; 15 = solid color*/
     for (let i = 0; i < 14; i++) {
       //build the number cards
       // joker_marker is true for wild cards and solid color cards -- allows solid color to be placed on wild
@@ -404,22 +420,40 @@ class Card {
     this.number = number;
     this.joker = joker;
   }
+
+  public canBePlayedOn(card: Card) {
+    // "draw " card or wild cards
+    if (this.number === 14) return true;
+    // "normal" cards
+    else if (card.number < 12) {
+      return this.number === 12 || this.number === 13 ||
+      (this.number === card.number || this.color === card.color);
+    } 
+    // "wild" cards - will only be the case if drawn as the first starting card
+    else if (card.number === 12 || card.number === 13) {
+      return true;
+    } 
+    // "solid color" cards
+    else if (card.number === 15) {
+      return this.color === card.color
+    }
+  }
 }
 
 class Player {
   ready = false;
   player_socket: string = "";
   hand: Card[] = [];
-  possible_hand: Card[] = [];
   selected_card: number = 0;
-  impossible_hand: Card[] = [];
 
   constructor(player_socket: string) {
     this.player_socket = player_socket;
     this.hand = [];
-    this.possible_hand = [];
     this.selected_card = 0;
-    this.impossible_hand = [];
+  }
+
+  public initialize(hand: Card[]) {
+    this.hand = hand;
   }
 
   public checkReady(playerClient: GameClient) {
@@ -432,16 +466,29 @@ class Player {
     while (true) {
       const action = playerClient.getCurrentPrediction();
       if (action === Action.Clench) {
-        return this.playCard(gameState, playerClient);
+        if (
+          gameState.top_card &&
+          this.canPlaySelectedCardOn(gameState.top_card)
+        ) {
+          return this.playCard();
+        } else {
+          // maybe create a new message for the client to notify them that try
+          // tried to make an illegal move
+          console.log("illegal card, skipping action");
+          await sleep(2000);
+          continue;
+        }
       }
 
       if (action === Action.Right) {
         this.selected_card =
-          (this.selected_card + 1) % this.possible_hand.length;
+          // (this.selected_card + 1) % this.possible_hand.length;
+          (this.selected_card + 1) % this.hand.length;
       } else if (action === Action.Left) {
         this.selected_card =
-          (this.selected_card - 1 + this.possible_hand.length) %
-          this.possible_hand.length;
+          // (this.selected_card - 1 + this.possible_hand.length) %
+          // this.possible_hand.length;
+          (this.selected_card - 1 + this.hand.length) % this.hand.length;
       }
 
       console.log("emit position", this.selected_card);
@@ -450,66 +497,32 @@ class Player {
     }
   }
 
-  // Returns true if card played (new card placed onto played cards), false if no card played (draw card)
-  public playCard(gameState: GameState, playerClient: GameClient) {
-    const selected = this.possible_hand[this.selected_card];
-    if (selected.number != 14) {
-      gameState.top_card = selected;
-      this.possible_hand.splice(this.selected_card, 1);
-      gameState.played_cards.push(this.possible_hand[this.selected_card]);
-      this.hand.splice(this.selected_card, 1);
-    } else {
-      const drawn = gameState.deck.pop();
-      if (drawn) {
-        this.hand.push(drawn);
-      }
+  public canPlaySelectedCardOn(topCard: Card) {
+    const card = this.hand.at(this.selected_card);
+    if (!card) {
+      console.log(
+        `unexpected error trying to play card: index ${this.selected_card} out of bounds for hand of length ${this.hand}`,
+      );
+      return false;
     }
-    playerClient.socket.emit("Card Played", playerClient.playerIndex, selected);
-    return selected;
+
+    console.log(
+      card,
+      "can be played on",
+      topCard,
+      "?:",
+      card.canBePlayedOn(topCard),
+    );
+    return card.canBePlayedOn(topCard);
   }
 
-  public sortPossibleHand(topCard: Card, playerClient: GameClient) {
-    const color = topCard.color;
-    const number = topCard.number;
-
-    const hand = this.hand;
-
-    // splice possible hand from 1 -> end, preserve draw card
-    // clear everything in impossible hand
-    this.possible_hand.splice(1, this.possible_hand.length - 1);
-    this.impossible_hand = [];
-
-    // Handles wild card color choice
-    if (number == 12 || number == 13) {
-      const colour = ["red", "yellow", "green", "blue"];
-      const solidnum = 15;
-
-      // Pops draw card
-      this.possible_hand.pop();
-
-      for (let i = 0; i < colour.length; i++) {
-        this.possible_hand.push(new Card(colour[i], solidnum, true));
-      }
-    } else {
-      // Adds draw card if doesn't exist
-      if (hand.length == 0) {
-        this.possible_hand.push(new Card("wild", 14, true));
-      }
-      for (let i = 0; i < hand.length; i++) {
-        if (
-          hand[i].color === color ||
-          hand[i].color === "wild" ||
-          hand[i].number === number
-        ) {
-          this.possible_hand.push(hand[i]);
-        } else {
-          this.impossible_hand.push(hand[i]);
-        }
-      }
+  // Returns Card if card played (new card placed onto played cards), undefined if no card played (draw card)
+  public playCard() {
+    const selected = this.hand[this.selected_card];
+    if (selected.number !== 14) {
+      this.hand.splice(this.selected_card, 1);
     }
-    this.selected_card = Math.floor(this.possible_hand.length / 2); // prevent out of bounds errors
-    playerClient.socket.emit("Possible Cards", this.possible_hand);
-    playerClient.socket.emit("Impossible Cards", this.impossible_hand);
+    return selected;
   }
 }
 

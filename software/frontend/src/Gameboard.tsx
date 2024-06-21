@@ -146,8 +146,23 @@ const makeCardProps = (card: GameCard) => {
       </p>
     );
   } else {
-    ret.corners = specialCornerMap.get(card.number)!(card.color);
-    ret.center = specialCenterMap.get(card.number)!(card.color);
+    const corner = specialCornerMap.get(card.number);
+    if (corner) {
+      ret.corners = corner(card.color);
+    }
+    else {
+      console.error(`unexpected number ${card.number} from card ${card}`)
+      ret.corners = <p>unexpected number</p>
+    }
+
+    const center = specialCenterMap.get(card.number);
+    if (center) {
+      ret.center = center(card.color);
+    } else {
+      console.error(`unexpected number ${card.number} from card ${card}`)
+      ret.center = <p>unexpected number</p>
+    }
+
     ret.centerClassName = specialClassNameMap.get(card.number);
   }
 
@@ -159,16 +174,11 @@ const CARD_HEIGHT = 150; // Replace with actual card height
 
 const Gameboard: React.FC = () => {
   const { connectionInfo, gameInfo } = useGameSocket();
-  const {
-    playedCards,
-    playableCards,
-    unplayableCards,
-    selectedPlayableCardIndex,
-  } = gameInfo;
+  const { playedCards, cards, selectedCardIndex } = gameInfo;
   const isConnected = connectionInfo.isConnected;
   const id = connectionInfo.id;
 
-  console.log(selectedPlayableCardIndex);
+  console.log(cards);
   return (
     <div className="gameboard">
       <div className="top-section">
@@ -195,20 +205,10 @@ const Gameboard: React.FC = () => {
       <div className="bottom-section">
         <div className="card-container">
           <CardFanLinear
-            selected={selectedPlayableCardIndex}
+            selected={selectedCardIndex}
             spread={1}
             //onSelected={(i) => setSelectedCardIndex(i)}
-            cards={playableCards.map(makeCardProps)}
-          />
-        </div>
-      </div>
-      <div className="bottom-section">
-        <div className="card-container">
-          <CardFanLinear
-            selected={selectedPlayableCardIndex}
-            spread={1}
-            //onSelected={(i) => setSelectedCardIndex(i)}
-            cards={unplayableCards.map(makeCardProps)}
+            cards={cards.map(makeCardProps)}
           />
         </div>
       </div>
