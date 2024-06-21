@@ -3,6 +3,7 @@ a multiplayer card game that allows two users to connect to the platform and eng
 
 The team:
 - Ezra Huand
+- Allison Murdock
 - Malak Oualid
 - Toky Raharison
 - Maxence Lapatrie
