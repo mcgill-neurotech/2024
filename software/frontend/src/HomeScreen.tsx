@@ -2,6 +2,7 @@
 import React, { useContext } from 'react';
 import './HomeScreen_style.css';
 import { GameContext } from './gameContext';
+import { WinStatus } from './useSocket';
 
 const HomeScreen: React.FC = () => {
   const info = useContext(GameContext);
@@ -22,6 +23,8 @@ const HomeScreen: React.FC = () => {
           </span>
         </div>
       </div>
+      {info?.winStatus === WinStatus.Winner && <p>You won!</p>}
+      {info?.winStatus === WinStatus.Loser && <p>You lost!</p>}
       <h1 className="title fade">
         Welcome to the Uno-like Game! Waiting for all players to be ready...
       </h1>

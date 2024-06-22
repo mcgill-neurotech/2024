@@ -122,9 +122,16 @@ interface GameInfo {
   selectedCardIndex: number;
 }
 
+export enum WinStatus {
+  None,
+  Loser,
+  Winner
+}
+
 export interface useGameSocketReturn {
   connectionInfo: ConnectionInfo;
   gameInfo: GameInfo;
+  winStatus: WinStatus
 }
 
 const useGameSocket = (): useGameSocketReturn => {
@@ -134,6 +141,7 @@ const useGameSocket = (): useGameSocketReturn => {
   // necessary because the onPlayerConnectionStateUpdate handler gets fired immediately
   // after the onJoined handler before the component gets a chance to rerender
   // super jank but it works (yay!!)
+  const [winStatus, setWinStatus] = useState(WinStatus.None)
   let __players: Player[] = [];
   const [players, setPlayers] = useState<Player[]>([]);
   const [playerIndex, setPlayerIndex] = useState(-1);
@@ -189,8 +197,19 @@ const useGameSocket = (): useGameSocketReturn => {
       navigate('/game');
     },
 
-    onGameEnded: (data) => {
-      // possibly navigate winner and loser to WinScreen and LoseScreen respectively? Could just be a pop-up with a countdown for disconnect
+    onGameEnded: (winnerIndex) => {
+      if (playerIndex === winnerIndex) {
+        setWinStatus(WinStatus.Winner)
+        console.log("you won!")
+        navigate("/")
+      } else {
+        setWinStatus(WinStatus.Loser)
+        console.log("you lost")
+        navigate("/")
+      }
+
+
+      // possibly navigate winner and  loser to WinScreen and LoseScreen respectively? Could just be a pop-up with a countdown for disconnect
     },
 
     onGameClosed: () => {
@@ -210,6 +229,7 @@ const useGameSocket = (): useGameSocketReturn => {
       cards,
       selectedCardIndex,
     },
+    winStatus: winStatus  
   };
 };
 

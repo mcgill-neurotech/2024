@@ -11,7 +11,7 @@ function calculate_fan_positions(N: number, selected: number, spread: number) {
   const center = positions[selected];
   return positions.map((i) => ({
     left: (i - center) * spread * 50, // Spread horizontally
-    zIndex: -Math.abs(i - center) + B + 1,
+    zIndex: -Math.abs(i - center) + B + 10,
   }));
 }
 
