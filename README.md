@@ -8,3 +8,4 @@ The team:
 - Toky Raharison
 - Maxence Lapatrie
 - Janelle Tam
+- Angela Wang
