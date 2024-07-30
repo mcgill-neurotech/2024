@@ -10,3 +10,4 @@ The team:
 - Janelle Tam
 - Angela Wang
 - Victor Novakov
+- Brune Bettler
