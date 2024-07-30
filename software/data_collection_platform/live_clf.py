@@ -1,9 +1,9 @@
 from backend import DataClassifier
 import pathlib
 import logging
-from OpenBCI_LSL.lib.open_bci_v3 import OpenBCIBoard
-from pylsl import StreamInfo
-from bci_streamer import BciStreamer
+# from OpenBCI_LSL.lib.open_bci_v3 import OpenBCIBoard
+# from pylsl import StreamInfo
+# from bci_streamer import BciStreamer
 
 
 log_path = pathlib.Path(f"logs/cli.log")
@@ -40,8 +40,9 @@ def cli():
 
     # bci_streamer = BciStreamer()
     # bci_streamer.start_streaming(on_sample)
+    player = 1
 
-    data_recorder = DataClassifier(find_streams=True)
+    data_recorder = DataClassifier(int(player),find_streams=True)
     print(title_string)
 
     while True:

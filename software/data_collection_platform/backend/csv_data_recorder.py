@@ -16,6 +16,7 @@ import os
 import torch
 from torch.nn import functional as F
 import sys
+import random
 print("\n\n\n")
 print(os.path.dirname(__file__))
 print("\n\n\n")
@@ -298,18 +299,27 @@ class DataClassifier:
 
     def __init__(
         self,
+        player,
         find_streams=True,
         use_eegnet=True,
     ):
         self.eeg_inlet = find_bci_inlet() if find_streams else None
-
+        self.player = player
+        print(f"Setting player {player}")
         self.recording = False
         self.ready = self.eeg_inlet is not None
 
         if self.ready:
             logger.info("Ready to start recording.")
 
+        print("Ready to start recording")
+        context = zmq.Context()
+        self.socket = context.socket(zmq.PUB)
+
+        self.connect_zmq()
+
         self.bufsize = 512
+        self.window_length_sec = 512
         self.buffer = np.ndarray((8, self.bufsize))
         self.time_buffer = np.ndarray(self.bufsize)
         self.last_time_index = 0
@@ -381,7 +391,7 @@ class DataClassifier:
             two_seconds_before = eeg_timestamp - self.window_length_sec
 
             self.time_buffer[self.current_time_index] = eeg_timestamp
-            self.buffer[self.current_time_index] = eeg_sample
+            self.buffer[:,self.current_time_index] = eeg_sample
             self.current_time_index = (self.current_time_index + 1) % self.bufsize
 
             while self.time_buffer[self.last_time_index] < two_seconds_before:
@@ -404,12 +414,13 @@ class DataClassifier:
                     y = F.softmax(y,-1)
                     # use argmax for categorical output
                     y = torch.argmax(y,-1)
+
+                    self.send_categorical_prediction(time.time(),y[0]+random.randint(0,2),self.player)
                 else:
                     y = clf.predict(x)
-                print(f"predicted class {y}")
 
-            if count >= 1000:
-                raise(ValueError("early stop"))
+            # if count >= 1000:
+            #     raise(ValueError("early stop"))
             
     def get_buffer_samples(self):
         if self.last_time_index > self.current_time_index:
