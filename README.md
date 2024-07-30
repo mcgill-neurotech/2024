@@ -9,3 +9,5 @@ The team:
 - Maxence Lapatrie
 - Janelle Tam
 - Angela Wang
+- Victor Novakov
+- Brune Bettler
