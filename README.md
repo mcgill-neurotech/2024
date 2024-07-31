@@ -13,3 +13,5 @@ The team:
 - Brune Bettler
 - Hailey Eckersberg
 - Rhea Xinxo
+
+To run the project, follow the steps outlined in this [document](https://docs.google.com/document/d/1RWl2lwcKn2HQj0AX02HtGekkuQzpc4J4fJ0zuBhYmDc/edit?usp=sharing).
