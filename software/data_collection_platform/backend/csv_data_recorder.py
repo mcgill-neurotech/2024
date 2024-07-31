@@ -84,6 +84,20 @@ def epoch_preprocess(x, y, fs, notch_freq=50):
     x = (x - rearrange(mu, "n d -> n d 1")) / rearrange(sigma, "n d -> n d 1")
     return x, y
 
+def clench_detect(x, y, fs, notch_freq=50):
+
+    x, y = apply_notch(x, y, fs, notch_freq)
+
+    ax = []
+
+    for i in range(1, 10):
+        ax.append(bandpass(x, fs, 4 * i, 4 * i + 4))
+    x = np.concatenate(ax, -1)
+
+    mu = np.mean(x, axis=-1)
+    sigma = np.std(x, axis=-1)
+    x = (x - rearrange(mu, "n d -> n d 1"))
+    return reduce(x,"n d t -> ()","mean") > 20
 
 def find_bci_inlet(debug=False):
     """Find an EEG stream and return an inlet to it.
@@ -406,22 +420,31 @@ class DataClassifier:
             x = self.buffer
             c,t = x.shape
             if t >= 512:
-                x = rearrange(x[np.array([3,5]),:],"c t -> 1 t c")
-                x,_ = epoch_preprocess(x,None,256,60)
-                x = rearrange(x,"b t c ->b c t")
-                if self.use_eegnet:
-                    y = self.model.classify(torch.tensor(x).to(torch.float32))
-                    y = F.softmax(y,-1)
-                    # use argmax for categorical output
-                    y = torch.argmax(y,-1)
+                if time.time() - last_send < 0.5:
+                    continue
 
-                    self.send_categorical_prediction(time.time(),y[0]+random.randint(0,2),self.player)
                 else:
-                    y = clf.predict(x)
+                    x = rearrange(x[np.array([3,5]),:],"c t -> 1 t c")
+                    clench = clench_detect(x,_,256,60)
+                    if clench:
+                        self.send_categorical_prediction(time.time(),1,self.player)
+                        last_send = time.time()
+                        continue
+                    x,_ = epoch_preprocess(x,None,256,60)
+                    x = rearrange(x,"b t c ->b c t")
+                    
+                    if self.use_eegnet:
+                        y = self.model.classify(torch.tensor(x).to(torch.float32))
+                        y = F.softmax(y,-1)
+                        # use argmax for categorical output
+                        y = torch.argmax(y,-1)
 
-            # if count >= 1000:
-            #     raise(ValueError("early stop"))
-            
+                        self.send_categorical_prediction(time.time(),y[0]+1,self.player)
+                        last_send = time.time()
+                        continue
+                    else:
+                        y = clf.predict(x)
+
     def get_buffer_samples(self):
         if self.last_time_index > self.current_time_index:
             begin = self.buffer[self.last_time_index : self.bufsize]

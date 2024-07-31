@@ -40,7 +40,8 @@ def cli():
 
     # bci_streamer = BciStreamer()
     # bci_streamer.start_streaming(on_sample)
-    player = 1
+
+    player = int(input("Enter the player number"))
 
     data_recorder = DataClassifier(int(player),find_streams=True)
     print(title_string)
