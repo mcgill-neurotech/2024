@@ -11,3 +11,5 @@ The team:
 - Angela Wang
 - Victor Novakov
 - Brune Bettler
+- Hailey Eckersberg
+- Rhea Xinxo
