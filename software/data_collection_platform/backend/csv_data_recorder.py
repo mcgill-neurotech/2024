@@ -394,10 +394,15 @@ class DataClassifier:
         count = 0
 
         model_path = os.path.join(os.path.dirname(__file__), '../model.p')
+        clench_model_path = os.path.join(os.path.dirname(__file__), '../clench_model.p')
+        
 
         if not self.use_eegnet:
             with open(model_path,"rb") as f:
                 clf = pickle.load(f)
+
+        with open(clench_model_path,"rb") as f:
+            clench_clf = pickle.load(f)
 
         while self.recording:
             eeg_sample, eeg_timestamp = self.eeg_inlet.pull_sample()
@@ -425,18 +430,19 @@ class DataClassifier:
 
                 else:
                     x = rearrange(x[np.array([3,5]),:],"c t -> 1 t c")
-                    clench = clench_detect(x,_,256,60)
-                    if clench:
+                    x,_ = epoch_preprocess(x,None,256,60)
+                    x = rearrange(x,"b t c -> b c t")
+
+                    clench = clench_clf.predict(x)[0]
+
+                    if clench > 0:
                         self.send_categorical_prediction(time.time(),1,self.player)
                         last_send = time.time()
                         continue
-                    x,_ = epoch_preprocess(x,None,256,60)
-                    x = rearrange(x,"b t c ->b c t")
                     
                     if self.use_eegnet:
                         y = self.model.classify(torch.tensor(x).to(torch.float32))
                         y = F.softmax(y,-1)
-                        # use argmax for categorical output
                         y = torch.argmax(y,-1)
 
                         self.send_categorical_prediction(time.time(),y[0]+1,self.player)
